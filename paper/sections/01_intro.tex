@@ -1,0 +1,49 @@
+\section{Introduction}
+\label{sec:intro}
+
+Empirical risk minimization on imbalanced or spuriously-correlated data
+yields models that latch onto majority-group shortcuts and fail under
+distribution shift \citep{sagawa2020groupdro,arjovsky2019irm}. The
+mainstream remedy is per-sample reweighting via bi-level meta-learning
+(\citealt{ren2018reweight}; FORML, \citealt{yan2022forml}), where
+example weights are optimized against a small clean validation set
+through implicit differentiation.
+
+\paragraph{Closed-form alternative.}
+\citet{wang2024inrun} recently derived a closed-form first- and
+second-order Taylor estimator for In-Run Data Shapley computable in a
+single training run. Letting $g_i$ denote the per-sample gradient and
+$g_{\mathrm{val}}, H_{\mathrm{val}}$ denote the validation gradient and
+Hessian, the second-order Shapley value of sample $z_i$ is
+\begin{equation}
+\phi_i^{(2)} \;=\; \langle g_i, g_{\mathrm{val}}\rangle
+\;-\; \alpha \cdot \langle g_i, H_{\mathrm{val}}\, g_{\mathrm{val}}\rangle.
+\label{eq:phi2}
+\end{equation}
+The original work used $\phi_i$ for \emph{post-hoc} data filtering. We
+ask: can the same closed-form formulas serve as an \emph{in-training}
+per-sample reweighter, in particular, can the cross-term provide a
+stand-alone benefit?
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=1.2em, itemsep=2pt, topsep=3pt]
+\item We turn closed-form In-Run Shapley into a 5-step in-training
+reweighter and identify \textbf{RMS rescaling of the cross-term} as a
+required algorithmic contribution: without it the 2nd-order variant
+diverges under strong spurious bias.
+\item On Colored MNIST, our 2nd-order method (Fairds-2) yields a
+statistically significant \textbf{+13.0~pp} improvement in out-of-distribution
+worst-group accuracy over vanilla training and a \textbf{+4.7~pp} 2nd-order
+isolation gain over the 1st-order variant (Section~\ref{sec:exp:cmnist}).
+\item We honestly characterize the \textbf{regime boundary}: on
+pretrained-ResNet Waterbirds fine-tuning, three algorithmic variants we
+tried all fail to match the bi-level baseline (Section~\ref{sec:exp:waterbirds}).
+We diagnose the cause and recommend bi-level meta-learning for that regime.
+\end{enumerate}
+
+\paragraph{Where this paper fits.}
+We are not proposing a state-of-the-art robustness method on real
+images. We are a \emph{mechanism paper} that pins down when closed-form
+2nd-order Shapley reweighting is competitive (from-scratch / small-model
+spurious regimes) versus when bi-level remains the right tool
+(pretrained fine-tuning).

@@ -1,0 +1,91 @@
+{
+  "args": {
+    "datasets": [
+      "compas"
+    ],
+    "methods": [
+      "ren2018"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "val_modes": [
+      "balanced"
+    ],
+    "epochs": 5,
+    "batch_size": 64,
+    "lr": 0.05,
+    "alpha": 0.5,
+    "n_val_per_group": 200,
+    "device": "cuda",
+    "out_root": "results/e2"
+  },
+  "runs": [
+    {
+      "dataset": "compas",
+      "method": "ren2018",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 5,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "temperature": 0.5,
+      "clip_quantile": 0.05,
+      "weight_scale": 1.0,
+      "val_acc": 0.6979166865348816,
+      "worst_acc": 0.6969230771064758,
+      "val_acc_g0": 0.6995073556900024,
+      "val_acc_g1": 0.6969230771064758,
+      "dp_diff": 0.23279273509979248,
+      "eo_diff": 0.25855422019958496,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.8782448768615723
+    },
+    {
+      "dataset": "compas",
+      "method": "ren2018",
+      "seed": 1,
+      "val_mode": "balanced",
+      "epochs": 5,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "temperature": 0.5,
+      "clip_quantile": 0.05,
+      "weight_scale": 1.0,
+      "val_acc": 0.6884469985961914,
+      "worst_acc": 0.6861538290977478,
+      "val_acc_g0": 0.692118227481842,
+      "val_acc_g1": 0.6861538290977478,
+      "dp_diff": 0.24358469247817993,
+      "eo_diff": 0.2824096083641052,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.5624339580535889
+    },
+    {
+      "dataset": "compas",
+      "method": "ren2018",
+      "seed": 2,
+      "val_mode": "balanced",
+      "epochs": 5,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "temperature": 0.5,
+      "clip_quantile": 0.05,
+      "weight_scale": 1.0,
+      "val_acc": 0.6827651858329773,
+      "worst_acc": 0.670769214630127,
+      "val_acc_g0": 0.7019704580307007,
+      "val_acc_g1": 0.670769214630127,
+      "dp_diff": 0.2158772349357605,
+      "eo_diff": 0.21767067909240723,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.5352559089660645
+    }
+  ],
+  "total_walltime_sec": 1.9761195182800293
+}

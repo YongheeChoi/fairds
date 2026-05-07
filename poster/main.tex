@@ -1,0 +1,293 @@
+\documentclass{article}
+% A0 landscape: 1189 x 841 mm
+\usepackage[paperwidth=1189mm,paperheight=841mm,margin=0mm]{geometry}
+\usepackage{tcolorbox}
+\tcbuselibrary{poster,skins,fitting}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage{type1cm}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\pagestyle{empty}
+
+% ── ICLR Color Theme (deep green) ──
+\definecolor{primary}{HTML}{065F46}     % deep green
+\definecolor{secondary}{HTML}{059669}   % medium green
+\definecolor{accent}{HTML}{0284C7}      % blue
+\definecolor{bgposter}{HTML}{F0FDF4}    % light green-tinted background
+\definecolor{redbg}{HTML}{ECFDF5}       % softer green tint card
+\definecolor{bluebg}{HTML}{F0F9FF}      % blue tint card
+\definecolor{darkbg}{HTML}{F0FDF4}      % main card tint
+\definecolor{redtitlebg}{HTML}{D1FAE5}
+\definecolor{bluetitlebg}{HTML}{DBEAFE}
+\definecolor{darktitlebg}{HTML}{D1FAE5}
+\definecolor{textdark}{HTML}{111827}
+\definecolor{textgray}{HTML}{4B5563}
+\definecolor{stathighlight}{HTML}{ECFDF5}
+
+\pagecolor{bgposter}
+\color{textdark}
+
+\setlist[itemize]{leftmargin=24pt, itemsep=8pt, parsep=2pt, topsep=2pt,
+  label={\color{secondary}$\blacktriangleright$}}
+\setlist[enumerate]{leftmargin=24pt, itemsep=8pt, parsep=2pt, topsep=2pt,
+  label={\color{primary}\bfseries\arabic*.}}
+
+\newcommand{\posterfig}[3]{%
+  \centering\includegraphics[width=#1\linewidth]{#2}\\[3mm]
+  {\fontsize{24}{30}\selectfont\color{textgray}\textit{#3}}\vspace{2mm}%
+}
+
+\tcbset{
+  redcard/.style={
+    enhanced, arc=0pt, boxrule=0pt, colback=redbg,
+    borderline west={5pt}{0pt}{secondary},
+    left=16pt, right=14pt, top=4pt, bottom=4pt,
+    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{secondary},
+    coltitle=secondary, colbacktitle=redtitlebg,
+    toptitle=6pt, bottomtitle=6pt,
+    titlerule=2pt, titlerule style={secondary!50},
+    valign=top, drop shadow={opacity=0.18},
+  },
+  bluecard/.style={
+    enhanced, arc=0pt, boxrule=0pt, colback=bluebg,
+    borderline west={5pt}{0pt}{accent},
+    left=16pt, right=14pt, top=4pt, bottom=4pt,
+    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{accent},
+    coltitle=accent, colbacktitle=bluetitlebg,
+    toptitle=6pt, bottomtitle=6pt,
+    titlerule=2pt, titlerule style={accent!50},
+    valign=top, drop shadow={opacity=0.18},
+  },
+  darkcard/.style={
+    enhanced, arc=0pt, boxrule=0pt, colback=darkbg,
+    borderline west={5pt}{0pt}{primary},
+    left=16pt, right=14pt, top=4pt, bottom=4pt,
+    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{primary},
+    coltitle=primary, colbacktitle=darktitlebg,
+    toptitle=6pt, bottomtitle=6pt,
+    titlerule=2pt, titlerule style={primary!50},
+    valign=top, drop shadow={opacity=0.18},
+  },
+  highlightcard/.style={
+    enhanced, arc=0pt, boxrule=0pt, colback=primary!20!white,
+    borderline west={6pt}{0pt}{primary},
+    left=16pt, right=14pt, top=4pt, bottom=4pt,
+    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{white},
+    coltitle=white, colbacktitle=primary,
+    toptitle=6pt, bottomtitle=6pt,
+    valign=top, drop shadow={opacity=0.22},
+  },
+}
+
+\begin{document}
+\begin{tcbposter}[
+  coverage={spread},
+  poster={columns=4, rows=20, spacing=0mm},
+]
+
+% ══ TITLE BAR ══
+\posterbox[
+  enhanced, colback=primary, colframe=primary, colupper=white,
+  arc=0pt, boxrule=0pt,
+  left=40pt, right=40pt, top=12pt, bottom=8pt,
+  halign=center, valign=center,
+  drop shadow={opacity=0.3}
+]{name=title, column=1, span=4, between=top and row4}{
+  {\fontsize{60}{72}\selectfont\sffamily\bfseries Closed-form\ 2nd-order\ Data\ Shapley\\[6pt] as\ a\ Spurious-Correlation\ Attenuator}\\[12pt]
+  {\fontsize{32}{40}\selectfont\sffamily \emph{Where it Works and Where it Doesn't}}\\[12pt]
+  {\fontsize{26}{34}\selectfont\sffamily\color{white!85} Anonymous Authors \quad$|$\quad ICLR 2026 Workshop \quad$|$\quad code: github.com/anon/fairds}
+}
+
+% ══ STATS BANNER ══
+\posterbox[
+  enhanced, colback=primary!10!white, boxrule=0pt, arc=0pt,
+  left=12pt, right=12pt, top=6pt, bottom=6pt,
+  valign=center, borderline south={3pt}{0pt}{primary!35},
+]{name=stats, column=1, span=4, between=row4 and row6}{
+  \centering
+  \begin{minipage}[c]{0.235\linewidth}\centering
+    \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
+      \centering\vspace{6pt}%
+      {\fontsize{60}{72}\selectfont\bfseries\color{primary} +13.0\,pp}\\[2pt]
+      {\fontsize{24}{30}\selectfont\color{textdark} OOD test\_worst vs Vanilla\\($p\!=\!5\!\times\!10^{-5}$, 10 seeds)}\vspace{6pt}%
+    }}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.235\linewidth}\centering
+    \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
+      \centering\vspace{6pt}%
+      {\fontsize{60}{72}\selectfont\bfseries\color{primary} +4.7\,pp}\\[2pt]
+      {\fontsize{24}{30}\selectfont\color{textdark} 2nd-order isolation\\(vs Fairds-1, $p\!=\!0.033$)}\vspace{6pt}%
+    }}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.235\linewidth}\centering
+    \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
+      \centering\vspace{6pt}%
+      {\fontsize{60}{72}\selectfont\bfseries\color{primary} +55.3\,pp}\\[2pt]
+      {\fontsize{24}{30}\selectfont\color{textdark} at strong spurious $p\!=\!0.99$\\(phase transition, $p\!=\!3\!\times\!10^{-5}$)}\vspace{6pt}%
+    }}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.235\linewidth}\centering
+    \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
+      \centering\vspace{6pt}%
+      {\fontsize{60}{72}\selectfont\bfseries\color{primary} 1.89\!$\times$\!$10^{\!-\!8}$}\\[2pt]
+      {\fontsize{24}{30}\selectfont\color{textdark} Mann--Whitney $p$\\(majority $\phi$ < minority $\phi$)}\vspace{6pt}%
+    }}
+  \end{minipage}
+}
+
+% ══ COL 1: BACKGROUND + CONTRIBUTIONS + REFERENCES ══
+
+\posterbox[
+  redcard, title={\bfseries Background}
+]{name=background, column=1, between=row6 and row11}{
+  \fontsize{30}{40}\selectfont
+  Empirical risk minimization on \emph{spuriously-correlated} data
+  latches onto majority shortcuts.\\[4pt]
+  Mainstream remedy: \textbf{bi-level meta-learning}
+  (Ren 2018; FORML) -- implicit-differentiation heavy.\\[4pt]
+  \colorbox{secondary!20}{\parbox{0.94\linewidth}{\fontsize{28}{36}\selectfont
+  \textbf{Wang et al. 2024} derived a \emph{closed-form} 2nd-order
+  In-Run Shapley estimator -- but used only \textbf{post-hoc for
+  filtering}.\par}}
+  \vspace{4pt}
+  \textbf{Question:} can the same closed-form formulas serve as an
+  \emph{in-training} reweighter? Does the 2nd-order cross-term
+  contribute a \emph{stand-alone} benefit?
+}
+
+\posterbox[
+  darkcard, title={\bfseries Contributions}
+]{name=contributions, column=1, between=row11 and row16}{
+  \fontsize{30}{40}\selectfont
+  \begin{enumerate}[itemsep=14pt]
+    \item Adapt closed-form In-Run Shapley as a 5-step in-training reweighter.
+    \item \textbf{RMS-rescale the cross-term} -- prevents divergence under strong spurious bias.
+    \item Statistically isolate a \textbf{2nd-order benefit} on Colored MNIST ($+4.7$\,pp, $p\!=\!0.033$).
+    \item Honestly characterize the \textbf{regime boundary} (works on from-scratch / small-model; fails on pretrained ResNet).
+  \end{enumerate}
+}
+
+\posterbox[
+  redcard, title={\bfseries References \& Code}
+]{name=refs, column=1, between=row16 and bottom}{
+  \fontsize{26}{34}\selectfont
+  \begin{itemize}[itemsep=5pt, label={}]
+    \item Wang et al. (2024). \emph{Data Shapley in One Training Run}. ICLR.
+    \item Ren et al. (2018). \emph{Learning to Reweight Examples}. ICML.
+    \item Liu et al. (2021). \emph{Just Train Twice}. ICML.
+    \item Sagawa et al. (2020). \emph{GroupDRO}. ICLR.
+    \item Arjovsky et al. (2019). \emph{IRM}. arXiv:1907.02893.
+  \end{itemize}\vspace{4pt}
+  \vspace{4pt}
+  \colorbox{primary!20}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont
+    \centering\textbf{Code:} \texttt{github.com/anon/fairds}\par}}
+}
+
+% ══ COL 2: METHOD ══
+
+\posterbox[
+  darkcard, title={\bfseries Method: Fairds}
+]{name=method, column=2, between=row6 and row14}{
+  \fontsize{28}{36}\selectfont
+  Per-step on minibatch $\mathcal{B}_t$ with anchor $\mathcal{D}_{\mathrm{val}}$:\\[4pt]
+  \colorbox{accent!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont\centering
+    $\displaystyle\phi_i^{(2)} = \langle g_i,\, g_{\mathrm{val}}\rangle
+    \;-\; \alpha\cdot\langle g_i,\, H_{\mathrm{val}}\, g_{\mathrm{val}}\rangle$}}
+  \vspace{6pt}
+  \begin{itemize}[itemsep=8pt]
+    \item $g_i$ via \texttt{torch.func.vmap(grad)} (single graph).
+    \item $H_{\mathrm{val}} g_{\mathrm{val}}$ via Pearlmutter HVP.
+    \item EMA-accumulate $\phi_i$, softmax-weight, weighted SGD.
+  \end{itemize}\vspace{4pt}
+  \vspace{4pt}
+  \colorbox{secondary!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
+    \textbf{Algorithmic contribution:} cross-term must be RMS-rescaled to first-order's magnitude. Without it Fairds-2 collapses to chance under strong spurious bias.}}
+}
+
+\posterbox[
+  redcard, title={\bfseries Mechanism (E1b probe)}
+]{name=mechanism, column=2, between=row14 and bottom}{
+  \fontsize{28}{36}\selectfont
+  Controlled spurious-feature MLP, 2 of 8 dims informative,
+  spurious strength $s\!=\!10$.\\[4pt]
+  \begin{itemize}[itemsep=6pt]
+    \item Mann--Whitney $U(\mathrm{maj}\!<\!\mathrm{min}\,\phi)$:\\
+          $p\!=\!1.89\!\times\!10^{-8}$ at imbalance $0.9$.
+    \item $\Delta\phi$ monotone $\downarrow$ with imbalance.
+  \end{itemize}\vspace{4pt}
+  \colorbox{secondary!18}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont
+    Cross-term penalises majority gradients aligned with $H_{\mathrm{val}}$'s dominant directions.}}
+}
+
+% ══ COL 3: MAIN RESULTS ══
+
+\posterbox[
+  bluecard, title={\bfseries Colored MNIST (E3): extended baselines}
+]{name=results1, column=3, between=row6 and row14}{
+  \fontsize{28}{36}\selectfont
+  10 seeds $\times$ 7 methods $\times$ 20 epochs, best-tuned $\eta\!=\!0.05$.\\[2pt]
+  \posterfig{0.96}{figures/fig_cmnist_extended.pdf}{Held-out OOD test\_worst across all baselines.}
+  \vspace{2pt}
+  \colorbox{accent!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
+    \textbf{Fairds-2 vs Vanilla:} $+13.0$\,pp ($p\!=\!5\!\times\!10^{-5}$).\\
+    \textbf{Fairds-2 vs Ren2018:} $+2.7$\,pp ($p\!=\!0.052$).\\
+    \textbf{Fairds-2 vs Fairds-1 (isolation):} $+4.7$\,pp ($p\!=\!0.033$).
+  }}\\[4pt]
+  Honest: \textbf{JTT} (no group label, 2-stage ERM) reaches $0.878$
+  and \textbf{GroupDRO} (group label) reaches $0.900$, both above
+  Fairds-2's $0.824$.
+}
+
+\posterbox[
+  redcard, title={\bfseries Phase transition with spurious strength}
+]{name=phase, column=3, between=row14 and bottom}{
+  \fontsize{28}{36}\selectfont
+  Sweep $p_{\mathrm{maj}}\!\in\!\{0.7,\ldots,0.99\}$:\\[4pt]
+  \posterfig{0.96}{figures/fig_strength_phase.pdf}{Vanilla collapses at $p\!=\!0.99$ while Fairds-2 stays robust.}
+  \vspace{2pt}
+  \colorbox{secondary!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
+    $p\!=\!0.95$: $\Delta\!=\!+19.8$\,pp; $p\!=\!0.99$: $\Delta\!=\!+55.3$\,pp ($p\!=\!3\!\times\!10^{-5}$).
+  }}
+}
+
+% ══ COL 4: WATERBIRDS NEGATIVE + TAKEAWAYS ══
+
+\posterbox[
+  bluecard, title={\bfseries Waterbirds (E3b): regime boundary}
+]{name=waterbirds, column=4, between=row6 and row14}{
+  \fontsize{28}{36}\selectfont
+  Pretrained ResNet-18 fine-tuning. We tried 3 algorithmic
+  variants:\\[2pt]
+  \posterfig{0.96}{figures/fig_waterbirds.pdf}{All Fairds variants $\le$ Vanilla; Ren2018 dominates.}
+  \vspace{2pt}
+  \colorbox{accent!18}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
+    \textbf{Diagnosis:} pretrained $g_i$ is small / noisy in early
+    epochs. EMA fills with noise; reweighting destabilises training.
+    No-EMA variant doesn't cure it -- underlying SNR is poor.
+  }}\\[2pt]
+  \colorbox{primary!18}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont
+    Practical recommendation: \textbf{bi-level meta-learning} for
+    pretrained fine-tuning regimes.
+  }}
+}
+
+\posterbox[
+  highlightcard, title={\bfseries Takeaways}
+]{name=takeaways, column=4, between=row14 and bottom}{
+  \fontsize{30}{40}\selectfont\color{textdark}
+  \begin{enumerate}[itemsep=12pt]
+    \item Closed-form 2nd-order Shapley reweighting is a
+          \textbf{regime-dependent} tool.
+    \item It works on \textbf{from-scratch / spurious-correlation}
+          regimes -- with statistical isolation of the 2nd-order benefit.
+    \item It \textbf{fails on pretrained fine-tuning} -- bi-level
+          methods stay stronger there.
+    \item RMS-rescaling of the cross-term is required for stability.
+  \end{enumerate}
+}
+
+\end{tcbposter}
+\end{document}

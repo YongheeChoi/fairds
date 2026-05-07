@@ -1,0 +1,104 @@
+{
+  "args": {
+    "datasets": [
+      "adult"
+    ],
+    "methods": [
+      "vanilla",
+      "fairds-1",
+      "fairds-2"
+    ],
+    "seeds": [
+      0
+    ],
+    "val_modes": [
+      "balanced"
+    ],
+    "epochs": 3,
+    "batch_size": 256,
+    "lr": 0.05,
+    "alpha": 0.5,
+    "n_val_per_group": 200,
+    "device": "cuda",
+    "out_root": "results/e2"
+  },
+  "runs": [
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 3,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8363736867904663,
+      "worst_acc": 0.7970873713493347,
+      "val_acc_g0": 0.7970873713493347,
+      "val_acc_g1": 0.9211169481277466,
+      "dp_diff": 0.21045593172311783,
+      "eo_diff": 0.12330734729766846,
+      "phi_per_group_last": {},
+      "walltime_sec": 1.5696957111358643
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 3,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8363736867904663,
+      "worst_acc": 0.7972491383552551,
+      "val_acc_g0": 0.7972491383552551,
+      "val_acc_g1": 0.9207679033279419,
+      "dp_diff": 0.2152061089873314,
+      "eo_diff": 0.1467549204826355,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0018309775960829787,
+          "std": 0.07478015865350732,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0012484341230960484,
+          "std": 0.06215515438619082,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 1.855001449584961
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 3,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8353787064552307,
+      "worst_acc": 0.7962782979011536,
+      "val_acc_g0": 0.7962782979011536,
+      "val_acc_g1": 0.9197207689285278,
+      "dp_diff": 0.21908283233642578,
+      "eo_diff": 0.1433892846107483,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0012327055993217161,
+          "std": 0.06049108337954538,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0007736451953386704,
+          "std": 0.04833242212077594,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 2.149479627609253
+    }
+  ],
+  "total_walltime_sec": 5.574428081512451
+}

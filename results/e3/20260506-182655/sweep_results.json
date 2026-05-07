@@ -1,0 +1,98 @@
+{
+  "args": {
+    "methods": [
+      "vanilla",
+      "fairds-1",
+      "fairds-2",
+      "ren2018"
+    ],
+    "seeds": [
+      0
+    ],
+    "ratios": [
+      0.9
+    ],
+    "epochs": 5,
+    "n_train": 1000,
+    "batch_size": 128,
+    "lr": 0.005,
+    "alpha": 0.5,
+    "temperature": 0.5,
+    "weight_scale": 1.0,
+    "device": "cuda",
+    "out_root": "results/e3"
+  },
+  "runs": [
+    {
+      "method": "vanilla",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.005,
+      "alpha": 0.5,
+      "temperature": 0.5,
+      "weight_scale": 1.0,
+      "n_train": 1000,
+      "val_acc": 0.527999997138977,
+      "val_worst": 0.5240000486373901,
+      "val_acc_g0": 0.5320000052452087,
+      "val_acc_g1": 0.5240000486373901,
+      "test_acc": 0.4867999851703644,
+      "walltime_sec": 0.6362760066986084
+    },
+    {
+      "method": "fairds-1",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.005,
+      "alpha": 0.5,
+      "temperature": 0.5,
+      "weight_scale": 1.0,
+      "n_train": 1000,
+      "val_acc": 0.527999997138977,
+      "val_worst": 0.5240000486373901,
+      "val_acc_g0": 0.5320000052452087,
+      "val_acc_g1": 0.5240000486373901,
+      "test_acc": 0.4867999851703644,
+      "w_std_mean": 0.04624346327036619,
+      "walltime_sec": 0.54768967628479
+    },
+    {
+      "method": "fairds-2",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.005,
+      "alpha": 0.5,
+      "temperature": 0.5,
+      "weight_scale": 1.0,
+      "n_train": 1000,
+      "val_acc": 0.527999997138977,
+      "val_worst": 0.5240000486373901,
+      "val_acc_g0": 0.5320000052452087,
+      "val_acc_g1": 0.5240000486373901,
+      "test_acc": 0.4867999851703644,
+      "w_std_mean": 0.02893432495184243,
+      "walltime_sec": 0.4853556156158447
+    },
+    {
+      "method": "ren2018",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.005,
+      "alpha": 0.5,
+      "temperature": 0.5,
+      "weight_scale": 1.0,
+      "n_train": 1000,
+      "val_acc": 0.527999997138977,
+      "val_worst": 0.5240000486373901,
+      "val_acc_g0": 0.5320000052452087,
+      "val_acc_g1": 0.5240000486373901,
+      "test_acc": 0.4867999851703644,
+      "walltime_sec": 0.27948713302612305
+    }
+  ],
+  "total_walltime_sec": 1.9490728378295898
+}

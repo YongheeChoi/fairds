@@ -1,0 +1,16 @@
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e3b] writing to results/e3b_warmup3/20260507-003831
+[  1/12] vanilla    seed=0 val_acc=0.670 val_worst=0.217 test_acc=0.675 test_worst=0.213 (26.8s)
+[  2/12] vanilla    seed=1 val_acc=0.667 val_worst=0.169 test_acc=0.662 test_worst=0.137 (26.5s)
+[  3/12] vanilla    seed=2 val_acc=0.627 val_worst=0.205 test_acc=0.634 test_worst=0.196 (26.4s)
+[  4/12] fairds-1   seed=0 val_acc=0.648 val_worst=0.265 test_acc=0.658 test_worst=0.263 (46.2s)
+[  5/12] fairds-1   seed=1 val_acc=0.596 val_worst=0.217 test_acc=0.596 test_worst=0.207 (47.7s)
+[  6/12] fairds-1   seed=2 val_acc=0.486 val_worst=0.091 test_acc=0.496 test_worst=0.070 (47.7s)
+[  7/12] fairds-2   seed=0 val_acc=0.644 val_worst=0.301 test_acc=0.653 test_worst=0.277 (89.2s)
+[  8/12] fairds-2   seed=1 val_acc=0.575 val_worst=0.224 test_acc=0.582 test_worst=0.243 (89.2s)
+[  9/12] fairds-2   seed=2 val_acc=0.497 val_worst=0.106 test_acc=0.508 test_worst=0.080 (88.9s)
+[ 10/12] ren2018    seed=0 val_acc=0.626 val_worst=0.445 test_acc=0.653 test_worst=0.455 (43.8s)
+[ 11/12] ren2018    seed=1 val_acc=0.731 val_worst=0.554 test_acc=0.740 test_worst=0.575 (44.0s)
+[ 12/12] ren2018    seed=2 val_acc=0.642 val_worst=0.442 test_acc=0.661 test_worst=0.451 (45.7s)
+[e3b] results/e3b_warmup3/20260507-003831/sweep_results.json  (622.1s)

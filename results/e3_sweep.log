@@ -1,0 +1,16 @@
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e3] writing to results/e3/20260506-182713
+[  1/12] vanilla    ratio=0.90 seed=0 val_acc=0.696 val_worst=0.472 test_acc=0.101 (1.6s)
+[  2/12] vanilla    ratio=0.90 seed=1 val_acc=0.700 val_worst=0.516 test_acc=0.090 (1.2s)
+[  3/12] vanilla    ratio=0.90 seed=2 val_acc=0.682 val_worst=0.452 test_acc=0.100 (1.2s)
+[  4/12] fairds-1   ratio=0.90 seed=0 val_acc=0.696 val_worst=0.472 test_acc=0.101 (5.0s)
+[  5/12] fairds-1   ratio=0.90 seed=1 val_acc=0.700 val_worst=0.516 test_acc=0.091 (4.1s)
+[  6/12] fairds-1   ratio=0.90 seed=2 val_acc=0.682 val_worst=0.452 test_acc=0.100 (4.2s)
+[  7/12] fairds-2   ratio=0.90 seed=0 val_acc=0.696 val_worst=0.472 test_acc=0.101 (9.1s)
+[  8/12] fairds-2   ratio=0.90 seed=1 val_acc=0.700 val_worst=0.516 test_acc=0.090 (8.4s)
+[  9/12] fairds-2   ratio=0.90 seed=2 val_acc=0.682 val_worst=0.452 test_acc=0.100 (7.2s)
+[ 10/12] ren2018    ratio=0.90 seed=0 val_acc=0.696 val_worst=0.472 test_acc=0.101 (3.7s)
+[ 11/12] ren2018    ratio=0.90 seed=1 val_acc=0.752 val_worst=0.596 test_acc=0.203 (5.1s)
+[ 12/12] ren2018    ratio=0.90 seed=2 val_acc=0.682 val_worst=0.452 test_acc=0.100 (5.1s)
+[e3] results/e3/20260506-182713/sweep_results.json  (55.8s total)

@@ -1,0 +1,62 @@
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[pareto] writing to results/e2/pareto-20260506-175854
+[vanilla baseline]
+[1] vanilla seed=0 acc=0.837 dp=0.196 eo=0.110
+[2] vanilla seed=1 acc=0.835 dp=0.199 eo=0.139
+[3] vanilla seed=2 acc=0.838 dp=0.201 eo=0.127
+
+[fairds-2 grid]
+[4] fairds-2 τ=0.1 ws=1.0 seed=0 acc=0.829 dp=0.209 eo=0.165 w_std=0.7210323719911172
+[5] fairds-2 τ=0.1 ws=1.0 seed=1 acc=0.826 dp=0.155 eo=0.072 w_std=0.9478752364994775
+[6] fairds-2 τ=0.1 ws=1.0 seed=2 acc=0.833 dp=0.222 eo=0.214 w_std=0.8833446873885366
+[7] fairds-2 τ=0.1 ws=2.0 seed=0 acc=0.819 dp=0.210 eo=0.208 w_std=1.2038486422927166
+[8] fairds-2 τ=0.1 ws=2.0 seed=1 acc=0.810 dp=0.139 eo=0.040 w_std=1.547156115121125
+[9] fairds-2 τ=0.1 ws=2.0 seed=2 acc=0.827 dp=0.225 eo=0.233 w_std=1.4609425409019272
+[10] fairds-2 τ=0.1 ws=4.0 seed=0 acc=0.814 dp=0.201 eo=0.187 w_std=1.6375870856600747
+[11] fairds-2 τ=0.1 ws=4.0 seed=1 acc=0.803 dp=0.143 eo=0.055 w_std=1.9895550172653556
+[12] fairds-2 τ=0.1 ws=4.0 seed=2 acc=0.825 dp=0.225 eo=0.240 w_std=1.8920860253589253
+[13] fairds-2 τ=0.3 ws=1.0 seed=0 acc=0.833 dp=0.206 eo=0.152 w_std=0.2555209830333369
+[14] fairds-2 τ=0.3 ws=1.0 seed=1 acc=0.831 dp=0.173 eo=0.124 w_std=0.3312500155972483
+[15] fairds-2 τ=0.3 ws=1.0 seed=2 acc=0.834 dp=0.209 eo=0.198 w_std=0.2914728764287183
+[16] fairds-2 τ=0.3 ws=2.0 seed=0 acc=0.829 dp=0.206 eo=0.151 w_std=0.45754991697033803
+[17] fairds-2 τ=0.3 ws=2.0 seed=1 acc=0.829 dp=0.164 eo=0.105 w_std=0.5757613997714061
+[18] fairds-2 τ=0.3 ws=2.0 seed=2 acc=0.833 dp=0.217 eo=0.201 w_std=0.5311217975798347
+[19] fairds-2 τ=0.3 ws=4.0 seed=0 acc=0.824 dp=0.212 eo=0.203 w_std=0.7746809726030054
+[20] fairds-2 τ=0.3 ws=4.0 seed=1 acc=0.818 dp=0.144 eo=0.045 w_std=0.9586375607571131
+[21] fairds-2 τ=0.3 ws=4.0 seed=2 acc=0.831 dp=0.219 eo=0.228 w_std=0.9093299927985724
+[22] fairds-2 τ=0.5 ws=1.0 seed=0 acc=0.835 dp=0.209 eo=0.158 w_std=0.16404844361221846
+[23] fairds-2 τ=0.5 ws=1.0 seed=1 acc=0.832 dp=0.175 eo=0.128 w_std=0.21943971815173616
+[24] fairds-2 τ=0.5 ws=1.0 seed=2 acc=0.835 dp=0.203 eo=0.185 w_std=0.1852641327315373
+[25] fairds-2 τ=0.5 ws=2.0 seed=0 acc=0.833 dp=0.207 eo=0.151 w_std=0.2910861500307148
+[26] fairds-2 τ=0.5 ws=2.0 seed=1 acc=0.831 dp=0.171 eo=0.121 w_std=0.3734813989328107
+[27] fairds-2 τ=0.5 ws=2.0 seed=2 acc=0.834 dp=0.210 eo=0.193 w_std=0.328787041049748
+[28] fairds-2 τ=0.5 ws=4.0 seed=0 acc=0.829 dp=0.207 eo=0.158 w_std=0.5218880308136135
+[29] fairds-2 τ=0.5 ws=4.0 seed=1 acc=0.827 dp=0.160 eo=0.085 w_std=0.6432751334049333
+[30] fairds-2 τ=0.5 ws=4.0 seed=2 acc=0.832 dp=0.217 eo=0.201 w_std=0.5945717769609371
+[31] fairds-2 τ=1.0 ws=1.0 seed=0 acc=0.837 dp=0.203 eo=0.142 w_std=0.09070750117266961
+[32] fairds-2 τ=1.0 ws=1.0 seed=1 acc=0.834 dp=0.182 eo=0.138 w_std=0.12962471113448412
+[33] fairds-2 τ=1.0 ws=1.0 seed=2 acc=0.835 dp=0.201 eo=0.168 w_std=0.10354599513708146
+[34] fairds-2 τ=1.0 ws=2.0 seed=0 acc=0.835 dp=0.210 eo=0.160 w_std=0.1596795265418543
+[35] fairds-2 τ=1.0 ws=2.0 seed=1 acc=0.832 dp=0.175 eo=0.123 w_std=0.21479872279743634
+[36] fairds-2 τ=1.0 ws=2.0 seed=2 acc=0.835 dp=0.204 eo=0.186 w_std=0.1780755469216987
+[37] fairds-2 τ=1.0 ws=4.0 seed=0 acc=0.832 dp=0.206 eo=0.146 w_std=0.29126781819851744
+[38] fairds-2 τ=1.0 ws=4.0 seed=1 acc=0.831 dp=0.170 eo=0.115 w_std=0.37213336652573287
+[39] fairds-2 τ=1.0 ws=4.0 seed=2 acc=0.834 dp=0.210 eo=0.193 w_std=0.3229617320910586
+
+[ren2018 grid]
+[40] ren2018 lr=0.005 seed=0 acc=0.817 dp=0.203 eo=0.204
+[41] ren2018 lr=0.005 seed=1 acc=0.807 dp=0.151 eo=0.113
+[42] ren2018 lr=0.005 seed=2 acc=0.824 dp=0.226 eo=0.251
+[43] ren2018 lr=0.01 seed=0 acc=0.820 dp=0.200 eo=0.188
+[44] ren2018 lr=0.01 seed=1 acc=0.812 dp=0.152 eo=0.079
+[45] ren2018 lr=0.01 seed=2 acc=0.829 dp=0.211 eo=0.193
+[46] ren2018 lr=0.02 seed=0 acc=0.824 dp=0.207 eo=0.196
+[47] ren2018 lr=0.02 seed=1 acc=0.816 dp=0.147 eo=0.055
+[48] ren2018 lr=0.02 seed=2 acc=0.831 dp=0.206 eo=0.180
+[49] ren2018 lr=0.05 seed=0 acc=0.826 dp=0.207 eo=0.174
+[50] ren2018 lr=0.05 seed=1 acc=0.824 dp=0.163 eo=0.086
+[51] ren2018 lr=0.05 seed=2 acc=0.831 dp=0.218 eo=0.146
+
+[pareto] results/e2/pareto-20260506-175854/pareto.json, results/e2/pareto-20260506-175854/pareto.csv
+[pareto] total walltime: 466.1s

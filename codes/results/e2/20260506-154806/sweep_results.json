@@ -1,0 +1,1554 @@
+{
+  "args": {
+    "datasets": [
+      "adult",
+      "compas"
+    ],
+    "methods": [
+      "vanilla",
+      "fairds-1",
+      "fairds-2"
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "val_modes": [
+      "balanced",
+      "random"
+    ],
+    "epochs": 15,
+    "batch_size": 256,
+    "lr": 0.01,
+    "alpha": 0.5,
+    "n_val_per_group": 200,
+    "device": "cuda",
+    "out_root": "results/e2"
+  },
+  "runs": [
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8368159532546997,
+      "worst_acc": 0.7970873713493347,
+      "val_acc_g0": 0.7970873713493347,
+      "val_acc_g1": 0.9225131273269653,
+      "dp_diff": 0.1962994858622551,
+      "eo_diff": 0.11049443483352661,
+      "phi_per_group_last": {},
+      "walltime_sec": 3.8863072395324707
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 1,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8352681398391724,
+      "worst_acc": 0.7977346181869507,
+      "val_acc_g0": 0.7977346181869507,
+      "val_acc_g1": 0.9162303805351257,
+      "dp_diff": 0.19878683239221573,
+      "eo_diff": 0.13851606845855713,
+      "phi_per_group_last": {},
+      "walltime_sec": 3.0510072708129883
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 2,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8375898599624634,
+      "worst_acc": 0.7988672852516174,
+      "val_acc_g0": 0.7988672852516174,
+      "val_acc_g1": 0.9211169481277466,
+      "dp_diff": 0.20099204033613205,
+      "eo_diff": 0.12657326459884644,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.9392714500427246
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 3,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.838584840297699,
+      "worst_acc": 0.8004854321479797,
+      "val_acc_g0": 0.8004854321479797,
+      "val_acc_g1": 0.9207679033279419,
+      "dp_diff": 0.19125788658857346,
+      "eo_diff": 0.11446428298950195,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.955287456512451
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 4,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.838363766670227,
+      "worst_acc": 0.7988672852516174,
+      "val_acc_g0": 0.7988672852516174,
+      "val_acc_g1": 0.9235602021217346,
+      "dp_diff": 0.19331994652748108,
+      "eo_diff": 0.09555763006210327,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.9537062644958496
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 0,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8368159532546997,
+      "worst_acc": 0.7970873713493347,
+      "val_acc_g0": 0.7970873713493347,
+      "val_acc_g1": 0.9225131273269653,
+      "dp_diff": 0.1962994858622551,
+      "eo_diff": 0.11049443483352661,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.958275079727173
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 1,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8352681398391724,
+      "worst_acc": 0.7977346181869507,
+      "val_acc_g0": 0.7977346181869507,
+      "val_acc_g1": 0.9162303805351257,
+      "dp_diff": 0.19878683239221573,
+      "eo_diff": 0.13851606845855713,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.95582914352417
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 2,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8375898599624634,
+      "worst_acc": 0.7988672852516174,
+      "val_acc_g0": 0.7988672852516174,
+      "val_acc_g1": 0.9211169481277466,
+      "dp_diff": 0.20099204033613205,
+      "eo_diff": 0.12657326459884644,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.953148126602173
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 3,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.838584840297699,
+      "worst_acc": 0.8004854321479797,
+      "val_acc_g0": 0.8004854321479797,
+      "val_acc_g1": 0.9207679033279419,
+      "dp_diff": 0.19125788658857346,
+      "eo_diff": 0.11446428298950195,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.953821897506714
+    },
+    {
+      "dataset": "adult",
+      "method": "vanilla",
+      "seed": 4,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.838363766670227,
+      "worst_acc": 0.7988672852516174,
+      "val_acc_g0": 0.7988672852516174,
+      "val_acc_g1": 0.9235602021217346,
+      "dp_diff": 0.19331994652748108,
+      "eo_diff": 0.09555763006210327,
+      "phi_per_group_last": {},
+      "walltime_sec": 2.9419145584106445
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8349364399909973,
+      "worst_acc": 0.7959546446800232,
+      "val_acc_g0": 0.7959546446800232,
+      "val_acc_g1": 0.9190226793289185,
+      "dp_diff": 0.2035437524318695,
+      "eo_diff": 0.1578608751296997,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.002871149127401896,
+          "std": 0.07157487019717514,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.001982329729386791,
+          "std": 0.06010492077040792,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.340037107467651
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 1,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8330569267272949,
+      "worst_acc": 0.7943365573883057,
+      "val_acc_g0": 0.7943365573883057,
+      "val_acc_g1": 0.9165794253349304,
+      "dp_diff": 0.16934799402952194,
+      "eo_diff": 0.12870323657989502,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.00755850312983922,
+          "std": 0.07967283516664854,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.003151547504719226,
+          "std": 0.05053611693016542,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.631528615951538
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 2,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8334991931915283,
+      "worst_acc": 0.7954692244529724,
+      "val_acc_g0": 0.7954692244529724,
+      "val_acc_g1": 0.9155322909355164,
+      "dp_diff": 0.20627593994140625,
+      "eo_diff": 0.18776774406433105,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0017116429002264559,
+          "std": 0.04658753858645506,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0017146532437162707,
+          "std": 0.053929005015481916,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.6607232093811035
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 3,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8370370268821716,
+      "worst_acc": 0.7980582118034363,
+      "val_acc_g0": 0.7980582118034363,
+      "val_acc_g1": 0.9211169481277466,
+      "dp_diff": 0.18357647210359573,
+      "eo_diff": 0.09434914588928223,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0030571067629227154,
+          "std": 0.08516579184100065,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0009609806443511739,
+          "std": 0.06020393327668602,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.511658191680908
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 4,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8349364399909973,
+      "worst_acc": 0.7938510775566101,
+      "val_acc_g0": 0.7938510775566101,
+      "val_acc_g1": 0.9235602021217346,
+      "dp_diff": 0.16339822113513947,
+      "eo_diff": 0.06586217880249023,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.007282588109632722,
+          "std": 0.07737720222587754,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0015267650486874276,
+          "std": 0.05868459033727633,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.57772970199585
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 0,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.834825873374939,
+      "worst_acc": 0.7944983243942261,
+      "val_acc_g0": 0.7944983243942261,
+      "val_acc_g1": 0.921815037727356,
+      "dp_diff": 0.21784846484661102,
+      "eo_diff": 0.12589651346206665,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.005224285807531693,
+          "std": 0.08493940708574166,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.002819763953796438,
+          "std": 0.08112639197027863,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.574264287948608
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 1,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.836042046546936,
+      "worst_acc": 0.7983818650245667,
+      "val_acc_g0": 0.7983818650245667,
+      "val_acc_g1": 0.9172775149345398,
+      "dp_diff": 0.19811414182186127,
+      "eo_diff": 0.13303259015083313,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.002128358763116754,
+          "std": 0.0555838775150432,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0009309395187921985,
+          "std": 0.04374468107450437,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.554275274276733
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 2,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.835157573223114,
+      "worst_acc": 0.795145571231842,
+      "val_acc_g0": 0.795145571231842,
+      "val_acc_g1": 0.9214659929275513,
+      "dp_diff": 0.16532640159130096,
+      "eo_diff": 0.05509459972381592,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.007620511805468612,
+          "std": 0.09990123010288285,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0021808418695538454,
+          "std": 0.06637188739291298,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.542222499847412
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 3,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.836042046546936,
+      "worst_acc": 0.7977346181869507,
+      "val_acc_g0": 0.7977346181869507,
+      "val_acc_g1": 0.9186736345291138,
+      "dp_diff": 0.18668056279420853,
+      "eo_diff": 0.14060673117637634,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.002691581068934804,
+          "std": 0.07568753173607441,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0021265917857822164,
+          "std": 0.0559512782632064,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.558477401733398
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-1",
+      "seed": 4,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8361526131629944,
+      "worst_acc": 0.7962782979011536,
+      "val_acc_g0": 0.7962782979011536,
+      "val_acc_g1": 0.9221640825271606,
+      "dp_diff": 0.1813272014260292,
+      "eo_diff": 0.09024631977081299,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0036941702177860324,
+          "std": 0.08016256629927644,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0019837575458052665,
+          "std": 0.05800427149088584,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 7.540809869766235
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8352681398391724,
+      "worst_acc": 0.7962782979011536,
+      "val_acc_g0": 0.7962782979011536,
+      "val_acc_g1": 0.9193717241287231,
+      "dp_diff": 0.20886746048927307,
+      "eo_diff": 0.15849828720092773,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0019466989805188239,
+          "std": 0.06151770428460095,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.001246298958772343,
+          "std": 0.048451724985875945,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.884838342666626
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 1,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8321725130081177,
+      "worst_acc": 0.7933656573295593,
+      "val_acc_g0": 0.7933656573295593,
+      "val_acc_g1": 0.915881335735321,
+      "dp_diff": 0.17519188672304153,
+      "eo_diff": 0.12786030769348145,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.003920963491462753,
+          "std": 0.06175268885122983,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0017672544221241284,
+          "std": 0.04016074273456511,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.976055145263672
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 2,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8346047401428223,
+      "worst_acc": 0.7969255447387695,
+      "val_acc_g0": 0.7969255447387695,
+      "val_acc_g1": 0.915881335735321,
+      "dp_diff": 0.20322692394256592,
+      "eo_diff": 0.18474048376083374,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0017273341055923795,
+          "std": 0.04203698356513553,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.000987593866010623,
+          "std": 0.042821596793144484,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.990231275558472
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 3,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.836263120174408,
+      "worst_acc": 0.7967637181282043,
+      "val_acc_g0": 0.7967637181282043,
+      "val_acc_g1": 0.9214659929275513,
+      "dp_diff": 0.1877073273062706,
+      "eo_diff": 0.09441554546356201,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0016851914409449066,
+          "std": 0.06364934279511662,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0005473455438385686,
+          "std": 0.0443133987472523,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 10.00318169593811
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 4,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8355997800827026,
+      "worst_acc": 0.7948219776153564,
+      "val_acc_g0": 0.7948219776153564,
+      "val_acc_g1": 0.9235602021217346,
+      "dp_diff": 0.17183110117912292,
+      "eo_diff": 0.069088876247406,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.004413300602462281,
+          "std": 0.06104795246416541,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.00020614619916069145,
+          "std": 0.04710853343128254,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 10.001817226409912
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 0,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.836263120174408,
+      "worst_acc": 0.7959546446800232,
+      "val_acc_g0": 0.7959546446800232,
+      "val_acc_g1": 0.9232111573219299,
+      "dp_diff": 0.21666496247053146,
+      "eo_diff": 0.11842811107635498,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.004782986061314519,
+          "std": 0.08298424562014502,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0030220775216890355,
+          "std": 0.062627361778827,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.98002576828003
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 1,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8349364399909973,
+      "worst_acc": 0.7967637181282043,
+      "val_acc_g0": 0.7967637181282043,
+      "val_acc_g1": 0.9172775149345398,
+      "dp_diff": 0.19729577004909515,
+      "eo_diff": 0.13495105504989624,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0016197269234994771,
+          "std": 0.045522225253202944,
+          "n": 24347
+        },
+        "1": {
+          "mean": -5.4272419302379464e-05,
+          "std": 0.03399952115279643,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.94544005393982
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 2,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.836263120174408,
+      "worst_acc": 0.7964401245117188,
+      "val_acc_g0": 0.7964401245117188,
+      "val_acc_g1": 0.9221640825271606,
+      "dp_diff": 0.1748826503753662,
+      "eo_diff": 0.06330019235610962,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.004236574648468711,
+          "std": 0.07560067447407273,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.001723156513275682,
+          "std": 0.0492561816956934,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.975324630737305
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 3,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.8370370268821716,
+      "worst_acc": 0.799190878868103,
+      "val_acc_g0": 0.799190878868103,
+      "val_acc_g1": 0.9186736345291138,
+      "dp_diff": 0.19079532474279404,
+      "eo_diff": 0.13976386189460754,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.001563226628647375,
+          "std": 0.05929685300691342,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.001420135573872771,
+          "std": 0.04593751632979625,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.874482870101929
+    },
+    {
+      "dataset": "adult",
+      "method": "fairds-2",
+      "seed": 4,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.835157573223114,
+      "worst_acc": 0.7956310510635376,
+      "val_acc_g0": 0.7956310510635376,
+      "val_acc_g1": 0.9204188585281372,
+      "dp_diff": 0.19010910391807556,
+      "eo_diff": 0.09993225336074829,
+      "phi_per_group_last": {
+        "0": {
+          "mean": -0.0021717840697684124,
+          "std": 0.06453259354978684,
+          "n": 24347
+        },
+        "1": {
+          "mean": -0.0010627501740717877,
+          "std": 0.04667842817745065,
+          "n": 11830
+        }
+      },
+      "walltime_sec": 9.121613025665283
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6742424368858337,
+      "worst_acc": 0.670769214630127,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.670769214630127,
+      "dp_diff": 0.2422887682914734,
+      "eo_diff": 0.24309232831001282,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.2919473648071289
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 1,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.667613685131073,
+      "worst_acc": 0.6553846001625061,
+      "val_acc_g0": 0.6871920824050903,
+      "val_acc_g1": 0.6553846001625061,
+      "dp_diff": 0.27244409918785095,
+      "eo_diff": 0.2484738528728485,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.39212512969970703
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 2,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6657196879386902,
+      "worst_acc": 0.6569230556488037,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.6569230556488037,
+      "dp_diff": 0.25367945432662964,
+      "eo_diff": 0.2443774938583374,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.2895011901855469
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 3,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6448863744735718,
+      "worst_acc": 0.6215384602546692,
+      "val_acc_g0": 0.6822659969329834,
+      "val_acc_g1": 0.6215384602546692,
+      "dp_diff": 0.23797652125358582,
+      "eo_diff": 0.18457826972007751,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.290205717086792
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 4,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6846591234207153,
+      "worst_acc": 0.6769230961799622,
+      "val_acc_g0": 0.697044312953949,
+      "val_acc_g1": 0.6769230961799622,
+      "dp_diff": 0.19556650519371033,
+      "eo_diff": 0.20863449573516846,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.2900221347808838
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 0,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6742424368858337,
+      "worst_acc": 0.670769214630127,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.670769214630127,
+      "dp_diff": 0.2422887682914734,
+      "eo_diff": 0.24309232831001282,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.3885159492492676
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 1,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.667613685131073,
+      "worst_acc": 0.6553846001625061,
+      "val_acc_g0": 0.6871920824050903,
+      "val_acc_g1": 0.6553846001625061,
+      "dp_diff": 0.27244409918785095,
+      "eo_diff": 0.2484738528728485,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.28951191902160645
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 2,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6657196879386902,
+      "worst_acc": 0.6569230556488037,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.6569230556488037,
+      "dp_diff": 0.25367945432662964,
+      "eo_diff": 0.2443774938583374,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.2885770797729492
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 3,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6448863744735718,
+      "worst_acc": 0.6215384602546692,
+      "val_acc_g0": 0.6822659969329834,
+      "val_acc_g1": 0.6215384602546692,
+      "dp_diff": 0.23797652125358582,
+      "eo_diff": 0.18457826972007751,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.2892136573791504
+    },
+    {
+      "dataset": "compas",
+      "method": "vanilla",
+      "seed": 4,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6846591234207153,
+      "worst_acc": 0.6769230961799622,
+      "val_acc_g0": 0.697044312953949,
+      "val_acc_g1": 0.6769230961799622,
+      "dp_diff": 0.19556650519371033,
+      "eo_diff": 0.20863449573516846,
+      "phi_per_group_last": {},
+      "walltime_sec": 0.38227415084838867
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6742424368858337,
+      "worst_acc": 0.6676923036575317,
+      "val_acc_g0": 0.6847290396690369,
+      "val_acc_g1": 0.6676923036575317,
+      "dp_diff": 0.2417127937078476,
+      "eo_diff": 0.25682729482650757,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.010861131100836894,
+          "std": 0.10031203471528949,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.004446052286461558,
+          "std": 0.09080955009221363,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7420916557312012
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 1,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6628788113594055,
+      "worst_acc": 0.6507692337036133,
+      "val_acc_g0": 0.6822659969329834,
+      "val_acc_g1": 0.6507692337036133,
+      "dp_diff": 0.2654035687446594,
+      "eo_diff": 0.26586341857910156,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.004570814635937745,
+          "std": 0.04411733704028381,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.0008579778846463944,
+          "std": 0.04531571737246566,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7364916801452637
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 2,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6666666865348816,
+      "worst_acc": 0.6523076891899109,
+      "val_acc_g0": 0.6896551847457886,
+      "val_acc_g1": 0.6523076891899109,
+      "dp_diff": 0.20912465453147888,
+      "eo_diff": 0.21979916095733643,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.006256242098873146,
+          "std": 0.09886803876298246,
+          "n": 1697
+        },
+        "1": {
+          "mean": -0.0015518627654401457,
+          "std": 0.09312010491743516,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7344529628753662
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 3,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6761363744735718,
+      "worst_acc": 0.6738461256027222,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.6738461256027222,
+      "dp_diff": 0.23924213647842407,
+      "eo_diff": 0.2615662217140198,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.020621756613696335,
+          "std": 0.11910481425787536,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.010001176532443225,
+          "std": 0.11235133591610592,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7347486019134521
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 4,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6534091234207153,
+      "worst_acc": 0.6353846192359924,
+      "val_acc_g0": 0.6822659969329834,
+      "val_acc_g1": 0.6353846192359924,
+      "dp_diff": 0.2364380657672882,
+      "eo_diff": 0.1966264545917511,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.0198431240779424,
+          "std": 0.12528165535391703,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.003158797748662914,
+          "std": 0.11101166157746122,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.8371732234954834
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 0,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6619318127632141,
+      "worst_acc": 0.6461538672447205,
+      "val_acc_g0": 0.6871920824050903,
+      "val_acc_g1": 0.6461538672447205,
+      "dp_diff": 0.23859795928001404,
+      "eo_diff": 0.20630517601966858,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.009950316936418669,
+          "std": 0.08934490052409189,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.007700261621619863,
+          "std": 0.08430809789218237,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7350261211395264
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 1,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6723484992980957,
+      "worst_acc": 0.6676923036575317,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.6676923036575317,
+      "dp_diff": 0.2613869160413742,
+      "eo_diff": 0.27168670296669006,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.0028253021839628537,
+          "std": 0.05409241781507941,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.002939944679959502,
+          "std": 0.05561937394311742,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7351818084716797
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 2,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.65625,
+      "worst_acc": 0.6384615302085876,
+      "val_acc_g0": 0.6847290396690369,
+      "val_acc_g1": 0.6384615302085876,
+      "dp_diff": 0.2475558966398239,
+      "eo_diff": 0.23208832740783691,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.005756732733086307,
+          "std": 0.09183560601180876,
+          "n": 1697
+        },
+        "1": {
+          "mean": -7.71515187115805e-05,
+          "std": 0.08561494665366219,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7347145080566406
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 3,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.669507622718811,
+      "worst_acc": 0.6615384817123413,
+      "val_acc_g0": 0.6822659969329834,
+      "val_acc_g1": 0.6615384817123413,
+      "dp_diff": 0.2226373702287674,
+      "eo_diff": 0.2363855242729187,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.015957234716518966,
+          "std": 0.1069894257124819,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.00269772650435968,
+          "std": 0.09796406106344271,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.8392398357391357
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-1",
+      "seed": 4,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6363636255264282,
+      "worst_acc": 0.6246153712272644,
+      "val_acc_g0": 0.6551724076271057,
+      "val_acc_g1": 0.6246153712272644,
+      "dp_diff": 0.24841228127479553,
+      "eo_diff": 0.21879512071609497,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.023587215936434845,
+          "std": 0.13069529255914725,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.008795432829509009,
+          "std": 0.11300920625007793,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.7327530384063721
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 0,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6770833730697632,
+      "worst_acc": 0.6676923036575317,
+      "val_acc_g0": 0.692118227481842,
+      "val_acc_g1": 0.6676923036575317,
+      "dp_diff": 0.22938236594200134,
+      "eo_diff": 0.22092366218566895,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.00459303107369487,
+          "std": 0.0483523354756661,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.0013184579241315437,
+          "std": 0.044192957078606473,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.9143614768981934
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 1,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6704545617103577,
+      "worst_acc": 0.6630769371986389,
+      "val_acc_g0": 0.6822659969329834,
+      "val_acc_g1": 0.6630769371986389,
+      "dp_diff": 0.2709359675645828,
+      "eo_diff": 0.27963852882385254,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.0009768373197019781,
+          "std": 0.02437523810086553,
+          "n": 1697
+        },
+        "1": {
+          "mean": -0.0008653286547805782,
+          "std": 0.02238215760172088,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.919342041015625
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 2,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.669507622718811,
+      "worst_acc": 0.6630769371986389,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.6630769371986389,
+      "dp_diff": 0.20757104456424713,
+      "eo_diff": 0.2329317033290863,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.004260658211539951,
+          "std": 0.05703465024220589,
+          "n": 1697
+        },
+        "1": {
+          "mean": -0.00034581575101808563,
+          "std": 0.0553687688637382,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.9187109470367432
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 3,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6732954978942871,
+      "worst_acc": 0.670769214630127,
+      "val_acc_g0": 0.6773399114608765,
+      "val_acc_g1": 0.670769214630127,
+      "dp_diff": 0.23985601961612701,
+      "eo_diff": 0.2615662217140198,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.00891468216062501,
+          "std": 0.05584049973445034,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.005510976739961995,
+          "std": 0.05466730508189447,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 1.0223209857940674
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 4,
+      "val_mode": "balanced",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6638257503509521,
+      "worst_acc": 0.6492307782173157,
+      "val_acc_g0": 0.6871920824050903,
+      "val_acc_g1": 0.6492307782173157,
+      "dp_diff": 0.24722245335578918,
+      "eo_diff": 0.22329312562942505,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.007631972168709997,
+          "std": 0.05622186893241836,
+          "n": 1697
+        },
+        "1": {
+          "mean": -0.0002662394180436305,
+          "std": 0.050246868667063384,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.9177801609039307
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 0,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6628788113594055,
+      "worst_acc": 0.6507692337036133,
+      "val_acc_g0": 0.6822659969329834,
+      "val_acc_g1": 0.6507692337036133,
+      "dp_diff": 0.24013641476631165,
+      "eo_diff": 0.21899595856666565,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.002725939053447196,
+          "std": 0.037333421625965466,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.002427399481092303,
+          "std": 0.0427374674309892,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.9167866706848145
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 1,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6780303120613098,
+      "worst_acc": 0.6773399114608765,
+      "val_acc_g0": 0.6773399114608765,
+      "val_acc_g1": 0.6784615516662598,
+      "dp_diff": 0.2666161507368088,
+      "eo_diff": 0.2897590100765228,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.0007772283390255683,
+          "std": 0.02936145065977921,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.001397589539880242,
+          "std": 0.029288852145449133,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.9172191619873047
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 2,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6628788113594055,
+      "worst_acc": 0.6476923227310181,
+      "val_acc_g0": 0.6871920824050903,
+      "val_acc_g1": 0.6476923227310181,
+      "dp_diff": 0.21985600888729095,
+      "eo_diff": 0.20606419444084167,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.00378314730099089,
+          "std": 0.0506242186570912,
+          "n": 1697
+        },
+        "1": {
+          "mean": -0.000606432658214454,
+          "std": 0.046663450117018584,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.9172627925872803
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 3,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6685606241226196,
+      "worst_acc": 0.6615384817123413,
+      "val_acc_g0": 0.6798029541969299,
+      "val_acc_g1": 0.6615384817123413,
+      "dp_diff": 0.23186057806015015,
+      "eo_diff": 0.2441365122795105,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.007650267006596139,
+          "std": 0.0531877378397977,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.001263097229685708,
+          "std": 0.04964770871805414,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 1.0221495628356934
+    },
+    {
+      "dataset": "compas",
+      "method": "fairds-2",
+      "seed": 4,
+      "val_mode": "random",
+      "epochs": 15,
+      "lr": 0.01,
+      "alpha": 0.5,
+      "n_val_per_group": 200,
+      "val_acc": 0.6534091234207153,
+      "worst_acc": 0.6338461637496948,
+      "val_acc_g0": 0.6847290396690369,
+      "val_acc_g1": 0.6338461637496948,
+      "dp_diff": 0.2724365293979645,
+      "eo_diff": 0.22610440850257874,
+      "phi_per_group_last": {
+        "0": {
+          "mean": 0.00852122695720192,
+          "std": 0.05613766958842868,
+          "n": 1697
+        },
+        "1": {
+          "mean": 0.0026070054797663143,
+          "std": 0.05087576264950517,
+          "n": 2525
+        }
+      },
+      "walltime_sec": 0.9175624847412109
+    }
+  ],
+  "total_walltime_sec": 224.931823015213
+}

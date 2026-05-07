@@ -1,0 +1,53 @@
+\section{Method: Fairds}
+\label{sec:method}
+
+\paragraph{Setup.}
+At step $t$ with parameters $\theta_t$, we have a minibatch
+$\mathcal{B}_t = \{z_i\}_{i=1}^B$ and a small validation anchor
+$\mathcal{D}_{\mathrm{val}}$. The anchor is constructed once,
+group-balanced (50:50), using sensitive-attribute labels for that
+construction step only; the algorithm itself does not consume
+sensitive labels during training. Let
+$g_i = \nabla_\theta L(z_i; \theta_t)$ and
+$g_{\mathrm{val}} = \nabla_\theta L(\mathcal{D}_{\mathrm{val}};\theta_t)$.
+
+\paragraph{1st-order (Fairds-1).}
+$\phi_i^{(1)} = \langle g_i, g_{\mathrm{val}}\rangle$ is the Wang et al.
+Taylor estimator of the validation-loss utility change when $z_i$ is
+included in a single SGD step. A larger $\phi_i^{(1)}$ means $z_i$ pushes
+$\theta$ in a direction that reduces $L_{\mathrm{val}}$.
+
+\paragraph{2nd-order (Fairds-2) with RMS rescaling.}
+The 2nd-order term adds the gradient--Hessian--gradient cross-term
+\eqref{eq:phi2}. The cross-term is computed via the Pearlmutter trick
+\citep{pearlmutter1994hvp}: a single backward pass on the validation
+loss with $g_{\mathrm{val}}$ as the bookkeeping vector yields
+$H_{\mathrm{val}}\,g_{\mathrm{val}}$, and inner products with each $g_i$
+are then a single matmul. In practice the spectrum of
+$H_{\mathrm{val}}$ varies by orders of magnitude across training,
+making a fixed $\alpha$ unusable. We \textbf{rescale the cross-term to
+have the same root-mean-square magnitude as the 1st-order term within
+each minibatch}:
+\[
+\widetilde\phi_i^{(2)}
+\;=\; \phi_i^{(1)} \;-\; \alpha\,
+\frac{\mathrm{RMS}(\phi^{(1)})}{\mathrm{RMS}(\langle g_i, H_{\mathrm{val}} g_{\mathrm{val}}\rangle)}
+\,\langle g_i, H_{\mathrm{val}}\, g_{\mathrm{val}}\rangle.
+\]
+This is the algorithmic contribution of the paper. Without it,
+2nd-order Fairds collapses to chance accuracy under strong spurious bias
+(Appendix~\ref{app:rms_ablation}).
+
+\paragraph{Pipeline.}
+\begin{enumerate}[leftmargin=1.4em, itemsep=2pt, topsep=3pt]
+\item Compute $g_i$ for the minibatch via \texttt{torch.func.vmap(grad(\dots))}.
+\item Compute $g_{\mathrm{val}}$ and (for 2nd-order) $H_{\mathrm{val}}\,g_{\mathrm{val}}$ via Pearlmutter HVP.
+\item Update an exponential moving-average buffer $\mathrm{EMA}_i$ with $\widetilde\phi_i$.
+\item Per-batch weights $w_i = B \cdot \mathrm{softmax}(\mathrm{EMA}_{\mathcal{B}_t} / \tau)$, clipped at quantile bounds.
+\item Weighted SGD update: $\theta_{t+1} \leftarrow \theta_t - \eta \sum_i w_i \nabla_\theta L(z_i;\theta_t)$.
+\end{enumerate}
+
+\paragraph{Implementation note.}
+For models with batch normalization we freeze BN running statistics so
+that vmap-based per-sample gradients remain coupling-free across the
+batch dimension.

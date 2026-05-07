@@ -1,0 +1,63 @@
+\section{Discussion: Regime Boundary}
+\label{sec:discussion}
+
+Our evidence pins down a clear regime boundary for closed-form
+2nd-order Shapley reweighting.
+
+\paragraph{Spurious-strength phase transition.}
+A sweep over spurious-correlation strength
+$p_{\mathrm{maj}}\!\in\!\{0.7,\ldots,0.99\}$ shows Fairds-2's advantage
+is \emph{phase-dependent}: at $p\!=\!0.99$ vanilla collapses
+(test\_worst $0.19$) while Fairds-2 stays robust ($0.74$, paired
+$\Delta\!=\!+55$~pp, $p\!=\!3\!\times\!10^{-5}$). Details in
+Appendix~\ref{app:strength}.
+
+\paragraph{Where the 2nd-order cross-term provides a stand-alone benefit.}
+A small CNN trained from scratch on Colored MNIST has rich, signal-bearing
+per-sample gradients; the cross-term in \eqref{eq:phi2} captures the
+dominant-direction overlap between $g_i$ and $g_{\mathrm{val}}$ in a way
+that automatically penalises majority-group spurious-aligned updates
+(Section~\ref{sec:exp:e1b}). The 2nd-order isolation result
+($+4.7$~pp test\_worst over the 1st-order Fairds-1, $p\!=\!0.033$) and
+the Mann--Whitney $p\!=\!1.89\!\times\!10^{-8}$ on the controlled MLP
+both speak to this mechanism. We do \emph{not} claim Fairds-2 beats
+all baselines: JTT \citep{liu2021jtt} and especially GroupDRO
+\citep{sagawa2020groupdro} reach higher worst-group accuracy on the
+same benchmark (Table~\ref{tab:cmnist_extended}). Fairds-2's
+value is mechanistic and methodological: a closed-form single-pass
+estimator that isolates a 2nd-order curvature contribution to
+representation-bias attenuation.
+
+\paragraph{Where Fairds-2 loses (pretrained Waterbirds).}
+We \emph{hypothesise} that a pretrained ResNet-18 starts as a competent
+feature extractor, so in early epochs $g_i$ and $g_{\mathrm{val}}$ are
+both small and the per-sample utility signal is dominated by noise.
+The EMA buffer then accumulates that noise, and the resulting
+reweighting is catastrophic. Removing the EMA (variant (c)) did not
+cure the issue, which is suggestive that the underlying signal is
+weak; Ren2018, in contrast, takes a fresh meta-gradient step against
+$\mathcal{D}_{\mathrm{val}}$ at every minibatch and is therefore robust
+to the EMA noise-accumulation pathway.
+
+\paragraph{Practical recommendation.}
+Closed-form 2nd-order Shapley reweighting is an attractive option in
+\textbf{from-scratch / small-model spurious-correlation regimes}: it is
+implicit-differentiation-free, has competitive wall-clock to the
+bi-level baseline, and has the \emph{lowest seed variance} we observed.
+For \textbf{pretrained-model fine-tuning}, use bi-level meta-learning
+(Ren et al.~2018; FORML).
+
+\paragraph{Limitations and future work.}
+Our positive result is on a single benchmark (Colored MNIST); extending
+to Civil-Comments, BERT NLP setups, and small-model Waterbirds (no
+pretraining) is the natural next step. The Waterbirds diagnosis above
+is consistent with the data but not directly measured (we have not
+quantified the SNR of $g_i$ across training regimes); a probe study
+is open work. We did not derive a theoretical bound on the
+cross-term's representation-bias attenuation, only an empirical
+demonstration. A hybrid that uses closed-form for the 1st-order term
+and a Ren2018-style fresh meta-grad for cross-term correction is an
+open algorithmic direction. \emph{Summary:} closed-form 2nd-order
+Shapley reweighting is a useful tool in its native regime;
+bi-level meta-learning remains the better choice for pretrained
+fine-tuning.

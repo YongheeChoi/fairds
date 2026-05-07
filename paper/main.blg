@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: plainnat.bst
+Database file #1: references.bib
+Warning--empty booktitle in arjovsky2019irm
+You've used 10 entries,
+            2773 wiz_defined-function locations,
+            641 strings with 6696 characters,
+and the built_in function-call counts, 4952 in all, are:
+= -- 383
+> -- 388
+< -- 3
++ -- 130
+- -- 120
+* -- 405
+:= -- 781
+add.period$ -- 31
+call.type$ -- 10
+change.case$ -- 70
+chr.to.int$ -- 10
+cite$ -- 21
+duplicate$ -- 225
+empty$ -- 386
+format.name$ -- 134
+if$ -- 1018
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 10
+newline$ -- 59
+num.names$ -- 40
+pop$ -- 167
+preamble$ -- 1
+purify$ -- 60
+quote$ -- 0
+skip$ -- 165
+stack$ -- 0
+substring$ -- 45
+swap$ -- 16
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 110
+warning$ -- 1
+while$ -- 32
+width$ -- 0
+write$ -- 129
+(There was 1 warning)

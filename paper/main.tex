@@ -1,0 +1,66 @@
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, margin=0.85in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{natbib}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+
+\hypersetup{colorlinks=true, citecolor=blue, linkcolor=blue, urlcolor=blue}
+
+\setlength{\textfloatsep}{6pt}
+\setlength{\intextsep}{6pt}
+\captionsetup{font=small}
+
+\title{Closed-form 2nd-order Data Shapley\\
+       as a Spurious-Correlation Attenuator: \\
+       Where it Works and Where it Doesn't}
+\author{Anonymous Authors\\\small Workshop submission --- ICLR (anonymized)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We adapt Wang et al.'s (2024) closed-form In-Run Data Shapley as an
+\emph{in-training} per-sample reweighter. Our 2nd-order variant
+augments the gradient inner product with an RMS-rescaled
+gradient--Hessian--gradient cross-term. The cross-term provides a
+\emph{statistically isolated} contribution over the 1st-order term
+alone (\textbf{+4.7~pp} OOD test worst-group accuracy on Colored MNIST,
+paired $p=0.033$, 10 seeds), with the underlying mechanism supported
+by a controlled spurious-feature MLP (Mann--Whitney
+$p=1.89\!\times\!10^{-8}$). Among methods that do not require group
+labels at training time, Fairds-2 outperforms vanilla SGD
+($+13.0$~pp, $p=5\!\times\!10^{-5}$) and a corrected 1-step bi-level
+meta-learner \citep{ren2018reweight}, but JTT \citep{liu2021jtt}
+reaches higher accuracy ($+5.4$~pp over Fairds-2). Methods that use
+group labels (GroupDRO, \citealt{sagawa2020groupdro}) are stronger
+still. We do \emph{not} claim state-of-the-art; Fairds-2's contribution
+is the closed-form, single-pass cross-term mechanism. On
+\emph{pretrained}-ResNet Waterbirds fine-tuning, all Fairds variants
+we tried fail to match the bi-level baseline; we characterize this
+regime boundary.
+\end{abstract}
+
+\input{sections/01_intro}
+\input{sections/02_related}
+\input{sections/03_method}
+\input{sections/04_experiments}
+\input{sections/05_discussion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\input{sections/A_appendix}
+
+\end{document}

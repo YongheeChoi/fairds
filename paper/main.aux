@@ -1,0 +1,99 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{ren2018reweight}
+\citation{liu2021jtt}
+\citation{sagawa2020groupdro}
+\citation{sagawa2020groupdro,arjovsky2019irm}
+\citation{ren2018reweight}
+\citation{yan2022forml}
+\citation{wang2024inrun}
+\citation{wang2024inrun}
+\citation{ghorbani2019datashapley}
+\citation{ren2018reweight}
+\citation{yan2022forml}
+\citation{arnaiz2023fairshap}
+\citation{lahoti2020arl}
+\citation{arjovsky2019irm}
+\citation{sagawa2020groupdro}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Closed-form alternative.}{1}{section*.1}\protected@file@percent }
+\newlabel{eq:phi2}{{1}{1}{Closed-form alternative}{equation.1.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Contributions.}{1}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Where this paper fits.}{1}{section*.3}\protected@file@percent }
+\citation{pearlmutter1994hvp}
+\citation{ren2018reweight}
+\citation{liu2021jtt}
+\citation{sagawa2020groupdro}
+\citation{arjovsky2019irm}
+\citation{arjovsky2019irm}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method: Fairds}{2}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{2}{Method: Fairds}{section.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup.}{2}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{1st-order (Fairds-1).}{2}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{2nd-order (Fairds-2) with RMS rescaling.}{2}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Pipeline.}{2}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Implementation note.}{2}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{2}{section.4}\protected@file@percent }
+\newlabel{sec:experiments}{{4}{2}{Experiments}{section.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {Colored MNIST extended baselines} (mean $\pm $ std, 10 seeds, best-tuned $\eta $). \textit  {Italics} = our methods. \textbf  {Bold} = best in column. Higher is better.}}{3}{table.caption.11}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:cmnist_extended}{{1}{3}{\textbf {Colored MNIST extended baselines} (mean $\pm $ std, 10 seeds, best-tuned $\eta $). \textit {Italics} = our methods. \textbf {Bold} = best in column. Higher is better}{table.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {Paired tests vs Fairds-2} (one-sided, same seed). JTT and GroupDRO are stronger; Vanilla and Fairds-1 are weaker.}}{3}{table.caption.12}\protected@file@percent }
+\newlabel{tab:cmnist_pairwise_f2}{{2}{3}{\textbf {Paired tests vs Fairds-2} (one-sided, same seed). JTT and GroupDRO are stronger; Vanilla and Fairds-1 are weaker}{table.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Colored MNIST: where Fairds-2 wins}{3}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:exp:cmnist}{{4.1}{3}{Colored MNIST: where Fairds-2 wins}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup.}{3}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Results.}{3}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Mechanism probe on a controlled spurious-feature MLP}{3}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:exp:e1b}{{4.2}{3}{Mechanism probe on a controlled spurious-feature MLP}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Result.}{3}{section*.13}\protected@file@percent }
+\citation{sagawa2020groupdro}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Mechanism (E1b).} Mean per-sample $\phi _i$ in the majority vs minority group across imbalance ratios on the controlled spurious-feature MLP. Both Fairds variants down-weight majority $\phi _i$; the 2nd-order cross-term amplifies the effect.}}{4}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:e1b}{{1}{4}{\textbf {Mechanism (E1b).} Mean per-sample $\phi _i$ in the majority vs minority group across imbalance ratios on the controlled spurious-feature MLP. Both Fairds variants down-weight majority $\phi _i$; the 2nd-order cross-term amplifies the effect}{figure.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {Waterbirds OOD test\_worst} across three Fairds variants (mean $\pm $ std, 3 seeds). Higher is better. Fairds variants do not approach Ren2018; the regime-boundary diagnosis is in Section~\ref {sec:discussion}.}}{4}{table.caption.18}\protected@file@percent }
+\newlabel{tab:waterbirds_grid}{{3}{4}{\textbf {Waterbirds OOD test\_worst} across three Fairds variants (mean $\pm $ std, 3 seeds). Higher is better. Fairds variants do not approach Ren2018; the regime-boundary diagnosis is in Section~\ref {sec:discussion}}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Waterbirds: where Fairds-2 fails (and why we report it)}{4}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:exp:waterbirds}{{4.3}{4}{Waterbirds: where Fairds-2 fails (and why we report it)}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup.}{4}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Three algorithmic variants.}{4}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Result.}{4}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{On Adult/COMPAS.}{4}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion: Regime Boundary}{4}{section.5}\protected@file@percent }
+\newlabel{sec:discussion}{{5}{4}{Discussion: Regime Boundary}{section.5}{}}
+\citation{liu2021jtt}
+\citation{sagawa2020groupdro}
+\bibstyle{plainnat}
+\bibdata{references}
+\bibcite{arjovsky2019irm}{{1}{2019}{{Arjovsky et~al.}}{{Arjovsky, Bottou, Gulrajani, and Lopez-Paz}}}
+\bibcite{arnaiz2023fairshap}{{2}{2023}{{Arnaiz-Rodriguez and Oliver}}{{}}}
+\bibcite{ghorbani2019datashapley}{{3}{2019}{{Ghorbani and Zou}}{{}}}
+\bibcite{lahoti2020arl}{{4}{2020}{{Lahoti et~al.}}{{Lahoti, Beutel, Chen, Lee, Prost, Thain, Wang, and Chi}}}
+\bibcite{liu2021jtt}{{5}{2021}{{Liu et~al.}}{{Liu, Haghgoo, Chen, Raghunathan, Koh, Sagawa, Liang, and Finn}}}
+\bibcite{pearlmutter1994hvp}{{6}{1994}{{Pearlmutter}}{{}}}
+\bibcite{ren2018reweight}{{7}{2018}{{Ren et~al.}}{{Ren, Zeng, Yang, and Urtasun}}}
+\bibcite{sagawa2020groupdro}{{8}{2020}{{Sagawa et~al.}}{{Sagawa, Koh, Hashimoto, and Liang}}}
+\bibcite{wang2024inrun}{{9}{2024}{{Wang et~al.}}{{Wang, Mittal, Song, and Jia}}}
+\@writefile{toc}{\contentsline {paragraph}{Spurious-strength phase transition.}{5}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Where the 2nd-order cross-term provides a stand-alone benefit.}{5}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Where Fairds-2 loses (pretrained Waterbirds).}{5}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Practical recommendation.}{5}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limitations and future work.}{5}{section*.24}\protected@file@percent }
+\bibcite{yan2022forml}{{10}{2022}{{Yan et~al.}}{{Yan, Seto, and Apostoloff}}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Wall-clock overhead (CIFAR-10, ResNet-18)}{6}{appendix.A}\protected@file@percent }
+\newlabel{app:overhead}{{A}{6}{Wall-clock overhead (CIFAR-10, ResNet-18)}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Tabular benchmarks (E2 Adult / COMPAS)}{6}{appendix.B}\protected@file@percent }
+\newlabel{app:e2}{{B}{6}{Tabular benchmarks (E2 Adult / COMPAS)}{appendix.B}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Adult Pareto trade-off} (each point is one hyperparameter $\times $ seed). Vanilla and Ren2018($\eta \!=\!0.05$) jointly span the Pareto front; Fairds-2 is dominated.}}{6}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:pareto_adult}{{2}{6}{\textbf {Adult Pareto trade-off} (each point is one hyperparameter $\times $ seed). Vanilla and Ren2018($\eta \!=\!0.05$) jointly span the Pareto front; Fairds-2 is dominated}{figure.caption.26}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Spurious-strength phase transition}{6}{appendix.C}\protected@file@percent }
+\newlabel{app:strength}{{C}{6}{Spurious-strength phase transition}{appendix.C}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}RMS-rescaling ablation}{6}{appendix.D}\protected@file@percent }
+\newlabel{app:rms_ablation}{{D}{6}{RMS-rescaling ablation}{appendix.D}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Phase transition with spurious strength.} Vanilla collapses at $p_{\mathrm  {maj}} \geq 0.95$; Fairds-2 stays robust.}}{7}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:strength_phase}{{3}{7}{\textbf {Phase transition with spurious strength.} Vanilla collapses at $p_{\mathrm {maj}} \geq 0.95$; Fairds-2 stays robust}{figure.caption.27}{}}
+\gdef \@abspage@last{7}

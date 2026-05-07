@@ -1,0 +1,87 @@
+{
+  "args": {
+    "methods": [
+      "jtt",
+      "groupdro",
+      "irm"
+    ],
+    "seeds": [
+      0
+    ],
+    "ratios": [
+      0.9
+    ],
+    "epochs": 5,
+    "n_train": 1000,
+    "batch_size": 128,
+    "lr": 0.05,
+    "alpha": 0.5,
+    "temperature": 0.1,
+    "weight_scale": 4.0,
+    "device": "cuda",
+    "out_root": "results/e3"
+  },
+  "runs": [
+    {
+      "method": "jtt",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "n_train": 1000,
+      "val_eval_acc": 0.47200003266334534,
+      "val_eval_worst": 0.4480000138282776,
+      "val_eval_acc_g0": 0.4960000216960907,
+      "val_eval_acc_g1": 0.4480000138282776,
+      "test_acc": 0.5169999599456787,
+      "test_worst": 0.5048356056213379,
+      "test_acc_aligned": 0.5048356056213379,
+      "test_acc_flipped": 0.5184028744697571,
+      "walltime_sec": 0.5963566303253174
+    },
+    {
+      "method": "groupdro",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "n_train": 1000,
+      "val_eval_acc": 0.7020000219345093,
+      "val_eval_worst": 0.5080000162124634,
+      "val_eval_acc_g0": 0.8960000276565552,
+      "val_eval_acc_g1": 0.5080000162124634,
+      "test_acc": 0.10339999943971634,
+      "test_worst": 0.0,
+      "test_acc_aligned": 1.0,
+      "test_acc_flipped": 0.0,
+      "walltime_sec": 0.25804781913757324
+    },
+    {
+      "method": "irm",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.05,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "n_train": 1000,
+      "val_eval_acc": 0.527999997138977,
+      "val_eval_worst": 0.5040000081062317,
+      "val_eval_acc_g0": 0.5040000081062317,
+      "val_eval_acc_g1": 0.5520000457763672,
+      "test_acc": 0.4829999804496765,
+      "test_worst": 0.4815971553325653,
+      "test_acc_aligned": 0.4951644241809845,
+      "test_acc_flipped": 0.4815971553325653,
+      "walltime_sec": 0.20182323455810547
+    }
+  ],
+  "total_walltime_sec": 1.056495189666748
+}

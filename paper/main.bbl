@@ -1,0 +1,73 @@
+\begin{thebibliography}{10}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Arjovsky et~al.(2019)Arjovsky, Bottou, Gulrajani, and
+  Lopez-Paz]{arjovsky2019irm}
+Martin Arjovsky, L{\'e}on Bottou, Ishaan Gulrajani, and David Lopez-Paz.
+\newblock Invariant risk minimization.
+\newblock 2019.
+
+\bibitem[Arnaiz-Rodriguez and Oliver(2023)]{arnaiz2023fairshap}
+Adrian Arnaiz-Rodriguez and Nuria Oliver.
+\newblock {FairShap}: A {S}hapley value based fair data valuation.
+\newblock \emph{arXiv preprint arXiv:2303.01928}, 2023.
+
+\bibitem[Ghorbani and Zou(2019)]{ghorbani2019datashapley}
+Amirata Ghorbani and James Zou.
+\newblock Data {S}hapley: Equitable valuation of data for machine learning.
+\newblock In \emph{International Conference on Machine Learning ({ICML})},
+  2019.
+
+\bibitem[Lahoti et~al.(2020)Lahoti, Beutel, Chen, Lee, Prost, Thain, Wang, and
+  Chi]{lahoti2020arl}
+Preethi Lahoti, Alex Beutel, Jilin Chen, Kang Lee, Flavien Prost, Nithum Thain,
+  Xuezhi Wang, and Ed~H. Chi.
+\newblock Fairness without demographics through adversarially reweighted
+  learning.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  ({NeurIPS})}, 2020.
+
+\bibitem[Liu et~al.(2021)Liu, Haghgoo, Chen, Raghunathan, Koh, Sagawa, Liang,
+  and Finn]{liu2021jtt}
+Evan~Z. Liu, Behzad Haghgoo, Annie~S. Chen, Aditi Raghunathan, Pang~Wei Koh,
+  Shiori Sagawa, Percy Liang, and Chelsea Finn.
+\newblock Just train twice: Improving group robustness without training group
+  information.
+\newblock In \emph{International Conference on Machine Learning ({ICML})},
+  2021.
+
+\bibitem[Pearlmutter(1994)]{pearlmutter1994hvp}
+Barak~A. Pearlmutter.
+\newblock Fast exact multiplication by the {H}essian.
+\newblock \emph{Neural Computation}, 6\penalty0 (1):\penalty0 147--160, 1994.
+
+\bibitem[Ren et~al.(2018)Ren, Zeng, Yang, and Urtasun]{ren2018reweight}
+Mengye Ren, Wenyuan Zeng, Bin Yang, and Raquel Urtasun.
+\newblock Learning to reweight examples for robust deep learning.
+\newblock In \emph{International Conference on Machine Learning ({ICML})},
+  2018.
+
+\bibitem[Sagawa et~al.(2020)Sagawa, Koh, Hashimoto, and
+  Liang]{sagawa2020groupdro}
+Shiori Sagawa, Pang~Wei Koh, Tatsunori~B. Hashimoto, and Percy Liang.
+\newblock Distributionally robust neural networks for group shifts: On the
+  importance of regularization for worst-case generalization.
+\newblock In \emph{International Conference on Learning Representations
+  ({ICLR})}, 2020.
+
+\bibitem[Wang et~al.(2024)Wang, Mittal, Song, and Jia]{wang2024inrun}
+Jiachen~T. Wang, Prateek Mittal, Dawn Song, and Ruoxi Jia.
+\newblock Data {S}hapley in one training run.
+\newblock \emph{arXiv preprint arXiv:2406.11011}, 2024.
+\newblock ICLR 2025 Outstanding Paper Runner-Up.
+
+\bibitem[Yan et~al.(2022)Yan, Seto, and Apostoloff]{yan2022forml}
+Bobby Yan, Skyler Seto, and Nicholas Apostoloff.
+\newblock {FORML}: Fairness optimized reweighting via meta-learning.
+\newblock In \emph{{ICML} 2022 {DataPerf} Workshop}, 2022.
+
+\end{thebibliography}

@@ -1,0 +1,19 @@
+\section{Related Work}
+\label{sec:related}
+
+\citet{wang2024inrun} derive closed-form 1st- and 2nd-order Taylor
+estimators of the per-sample Shapley utility computable in a single
+training run, building on \citet{ghorbani2019datashapley}; we re-use
+the formulas but apply them \emph{during} training as a reweighter
+rather than \emph{post-hoc} for filtering.
+\citet{ren2018reweight} and FORML \citep{yan2022forml} reweight via
+1-step bi-level meta-learning (implicit differentiation against a
+clean validation set); FairShap \citep{arnaiz2023fairshap} pre-computes
+static Shapley weights, and ARL \citep{lahoti2020arl} reweights
+adversarially without sensitive labels. Our closest baseline is
+Ren2018, which the paper compares against under matched anchor
+conditions. The benchmarks are Colored MNIST in the IRM style
+\citep{arjovsky2019irm} and Waterbirds \citep{sagawa2020groupdro}.
+We do not claim a robustness state-of-the-art; we contribute a
+\emph{mechanism characterisation} of when closed-form Shapley
+reweighting is competitive.
