@@ -1,15 +1,20 @@
 \documentclass{article}
-% A0 landscape: 1189 x 841 mm
-\usepackage[paperwidth=1189mm,paperheight=841mm,margin=0mm]{geometry}
+% A0 portrait: 841 x 1189 mm
+\usepackage[paperwidth=841mm,paperheight=1189mm,margin=0mm]{geometry}
 \usepackage{tcolorbox}
-\tcbuselibrary{poster,skins,fitting}
+\tcbuselibrary{poster,skins}
+\usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
 \usepackage[table]{xcolor}
-\usepackage{type1cm}
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{kotex}
+\setmainfont{Latin Modern Roman}
+\setsansfont{TeX Gyre Heros}
+\setmainhangulfont{UnBatang}
+\setsanshangulfont{UnDotum}
+\newfontfamily\titlefont{TeX Gyre Heros}
 \pagestyle{empty}
 
 % ── ICLR Color Theme (deep green) ──
@@ -26,6 +31,7 @@
 \definecolor{textdark}{HTML}{111827}
 \definecolor{textgray}{HTML}{4B5563}
 \definecolor{stathighlight}{HTML}{ECFDF5}
+\definecolor{stepbg}{HTML}{E0F2FE}
 
 \pagecolor{bgposter}
 \color{textdark}
@@ -37,7 +43,13 @@
 
 \newcommand{\posterfig}[3]{%
   \centering\includegraphics[width=#1\linewidth]{#2}\\[3mm]
-  {\fontsize{24}{30}\selectfont\color{textgray}\textit{#3}}\vspace{2mm}%
+  {\fontsize{22}{28}\selectfont\color{textgray}\textit{#3}}\vspace{2mm}%
+}
+
+% Step badge for the method pipeline
+\newcommand{\stepbadge}[1]{%
+  \tikz[baseline=(b.base)]\node[fill=primary,text=white,rounded corners=4pt,
+    inner sep=4pt,font=\bfseries\fontsize{26}{30}\selectfont](b){#1};%
 }
 
 \tcbset{
@@ -45,7 +57,7 @@
     enhanced, arc=0pt, boxrule=0pt, colback=redbg,
     borderline west={5pt}{0pt}{secondary},
     left=16pt, right=14pt, top=4pt, bottom=4pt,
-    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{secondary},
+    fonttitle=\fontsize{38}{46}\selectfont\bfseries\color{secondary},
     coltitle=secondary, colbacktitle=redtitlebg,
     toptitle=6pt, bottomtitle=6pt,
     titlerule=2pt, titlerule style={secondary!50},
@@ -55,7 +67,7 @@
     enhanced, arc=0pt, boxrule=0pt, colback=bluebg,
     borderline west={5pt}{0pt}{accent},
     left=16pt, right=14pt, top=4pt, bottom=4pt,
-    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{accent},
+    fonttitle=\fontsize{38}{46}\selectfont\bfseries\color{accent},
     coltitle=accent, colbacktitle=bluetitlebg,
     toptitle=6pt, bottomtitle=6pt,
     titlerule=2pt, titlerule style={accent!50},
@@ -65,7 +77,7 @@
     enhanced, arc=0pt, boxrule=0pt, colback=darkbg,
     borderline west={5pt}{0pt}{primary},
     left=16pt, right=14pt, top=4pt, bottom=4pt,
-    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{primary},
+    fonttitle=\fontsize{38}{46}\selectfont\bfseries\color{primary},
     coltitle=primary, colbacktitle=darktitlebg,
     toptitle=6pt, bottomtitle=6pt,
     titlerule=2pt, titlerule style={primary!50},
@@ -75,7 +87,7 @@
     enhanced, arc=0pt, boxrule=0pt, colback=primary!20!white,
     borderline west={6pt}{0pt}{primary},
     left=16pt, right=14pt, top=4pt, bottom=4pt,
-    fonttitle=\fontsize{40}{48}\selectfont\bfseries\color{white},
+    fonttitle=\fontsize{38}{46}\selectfont\bfseries\color{white},
     coltitle=white, colbacktitle=primary,
     toptitle=6pt, bottomtitle=6pt,
     valign=top, drop shadow={opacity=0.22},
@@ -85,20 +97,21 @@
 \begin{document}
 \begin{tcbposter}[
   coverage={spread},
-  poster={columns=4, rows=20, spacing=0mm},
+  poster={columns=2, rows=36, spacing=0mm},
 ]
 
 % ══ TITLE BAR ══
 \posterbox[
   enhanced, colback=primary, colframe=primary, colupper=white,
   arc=0pt, boxrule=0pt,
-  left=40pt, right=40pt, top=12pt, bottom=8pt,
-  halign=center, valign=center,
+  left=40pt, right=40pt, top=14pt, bottom=10pt,
+  valign=center,
   drop shadow={opacity=0.3}
-]{name=title, column=1, span=4, between=top and row4}{
-  {\fontsize{60}{72}\selectfont\sffamily\bfseries Closed-form\ 2nd-order\ Data\ Shapley\\[6pt] as\ a\ Spurious-Correlation\ Attenuator}\\[12pt]
-  {\fontsize{32}{40}\selectfont\sffamily \emph{Where it Works and Where it Doesn't}}\\[12pt]
-  {\fontsize{26}{34}\selectfont\sffamily\color{white!85} Anonymous Authors \quad$|$\quad ICLR 2026 Workshop \quad$|$\quad code: github.com/anon/fairds}
+]{name=title, column=1, span=2, between=top and row4}{
+  \centering
+  {\titlefont\fontsize{54}{66}\selectfont\bfseries Closed-form 2nd-order Data Shapley\\[6pt] as a Spurious-Correlation Attenuator}\par\vspace{14pt}
+  {\titlefont\fontsize{32}{40}\selectfont \emph{Where it Works and Where it Doesn't}}\par\vspace{14pt}
+  {\titlefont\fontsize{24}{32}\selectfont\color{white!85} Anonymous Authors \quad$|$\quad ICLR 2026 Workshop \quad$|$\quad code: github.com/anon/fairds}
 }
 
 % ══ STATS BANNER ══
@@ -106,187 +119,260 @@
   enhanced, colback=primary!10!white, boxrule=0pt, arc=0pt,
   left=12pt, right=12pt, top=6pt, bottom=6pt,
   valign=center, borderline south={3pt}{0pt}{primary!35},
-]{name=stats, column=1, span=4, between=row4 and row6}{
+]{name=stats, column=1, span=2, between=row4 and row7}{
   \centering
   \begin{minipage}[c]{0.235\linewidth}\centering
     \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
       \centering\vspace{6pt}%
-      {\fontsize{60}{72}\selectfont\bfseries\color{primary} +13.0\,pp}\\[2pt]
-      {\fontsize{24}{30}\selectfont\color{textdark} OOD test\_worst vs Vanilla\\($p\!=\!5\!\times\!10^{-5}$, 10 seeds)}\vspace{6pt}%
+      {\fontsize{64}{76}\selectfont\bfseries\color{primary} +13.0\,pp}\\[2pt]
+      {\fontsize{22}{28}\selectfont\color{textdark} OOD test\_worst vs Vanilla\\($p\!=\!5\!\times\!10^{-5}$, 10 seeds)}\vspace{6pt}%
     }}
   \end{minipage}\hfill
   \begin{minipage}[c]{0.235\linewidth}\centering
     \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
       \centering\vspace{6pt}%
-      {\fontsize{60}{72}\selectfont\bfseries\color{primary} +4.7\,pp}\\[2pt]
-      {\fontsize{24}{30}\selectfont\color{textdark} 2nd-order isolation\\(vs Fairds-1, $p\!=\!0.033$)}\vspace{6pt}%
+      {\fontsize{64}{76}\selectfont\bfseries\color{primary} +4.7\,pp}\\[2pt]
+      {\fontsize{22}{28}\selectfont\color{textdark} 2nd-order isolation\\(vs Fairds-1, $p\!=\!0.033$)}\vspace{6pt}%
     }}
   \end{minipage}\hfill
   \begin{minipage}[c]{0.235\linewidth}\centering
     \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
       \centering\vspace{6pt}%
-      {\fontsize{60}{72}\selectfont\bfseries\color{primary} +55.3\,pp}\\[2pt]
-      {\fontsize{24}{30}\selectfont\color{textdark} at strong spurious $p\!=\!0.99$\\(phase transition, $p\!=\!3\!\times\!10^{-5}$)}\vspace{6pt}%
+      {\fontsize{64}{76}\selectfont\bfseries\color{primary} +55.3\,pp}\\[2pt]
+      {\fontsize{22}{28}\selectfont\color{textdark} at strong spurious $p\!=\!0.99$\\(phase transition, $p\!=\!3\!\times\!10^{-5}$)}\vspace{6pt}%
     }}
   \end{minipage}\hfill
   \begin{minipage}[c]{0.235\linewidth}\centering
     \fcolorbox{primary!40}{stathighlight}{\parbox{0.90\linewidth}{%
       \centering\vspace{6pt}%
       {\fontsize{60}{72}\selectfont\bfseries\color{primary} 1.89\!$\times$\!$10^{\!-\!8}$}\\[2pt]
-      {\fontsize{24}{30}\selectfont\color{textdark} Mann--Whitney $p$\\(majority $\phi$ < minority $\phi$)}\vspace{6pt}%
+      {\fontsize{22}{28}\selectfont\color{textdark} Mann--Whitney $p$\\(majority $\phi$ < minority $\phi$)}\vspace{6pt}%
     }}
   \end{minipage}
 }
 
-% ══ COL 1: BACKGROUND + CONTRIBUTIONS + REFERENCES ══
+% ══ ROW: PROBLEM (col 1) | APPROACH (col 2) ══
 
 \posterbox[
-  redcard, title={\bfseries Background}
-]{name=background, column=1, between=row6 and row11}{
-  \fontsize{30}{40}\selectfont
-  Empirical risk minimization on \emph{spuriously-correlated} data
-  latches onto majority shortcuts.\\[4pt]
-  Mainstream remedy: \textbf{bi-level meta-learning}
-  (Ren 2018; FORML) -- implicit-differentiation heavy.\\[4pt]
-  \colorbox{secondary!20}{\parbox{0.94\linewidth}{\fontsize{28}{36}\selectfont
-  \textbf{Wang et al. 2024} derived a \emph{closed-form} 2nd-order
-  In-Run Shapley estimator -- but used only \textbf{post-hoc for
-  filtering}.\par}}
-  \vspace{4pt}
-  \textbf{Question:} can the same closed-form formulas serve as an
-  \emph{in-training} reweighter? Does the 2nd-order cross-term
-  contribute a \emph{stand-alone} benefit?
-}
+  redcard, title={\bfseries Problem We Tackle}
+]{name=problem, column=1, between=row7 and row14}{
+  \fontsize{28}{38}\selectfont
+  \textbf{Spurious correlation} 환경에서 ERM 은 majority 의 \emph{지름길 신호}
+  (e.g.\ Colored MNIST 의 색)를 잡아 minority / OOD worst-group accuracy 를
+  무너뜨린다.\\[6pt]
 
-\posterbox[
-  darkcard, title={\bfseries Contributions}
-]{name=contributions, column=1, between=row11 and row16}{
-  \fontsize{30}{40}\selectfont
-  \begin{enumerate}[itemsep=14pt]
-    \item Adapt closed-form In-Run Shapley as a 5-step in-training reweighter.
-    \item \textbf{RMS-rescale the cross-term} -- prevents divergence under strong spurious bias.
-    \item Statistically isolate a \textbf{2nd-order benefit} on Colored MNIST ($+4.7$\,pp, $p\!=\!0.033$).
-    \item Honestly characterize the \textbf{regime boundary} (works on from-scratch / small-model; fails on pretrained ResNet).
-  \end{enumerate}
-}
-
-\posterbox[
-  redcard, title={\bfseries References \& Code}
-]{name=refs, column=1, between=row16 and bottom}{
-  \fontsize{26}{34}\selectfont
-  \begin{itemize}[itemsep=5pt, label={}]
-    \item Wang et al. (2024). \emph{Data Shapley in One Training Run}. ICLR.
-    \item Ren et al. (2018). \emph{Learning to Reweight Examples}. ICML.
-    \item Liu et al. (2021). \emph{Just Train Twice}. ICML.
-    \item Sagawa et al. (2020). \emph{GroupDRO}. ICLR.
-    \item Arjovsky et al. (2019). \emph{IRM}. arXiv:1907.02893.
-  \end{itemize}\vspace{4pt}
-  \vspace{4pt}
-  \colorbox{primary!20}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont
-    \centering\textbf{Code:} \texttt{github.com/anon/fairds}\par}}
-}
-
-% ══ COL 2: METHOD ══
-
-\posterbox[
-  darkcard, title={\bfseries Method: Fairds}
-]{name=method, column=2, between=row6 and row14}{
-  \fontsize{28}{36}\selectfont
-  Per-step on minibatch $\mathcal{B}_t$ with anchor $\mathcal{D}_{\mathrm{val}}$:\\[4pt]
-  \colorbox{accent!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont\centering
-    $\displaystyle\phi_i^{(2)} = \langle g_i,\, g_{\mathrm{val}}\rangle
-    \;-\; \alpha\cdot\langle g_i,\, H_{\mathrm{val}}\, g_{\mathrm{val}}\rangle$}}
+  \textbf{표준 해법의 한계.}
+  \begin{itemize}[itemsep=4pt]
+    \item Bi-level meta-learning (Ren 2018, FORML): minibatch 마다 inner SGD
+          + implicit differentiation \textemdash{} 구현 무겁고 비용 큼.
+    \item GroupDRO / IRM: \textbf{group label} 이 학습 중 필요.
+    \item JTT: 2-stage ERM, \emph{학습 동역학} 으로의 개입은 없음.
+  \end{itemize}
+  \vspace{2pt}
+  \colorbox{secondary!20}{\parbox{0.94\linewidth}{\fontsize{26}{34}\selectfont
+    \textbf{Wang et al. 2024} 는 \emph{closed-form} 1차 / 2차 In-Run
+    Shapley estimator 를 단일 학습 run 으로 유도했다 \textemdash{} 그러나
+    \textbf{post-hoc filtering} (저-Shapley 샘플 제거 후 재학습) 에만 사용했다.}}
   \vspace{6pt}
-  \begin{itemize}[itemsep=8pt]
-    \item $g_i$ via \texttt{torch.func.vmap(grad)} (single graph).
-    \item $H_{\mathrm{val}} g_{\mathrm{val}}$ via Pearlmutter HVP.
-    \item EMA-accumulate $\phi_i$, softmax-weight, weighted SGD.
-  \end{itemize}\vspace{4pt}
-  \vspace{4pt}
-  \colorbox{secondary!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
-    \textbf{Algorithmic contribution:} cross-term must be RMS-rescaled to first-order's magnitude. Without it Fairds-2 collapses to chance under strong spurious bias.}}
+
+  \textbf{우리의 질문:} 같은 closed-form 수식을 \emph{학습 중 per-sample
+  reweighter} 로 재용도(repurpose) 할 수 있는가? 그리고 2차 cross-term 이
+  1차 단독 대비 \textbf{stand-alone 기여}를 주는가?
 }
+
+\posterbox[
+  bluecard, title={\bfseries How We Approach It}
+]{name=approach, column=2, between=row7 and row14}{
+  \fontsize{28}{38}\selectfont
+  \textbf{핵심 아이디어 1 — 사후 필터링을 학습 중 가중치로.}\\
+  Shapley 값을 학습이 끝난 뒤 사용하는 대신, 매 minibatch 마다
+  per-sample Shapley 추정치를 softmax 가중치로 환산해 가중 SGD 수행.\\[6pt]
+
+  \textbf{핵심 아이디어 2 — 2차 cross-term 의 기하학적 의미.}\\
+  1차 항 $\langle g_i, g_{\mathrm{val}}\rangle$ 은 단순 gradient alignment.\\
+  2차 cross-term $\langle g_i, H_{\mathrm{val}}\, g_{\mathrm{val}}\rangle$ 은
+  \emph{validation loss 의 곡률이 큰 방향에 align 된 majority gradient} 에
+  추가 페널티 \textemdash{} curvature-aware down-weighting.\\[4pt]
+
+  \colorbox{accent!18}{\parbox{0.94\linewidth}{\fontsize{26}{34}\selectfont
+    \textbf{핵심 아이디어 3 — RMS rescaling.}\\
+    학습 중 Hessian spectrum 이 수십 배 변동 \textemdash{} cross-term 을
+    그대로 더하면 발산. 매 step 1차 항의 RMS 에 맞춰 재스케일.}}
+  \vspace{6pt}
+
+  \textbf{핵심 아이디어 4 — EMA 누적.}\\
+  Per-step $\phi_i$ 는 noisy. iteration 간 EMA 로 평활화 후 softmax-weight.
+  \vspace{2pt}
+  \begin{itemize}[itemsep=4pt]
+    \item No implicit differentiation \textemdash{} 단일 forward + backward + HVP.
+    \item Group label 은 anchor 50:50 균형에만 사용 (학습 중 불필요).
+  \end{itemize}
+}
+
+% ══ METHOD (span 2 columns) ══
+
+\posterbox[
+  darkcard, title={\bfseries Method: Fairds — 5-Step In-Training Pipeline}
+]{name=method, column=1, span=2, between=row14 and row24}{
+  \fontsize{26}{34}\selectfont
+  파라미터 $\theta_t$, minibatch $\mathcal{B}_t = \{z_i\}_{i=1}^B$, anchor
+  $\mathcal{D}_{\mathrm{val}}$ (50:50 group-balanced, $|\mathcal{D}_{\mathrm{val}}|\!=\!200$). 매 step:
+  \vspace{6pt}
+
+  \begin{minipage}[t]{0.58\linewidth}
+    \textbf{\stepbadge{1}\ Per-sample gradient $g_i$.}\\
+    {\fontsize{24}{32}\selectfont $g_i = \nabla_\theta \mathcal{L}(z_i;\theta_t)$, \texttt{torch.func.vmap(grad)} 으로 단일 autograd graph 에서 한 번에.}
+    \\[10pt]
+
+    \textbf{\stepbadge{2}\ Validation gradient \& HVP.}\\
+    {\fontsize{24}{32}\selectfont
+    $g_{\mathrm{val}}\!=\!\nabla_\theta \mathcal{L}(\mathcal{D}_{\mathrm{val}};\theta_t)$,\quad
+    $H_{\mathrm{val}}\,g_{\mathrm{val}}$ via Pearlmutter HVP \textemdash{} full Hessian 불필요, $\mathcal{O}(P)$ 메모리.}
+    \\[10pt]
+
+    \textbf{\stepbadge{3}\ Closed-form Shapley score.}\\
+    \colorbox{accent!20}{\parbox{0.92\linewidth}{\fontsize{24}{32}\selectfont\centering\vspace{3pt}
+      $\displaystyle \phi_i^{(1)} = \langle g_i,\, g_{\mathrm{val}}\rangle$\hfill\textit{(1차)}\\[2pt]
+      $\displaystyle \phi_i^{(2)} = \phi_i^{(1)} \;-\; \alpha\,\widetilde{c}_i,\quad c_i\!=\!\langle g_i,\, H_{\mathrm{val}}\, g_{\mathrm{val}}\rangle$\hfill\textit{(2차)}\\[2pt]
+      $\displaystyle \widetilde{c}_i = c_i \cdot \tfrac{\mathrm{RMS}_i(\phi_i^{(1)})}{\mathrm{RMS}_i(c_i) + \epsilon}$\hfill\textit{(RMS rescale)}\vspace{3pt}}}
+    \\[8pt]
+
+    \textbf{\stepbadge{4}\ EMA accumulate.}\\
+    {\fontsize{24}{32}\selectfont
+    $\overline{\phi}_i \leftarrow \beta\,\overline{\phi}_i + (1-\beta)\,\phi_i^{(2)}$,\quad $\beta\!=\!0.9$.\\
+    Per-step $\phi$ 의 분산을 줄이고 minibatch boundary 효과 완화.}
+    \\[10pt]
+
+    \textbf{\stepbadge{5}\ Softmax weight \& weighted SGD.}\\
+    {\fontsize{24}{32}\selectfont
+    $\displaystyle w_i = \mathrm{clip}_{q_{0.05},q_{0.95}}\!\Bigl(\tfrac{B \cdot \exp(\overline{\phi}_i / \tau)}{\sum_j \exp(\overline{\phi}_j / \tau)}\Bigr)$,\quad
+    $\theta_{t+1} = \theta_t - \eta \sum_i w_i\,g_i$.}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.39\linewidth}
+    \colorbox{secondary!18}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont\vspace{4pt}
+      \textbf{Hyperparameters}\\[3pt]
+      \begin{tabular}{ll}
+        $\alpha$ & 2차 weight $=1.0$\\
+        $\tau$ & softmax temp $=0.5$\\
+        $\beta$ & EMA decay $=0.9$\\
+        quantile clip & $[0.05,\,0.95]$\\
+        $|\mathcal{D}_{\mathrm{val}}|$ & $200$ (50:50)\\
+      \end{tabular}\vspace{4pt}}}
+    \\[10pt]
+    \colorbox{primary!18}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont\vspace{4pt}
+      \textbf{Variants compared}\\[3pt]
+      \textbf{Fairds-1}: 식에서 $\alpha\!=\!0$ (1차만).\\
+      \textbf{Fairds-2}: $\alpha\!=\!1$ + RMS rescale.\\[4pt]
+      두 variant 의 차이가 \emph{2차 cross-term 의 isolated 기여}.\vspace{4pt}}}
+    \\[10pt]
+    \colorbox{accent!18}{\parbox{0.94\linewidth}{\fontsize{22}{30}\selectfont\vspace{4pt}
+      \textbf{비용 (per step)}\\[3pt]
+      \begin{itemize}[leftmargin=14pt, itemsep=2pt]
+        \item $g_i$: vmap, 1 fwd + 1 bwd
+        \item $g_{\mathrm{val}}$: 1 fwd + 1 bwd
+        \item HVP: 1 추가 bwd (Pearlmutter)
+      \end{itemize}
+      Wall-clock: vanilla 의 $5{-}7\!\times$ (small CNN).\vspace{4pt}}}
+  \end{minipage}
+  \vspace{4pt}
+
+  \colorbox{secondary!20}{\parbox{0.97\linewidth}{\fontsize{26}{34}\selectfont\centering\vspace{4pt}
+    \textbf{알고리즘적 기여:} cross-term 의 RMS rescaling \textemdash{} 빠지면 strong spurious bias 에서 Fairds-2 가 chance 까지 붕괴. ablation 으로 확인.\vspace{4pt}}}
+}
+
+% ══ MECHANISM (col 1) | PHASE TRANSITION (col 2) ══
 
 \posterbox[
   redcard, title={\bfseries Mechanism (E1b probe)}
-]{name=mechanism, column=2, between=row14 and bottom}{
-  \fontsize{28}{36}\selectfont
-  Controlled spurious-feature MLP, 2 of 8 dims informative,
-  spurious strength $s\!=\!10$.\\[4pt]
-  \begin{itemize}[itemsep=6pt]
+]{name=mechanism, column=1, between=row24 and row28}{
+  \fontsize{26}{34}\selectfont
+  Controlled spurious-feature MLP, 8 input dim 중 2 dim 만 informative,
+  spurious strength $s\!=\!10$.\\[2pt]
+  \begin{itemize}[itemsep=4pt]
     \item Mann--Whitney $U(\mathrm{maj}\!<\!\mathrm{min}\,\phi)$:\\
-          $p\!=\!1.89\!\times\!10^{-8}$ at imbalance $0.9$.
-    \item $\Delta\phi$ monotone $\downarrow$ with imbalance.
-  \end{itemize}\vspace{4pt}
-  \colorbox{secondary!18}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont
-    Cross-term penalises majority gradients aligned with $H_{\mathrm{val}}$'s dominant directions.}}
-}
-
-% ══ COL 3: MAIN RESULTS ══
-
-\posterbox[
-  bluecard, title={\bfseries Colored MNIST (E3): extended baselines}
-]{name=results1, column=3, between=row6 and row14}{
-  \fontsize{28}{36}\selectfont
-  10 seeds $\times$ 7 methods $\times$ 20 epochs, best-tuned $\eta\!=\!0.05$.\\[2pt]
-  \posterfig{0.96}{figures/fig_cmnist_extended.pdf}{Held-out OOD test\_worst across all baselines.}
-  \vspace{2pt}
-  \colorbox{accent!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
-    \textbf{Fairds-2 vs Vanilla:} $+13.0$\,pp ($p\!=\!5\!\times\!10^{-5}$).\\
-    \textbf{Fairds-2 vs Ren2018:} $+2.7$\,pp ($p\!=\!0.052$).\\
-    \textbf{Fairds-2 vs Fairds-1 (isolation):} $+4.7$\,pp ($p\!=\!0.033$).
-  }}\\[4pt]
-  Honest: \textbf{JTT} (no group label, 2-stage ERM) reaches $0.878$
-  and \textbf{GroupDRO} (group label) reaches $0.900$, both above
-  Fairds-2's $0.824$.
+          $p\!=\!1.89\!\times\!10^{-8}$ at imbalance ratio $0.9$.
+    \item $\Delta\phi\,(\mathrm{maj}\!-\!\mathrm{min})$ 단조 감소: $0.50\!\to\!+0.002$, $0.99\!\to\!-0.025$.
+  \end{itemize}\vspace{2pt}
+  \colorbox{secondary!18}{\parbox{0.94\linewidth}{\fontsize{22}{30}\selectfont
+    Cross-term 이 $H_{\mathrm{val}}$ 의 dominant direction 과 align 된 majority gradient 에 페널티 \textemdash{} 메커니즘 직접 검증.}}
 }
 
 \posterbox[
-  redcard, title={\bfseries Phase transition with spurious strength}
-]{name=phase, column=3, between=row14 and bottom}{
-  \fontsize{28}{36}\selectfont
-  Sweep $p_{\mathrm{maj}}\!\in\!\{0.7,\ldots,0.99\}$:\\[4pt]
-  \posterfig{0.96}{figures/fig_strength_phase.pdf}{Vanilla collapses at $p\!=\!0.99$ while Fairds-2 stays robust.}
+  bluecard, title={\bfseries Phase Transition: Spurious Strength Sweep}
+]{name=phase, column=2, between=row24 and row28}{
+  \fontsize{26}{34}\selectfont
+  $p_{\mathrm{maj}}\!\in\!\{0.7, 0.8, 0.9, 0.95, 0.99\}$ sweep.\\[2pt]
+  \posterfig{0.95}{figures/fig_strength_phase.pdf}{Vanilla 가 $0.99$ 에서 붕괴; Fairds-2 는 robust.}
   \vspace{2pt}
-  \colorbox{secondary!20}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
-    $p\!=\!0.95$: $\Delta\!=\!+19.8$\,pp; $p\!=\!0.99$: $\Delta\!=\!+55.3$\,pp ($p\!=\!3\!\times\!10^{-5}$).
+  \colorbox{accent!20}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont
+    $p\!=\!0.95$: $\Delta\!=\!+19.8$\,pp;\ \ $p\!=\!0.99$: $\Delta\!=\!+55.3$\,pp ($p\!=\!3\!\times\!10^{-5}$).
   }}
 }
 
-% ══ COL 4: WATERBIRDS NEGATIVE + TAKEAWAYS ══
+% ══ MAIN RESULTS (col 1) | WATERBIRDS (col 2) ══
 
 \posterbox[
-  bluecard, title={\bfseries Waterbirds (E3b): regime boundary}
-]{name=waterbirds, column=4, between=row6 and row14}{
-  \fontsize{28}{36}\selectfont
-  Pretrained ResNet-18 fine-tuning. We tried 3 algorithmic
-  variants:\\[2pt]
-  \posterfig{0.96}{figures/fig_waterbirds.pdf}{All Fairds variants $\le$ Vanilla; Ren2018 dominates.}
-  \vspace{2pt}
-  \colorbox{accent!18}{\parbox{0.94\linewidth}{\fontsize{26}{32}\selectfont
-    \textbf{Diagnosis:} pretrained $g_i$ is small / noisy in early
-    epochs. EMA fills with noise; reweighting destabilises training.
-    No-EMA variant doesn't cure it -- underlying SNR is poor.
+  bluecard, title={\bfseries Colored MNIST (E3): Held-out OOD}
+]{name=results1, column=1, between=row28 and row33}{
+  \fontsize{26}{34}\selectfont
+  10 seeds $\times$ 7 methods $\times$ 20 ep, best-tuned $\eta\!=\!0.05$.\\[2pt]
+  \posterfig{0.95}{figures/fig_cmnist_extended.pdf}{Held-out OOD test\_worst, 7 methods.}
+  \vspace{1pt}
+  \colorbox{accent!20}{\parbox{0.94\linewidth}{\fontsize{22}{30}\selectfont
+    Fairds-2 vs Vanilla: $+13.0$\,pp ($p\!=\!5\!\times\!10^{-5}$)\\
+    Fairds-2 vs Ren2018: $+2.7$\,pp ($p\!=\!0.052$)\\
+    Fairds-2 vs Fairds-1: $+4.7$\,pp ($p\!=\!0.033$)
   }}\\[2pt]
-  \colorbox{primary!18}{\parbox{0.94\linewidth}{\fontsize{24}{30}\selectfont
-    Practical recommendation: \textbf{bi-level meta-learning} for
-    pretrained fine-tuning regimes.
-  }}
+  {\fontsize{22}{28}\selectfont\color{textgray}\textit{Honest: GroupDRO 0.900, JTT 0.878 — Fairds-2 (0.824) 보다 강함. SOTA claim 아님.}}
 }
+
+\posterbox[
+  redcard, title={\bfseries Waterbirds (E3b): Regime Boundary}
+]{name=waterbirds, column=2, between=row28 and row33}{
+  \fontsize{26}{34}\selectfont
+  Pretrained ResNet-18 fine-tuning. 3 algorithmic variant 시도.\\[2pt]
+  \posterfig{0.95}{figures/fig_waterbirds.pdf}{모든 Fairds variant $\le$ Vanilla; Ren2018 dominate.}
+  \vspace{1pt}
+  \colorbox{secondary!18}{\parbox{0.94\linewidth}{\fontsize{22}{30}\selectfont
+    \textbf{진단:} pretrained $g_i$ 가 초기 epoch 에 small / noisy. EMA 가 noise 누적 $\to$ reweighting 이 학습 dynamics 망김. No-EMA variant 도 SNR 불량으로 회복 안 됨.}}\\[2pt]
+  \colorbox{primary!18}{\parbox{0.94\linewidth}{\fontsize{22}{30}\selectfont
+    \textbf{권장:} pretrained fine-tuning regime 에선 \textbf{bi-level meta-learning} 사용.}}
+}
+
+% ══ TAKEAWAYS (span 2) ══
 
 \posterbox[
   highlightcard, title={\bfseries Takeaways}
-]{name=takeaways, column=4, between=row14 and bottom}{
-  \fontsize{30}{40}\selectfont\color{textdark}
-  \begin{enumerate}[itemsep=12pt]
-    \item Closed-form 2nd-order Shapley reweighting is a
-          \textbf{regime-dependent} tool.
-    \item It works on \textbf{from-scratch / spurious-correlation}
-          regimes -- with statistical isolation of the 2nd-order benefit.
-    \item It \textbf{fails on pretrained fine-tuning} -- bi-level
-          methods stay stronger there.
-    \item RMS-rescaling of the cross-term is required for stability.
+]{name=takeaways, column=1, span=2, between=row33 and row36}{
+  \fontsize{28}{38}\selectfont\color{textdark}
+  \begin{enumerate}[itemsep=4pt]
+    \item Closed-form 2nd-order Shapley reweighting 은 \textbf{regime-dependent} 도구다.
+    \item \textbf{From-scratch / spurious-correlation} 환경에서 작동 \textemdash{} 2차 cross-term 의 기여를 통계적으로 isolate 했다 ($+4.7$\,pp, $p\!=\!0.033$).
+    \item \textbf{Pretrained fine-tuning} 환경에서는 실패 \textemdash{} bi-level meta-learning 이 더 강하다 (정직 보고).
+    \item \textbf{Cross-term 의 RMS rescaling} 이 안정성의 키 (없으면 발산).
   \end{enumerate}
+}
+
+% ══ REFERENCES (span 2) ══
+
+\posterbox[
+  redcard, title={\bfseries References \& Code}
+]{name=refs, column=1, span=2, between=row36 and bottom}{
+  \fontsize{24}{32}\selectfont
+  \begin{minipage}[t]{0.62\linewidth}
+    \begin{itemize}[itemsep=3pt, label={}]
+      \item Wang et al. (2024). \emph{Data Shapley in One Training Run}. ICLR.
+      \item Ren et al. (2018). \emph{Learning to Reweight Examples}. ICML.
+      \item Liu et al. (2021). \emph{Just Train Twice}. ICML.
+      \item Sagawa et al. (2020). \emph{Distributionally Robust Optimization (GroupDRO)}. ICLR.
+      \item Arjovsky et al. (2019). \emph{Invariant Risk Minimization}. arXiv:1907.02893.
+      \item Pearlmutter (1994). \emph{Fast Exact Multiplication by the Hessian}. Neural Comp.
+    \end{itemize}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.34\linewidth}
+    \colorbox{primary!20}{\parbox{0.94\linewidth}{\fontsize{26}{34}\selectfont
+      \centering\vspace{4pt}\textbf{Code}\\\texttt{github.com/anon/fairds}\vspace{4pt}}}
+  \end{minipage}
 }
 
 \end{tcbposter}
