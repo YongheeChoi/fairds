@@ -27,7 +27,7 @@ COLORS = {
 }
 LABELS = {
     "vanilla": "Vanilla", "fairds-1": "Fairds-1",
-    "fairds-2": "Fairds-2", "ren2018": "Ren2018",
+    "fairds-2": "Fairds-2", "ren2018": "FORML",
 }
 
 

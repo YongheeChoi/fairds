@@ -40,7 +40,7 @@ def main():
         ("vanilla", "Vanilla", "no", "—"),
         ("fairds-1", "Fairds-1", "no", "closed-form"),
         ("fairds-2", "Fairds-2", "no", "closed-form"),
-        ("ren2018", "Ren2018", "no", "bi-level"),
+        ("ren2018", "FORML", "no", "bi-level"),
         ("jtt", "JTT", "no", "2-stage ERM"),
         ("groupdro", "GroupDRO", "yes", "minimax"),
         ("irm", "IRM", "yes", "penalty"),

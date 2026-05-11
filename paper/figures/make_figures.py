@@ -51,7 +51,7 @@ METHOD_LABEL = {
     "vanilla": "Vanilla",
     "fairds-1": "Fairds-1",
     "fairds-2": "Fairds-2",
-    "ren2018": "Ren2018",
+    "ren2018": "FORML",
 }
 
 
@@ -200,7 +200,7 @@ def waterbirds_table_and_fig():
     ax.set_xticklabels([METHOD_LABEL[m] for m in methods], rotation=15, ha="right")
     ax.set_ylabel("OOD worst-group acc")
     ax.set_ylim(0, 1.0)
-    ax.text(3.0, 0.55, "Ren2018 wins\n(p=0.02 vs vanilla)",
+    ax.text(3.0, 0.55, "FORML wins\n(p=0.02 vs vanilla)",
             fontsize=7, ha="center", color="#0F9D58", fontweight="bold")
     ax.text(1.5, 0.32, "Fairds fails\n(3 variants tried)",
             fontsize=7, ha="center", color="#C0392B", fontweight="bold")
