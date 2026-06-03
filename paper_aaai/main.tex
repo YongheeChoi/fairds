@@ -15,6 +15,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 \pdfinfo{
 /TemplateVersion (2026.1)
@@ -62,6 +64,17 @@ the spurious cue. Our starting point is In-Run Data Shapley
 sample's contribution to a validation anchor \emph{during} training. We
 repurpose this valuation as a training-time weight, and ask what the
 \emph{second-order} curvature term adds beyond the first-order inner product.
+
+Spurious correlations are a central obstacle to reliable deployment: a model that
+reaches high \emph{average} accuracy can still fail catastrophically on the
+under-represented group whenever the shortcut it learned is absent at test time.
+Existing remedies typically pay a price --- group annotations, a second training
+stage, or an inner optimization loop --- that does not fit a single closed-form
+training pass. We therefore ask how far a purely closed-form, single-pass
+data-valuation signal can go on its own, and what its second-order (curvature)
+component adds beyond the first-order inner product. This connects two threads
+from the course --- data valuation and worst-group robustness --- by turning a
+\emph{valuation} estimator into an \emph{optimization} signal.
 
 Our contributions are:
 \begin{itemize}\setlength{\itemsep}{1pt}
@@ -149,6 +162,27 @@ $\theta_{t+1}=\theta_t-\eta\sum_i w_i\nabla_\theta L(z_i;\theta_t)$. For models
 with batch normalization we freeze BN running statistics so vmap per-sample
 gradients stay coupling-free.
 
+\begin{algorithm}[t]
+\caption{Fairds second-order reweighting step}
+\label{alg:fairds}
+\begin{algorithmic}[1]
+\REQUIRE minibatch $\mathcal{B}$, anchor $\mathcal{D}_{\mathrm{val}}$, params
+$\theta_t$, EMA buffer $e$, scalars $\alpha,\tau$
+\STATE $g_i \leftarrow \nabla_\theta L(z_i;\theta_t)$ for $z_i\in\mathcal{B}$
+\hfill {\footnotesize\textit{// vmap, single graph}}
+\STATE $g_{\mathrm{val}}\leftarrow\nabla_\theta L(\mathcal{D}_{\mathrm{val}};\theta_t)$;\;\;
+$Hg\leftarrow$ Pearlmutter HVP$(\theta_t,g_{\mathrm{val}})$
+\STATE $\phi^{(1)}_i\leftarrow\langle g_i,g_{\mathrm{val}}\rangle$;\;\;
+$c_i\leftarrow\langle g_i,Hg\rangle$
+\STATE $\widetilde\phi_i\leftarrow\phi^{(1)}_i-\alpha\,
+\frac{\mathrm{RMS}(\phi^{(1)})}{\mathrm{RMS}(c)}\,c_i$
+\hfill {\footnotesize\textit{// RMS rescale}}
+\STATE $e_i\leftarrow\mathrm{EMA}(e_i,\widetilde\phi_i)$;\;\;
+$w\leftarrow B\cdot\mathrm{softmax}(e_{\mathcal{B}}/\tau)$, clipped
+\STATE $\theta_{t+1}\leftarrow\theta_t-\eta\sum_{i}w_i\,\nabla_\theta L(z_i;\theta_t)$
+\end{algorithmic}
+\end{algorithm}
+
 \paragraph{What does the cross-term do?}
 We find $g_{\mathrm{val}}$ is nearly the top eigenvector of $H_{\mathrm{val}}$
 (alignment $0.89$--$0.99$), so the normalized cross-term $c_n$ is almost
@@ -168,6 +202,31 @@ $\phi^{(1)}-\alpha r$; a corrected one-step bi-level meta-learner
 labels} in the update; GroupDRO uses them. Each method sees a small balanced
 anchor for its inner computation only.
 
+\subsection{Experimental setup}
+\label{sec:setup}
+\paragraph{Benchmarks and models.}
+All three benchmarks pose a binary task with a single spurious cue and are
+trained \emph{from scratch}. \textbf{Colored MNIST} \citep{arjovsky2019irm}:
+digit${\geq}5$ with a spurious color channel; 5{,}000 training images; a two-conv
+CNN. \textbf{Corrupted-CIFAR}: car vs.\ truck (both vehicles, so shape is a weak
+cue) with the corruption \emph{type} --- Gaussian blur vs.\ additive noise --- as
+the cue; 5{,}000 images; a two-conv CNN. \textbf{Spurious-STL10}: the same
+corruption cue on $96{\times}96$ natural photographs (car vs.\ truck);
+${\sim}2{,}600$ pooled images; a three-conv CNN. In each, the majority group
+(90\% of training) has spurious--label correlation $0.9$, the minority $0.5$, and
+the OOD test set flips it to $0.1$; the worst group is the spurious-flipped
+subset, so a model that relied on the cue collapses there.
+\paragraph{Protocol and statistics.}
+Each reweighting method uses a 200-sample, group-balanced \emph{anchor} for its
+inner gradient/Hessian computation only; a disjoint held-out validation set is
+used solely for model selection, and the OOD test set is never touched during
+training (no test leakage). We fix $\alpha{=}0.5$, exponentially average the
+per-sample scores across iterations, and form per-batch softmax weights with
+temperature $\tau$ and a weight scale tuned per regime. All numbers are means
+over 10 seeds (20 for the residual ablation); significance is the seed-paired
+Wilcoxon signed-rank test, so each pair of methods is compared on identical
+per-seed data.
+
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.97\textwidth]{figures/fig_three_regimes.pdf}
@@ -182,14 +241,10 @@ all three regimes. Error bars (STL10) are $\pm 1$ std over 10 seeds.}
 \subsection{Three spurious regimes}
 \label{sec:regimes}
 
-We use three from-scratch benchmarks with the same anchor / held-out
-\texttt{val\_eval} / OOD-test protocol, differing only in the spurious modality:
-\textbf{Colored MNIST} (color; \citealp{arjovsky2019irm}-style),
-\textbf{Corrupted-CIFAR} (texture: Gaussian blur vs.\ additive noise on
-car/truck), and \textbf{Spurious-STL10} (the same corruption cue on $96{\times}96$
-natural images, car vs.\ truck). In each, the majority training group has
-spurious--label correlation $0.9$, the minority $0.5$, and the test set flips it
-to $0.1$.
+The three benchmarks (Section~\ref{sec:setup}) span distinct spurious modalities
+--- color, texture, and natural-image corruption --- under one shared protocol,
+so a consistent pattern across them isolates the \emph{mechanism} from any single
+dataset's idiosyncrasies.
 
 Table~\ref{tab:regimes} and Figure~\ref{fig:three} show the pattern is
 consistent. Among no-group-label methods, the second-order residual variant is
@@ -200,6 +255,15 @@ $+28.1$~pp over vanilla ($p=0.002$), $+17.2$~pp over Ren2018 ($p=0.002$), and a
 ($p=0.010$). The Colored-MNIST isolation ($+4.7$~pp, $p=0.033$) and
 Corrupted-CIFAR isolation ($+4.9$~pp, $p=0.042$) reproduce the same effect.
 Fairds-2 also has the lowest seed variance among no-group-label methods.
+
+The second-order isolation \emph{widens} as the benchmark becomes more
+naturalistic --- $+4.7$~pp (MNIST), $+4.9$~pp (CIFAR), $+12.9$~pp (STL10) ---
+consistent with harder, higher-dimensional spurious cues giving the curvature
+term more structure to exploit. The two-stage (JTT) and group-label (GroupDRO)
+methods also strengthen on STL10, so the \emph{ranking} --- Fairds-2 best among
+no-label methods, with JTT/GroupDRO above --- is stable across all three regimes.
+This stability is the point: rather than a single tuned win, we see one mechanism
+behaving the same way under color, texture, and natural-image shortcuts.
 
 \begin{table}[t]
 \centering\footnotesize
@@ -288,6 +352,37 @@ frozen and Shapley acts only on a freshly initialized last layer (a DFR-style
 setup), Fairds recovers to parity with the bi-level baseline and with last-layer
 retraining --- but this is a boundary result, not a win.
 
+\subsection{Computational cost}
+\label{sec:cost}
+Table~\ref{tab:overhead} reports per-epoch wall-clock overhead on a ResNet-18
+(10k-image CIFAR-10 subset, batch 256). The closed-form first-order variant is
+\emph{cheaper} than the bi-level meta-learner, because it avoids the second
+forward/backward pass through an unrolled inner step. The second-order variant is
+more expensive than the bi-level baseline --- the per-sample Hessian--vector
+product dominates --- but remains single-pass and stateless across steps apart
+from a lightweight EMA buffer. In practice, the first-order variant already
+recovers much of the worst-group gain at lower cost, and the second-order term is
+worth its price only when the residual signal matters (the from-scratch regimes
+above).
+
+\begin{table}[t]
+\centering\footnotesize
+\begin{tabular}{lc}
+\toprule
+method & per-epoch wall-clock ($\times$ vanilla) \\
+\midrule
+Vanilla SGD          & 1.0$\times$ \\
+\textit{Fairds-1}    & 4.3$\times$ \\
+Ren2018 (bi-level)   & 4.8$\times$ \\
+\textit{Fairds-2}    & 7.7$\times$ \\
+\bottomrule
+\end{tabular}
+\caption{Wall-clock overhead (ResNet-18, 3 epochs $\times$ 3 seeds). The
+closed-form first-order variant is cheaper than the bi-level baseline; the second
+order pays for the Hessian--vector product.}
+\label{tab:overhead}
+\end{table}
+
 \section{Discussion and Conclusion}
 
 Closed-form data valuation can shape training dynamics, but \emph{within a
@@ -304,8 +399,25 @@ first-order variant, $4.3\times$, is cheaper than the bi-level baseline). Its
 value is conceptual: a single-pass, closed-form valuation whose curvature term
 provably carries a usable robustness signal. Characterizing why the residual is
 informative in some architectures but not others, and reducing the
-second-order overhead, are the natural next steps.
+second-order overhead, are the natural next steps. More broadly, our results
+suggest that closed-form data valuation --- usually used for post-hoc dataset
+debugging --- can double as a cheap, label-free \emph{training} signal, and that
+the curvature term is not a cosmetic refinement but carries its own usable
+structure. The residual decomposition offers a reusable template for asking
+\emph{which part} of a second-order correction actually does the work, beyond the
+specific case of Shapley reweighting studied here.
 
+\paragraph{Limitations.}
+(i)~Fairds is not state-of-the-art: group-label (GroupDRO) and two-stage (JTT)
+methods are stronger and preferable when their supervision is available.
+(ii)~The second-order variant costs ${\sim}7.7\times$ vanilla wall-clock from the
+per-sample Hessian--vector product. (iii)~Each benchmark isolates a single
+spurious cue; multi-cue and naturally occurring spurious structure are untested.
+(iv)~Our EMA-noise account of the pretrained-fine-tuning failure is empirical,
+not proven. (v)~The anchor requires group balance at construction time, although
+the model update itself consumes no sensitive labels.
+
+\clearpage
 \bibliography{references}
 
 \end{document}
