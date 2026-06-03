@@ -3,17 +3,18 @@
 ## Pipeline Status
 
 ```yaml
-stage: review  # 6-round auto-review-loop 종료, Codex SCORE 6/10 도달
+stage: deliverables  # 8-clinch PASS (3rd regime), 발표자료+AAAI 논문 완성
 idea: "Dynamic In-Run Data Shapley reweighting for fairness (idea:dynamic-in-run-shapley-fairness)"
 contract: "plan.md"
 current_branch: main
-baseline: "E3 Colored MNIST held-out OOD test_worst: vanilla 0.694, ren2018 0.796, fairds-1 0.777, fairds-2 0.824 (best). 10 seeds × lr=0.05."
+baseline: "3 from-scratch spurious regimes, OOD test_worst (10 seed): CMNIST(color) fairds-2 0.824 / CIFAR(texture) fairds-2-resid 0.458 / STL10(natural) fairds-2-resid 0.323. JTT/GroupDRO 더 강함(정직 보고)."
 training_status: idle
 language: ko
 code_dir: codes
 active_tasks: []
-next: "/paper-writing 진입 가능. NARRATIVE_REPORT.md 가 input. 또는 추가 강화: Waterbirds 등 더 큰 spurious benchmark, larger-model overhead 측정 (C1)."
-last_updated: "2026-05-06 19:30"
+deliverables: "paper_aaai/slides.{html,pdf} (13 슬라이드, 7-9분, 영어), paper_aaai/main.pdf (AAAI 4페이지, 영어). figures: paper_aaai/figures/{fig_three_regimes,fig_residual,fig_e1b_phi}."
+next: "발표/논문 사용자 리뷰. 저자정보 기입(현 anonymous submission). 추가 강화 시: Codex Round 4로 STL universal-mechanism 재스코어, larger-model overhead(C1)."
+last_updated: "2026-06-02"
 ```
 
 ## 실험 종합 요약 (2026-05-06, 6-round auto-review 완료)

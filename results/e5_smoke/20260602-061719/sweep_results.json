@@ -1,0 +1,88 @@
+{
+  "args": {
+    "methods": [
+      "vanilla",
+      "fairds-2",
+      "ren2018"
+    ],
+    "seeds": [
+      0
+    ],
+    "ratios": [
+      0.9
+    ],
+    "epochs": 5,
+    "n_train": 5000,
+    "batch_size": 128,
+    "lr": 0.02,
+    "alpha": 0.5,
+    "temperature": 0.1,
+    "weight_scale": 4.0,
+    "device": "cuda",
+    "out_root": "results/e5_smoke"
+  },
+  "runs": [
+    {
+      "method": "vanilla",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.02,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "n_train": 5000,
+      "val_eval_acc": 0.6759999990463257,
+      "val_eval_worst": 0.47600001096725464,
+      "val_eval_acc_g0": 0.8759999871253967,
+      "val_eval_acc_g1": 0.47600001096725464,
+      "test_acc": 0.19550000131130219,
+      "test_worst": 0.10845384001731873,
+      "test_acc_aligned": 0.9702970385551453,
+      "test_acc_flipped": 0.10845384001731873,
+      "walltime_sec": 2.5968382358551025
+    },
+    {
+      "method": "fairds-2",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.02,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "n_train": 5000,
+      "val_eval_acc": 0.6179999709129333,
+      "val_eval_worst": 0.6079999804496765,
+      "val_eval_acc_g0": 0.628000020980835,
+      "val_eval_acc_g1": 0.6079999804496765,
+      "test_acc": 0.5559999942779541,
+      "test_worst": 0.5444938540458679,
+      "test_acc_aligned": 0.6584158539772034,
+      "test_acc_flipped": 0.5444938540458679,
+      "w_std_mean": 1.888033981025219,
+      "walltime_sec": 10.81652021408081
+    },
+    {
+      "method": "ren2018",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "epochs": 5,
+      "lr": 0.02,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "n_train": 5000,
+      "val_eval_acc": 0.6399999856948853,
+      "val_eval_worst": 0.6320000290870667,
+      "val_eval_acc_g0": 0.6320000290870667,
+      "val_eval_acc_g1": 0.6480000019073486,
+      "test_acc": 0.5814999938011169,
+      "test_worst": 0.5767519474029541,
+      "test_acc_aligned": 0.6237623691558838,
+      "test_acc_flipped": 0.5767519474029541,
+      "walltime_sec": 5.635514259338379
+    }
+  ],
+  "total_walltime_sec": 19.049152135849
+}

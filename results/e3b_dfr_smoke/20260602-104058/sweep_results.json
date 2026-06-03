@@ -1,0 +1,51 @@
+{
+  "args": {
+    "methods": [
+      "dfr"
+    ],
+    "seeds": [
+      0
+    ],
+    "epochs": 5,
+    "batch_size": 128,
+    "lr": 0.1,
+    "alpha": 0.5,
+    "temperature": 0.1,
+    "weight_scale": 4.0,
+    "n_anchor_per_group": 50,
+    "image_size": 96,
+    "num_workers": 4,
+    "warmup_epochs": 0,
+    "no_ema": false,
+    "freeze_backbone": true,
+    "device": "cuda",
+    "out_root": "results/e3b_dfr_smoke"
+  },
+  "runs": [
+    {
+      "method": "dfr",
+      "seed": 0,
+      "epochs": 5,
+      "lr": 0.1,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "image_size": 96,
+      "freeze_backbone": true,
+      "val_eval_acc": 0.391391396522522,
+      "val_eval_worst": 0.24038460850715637,
+      "test_acc": 0.4380393624305725,
+      "test_worst": 0.23636363446712494,
+      "val_eval_acc_g0": 0.316546767950058,
+      "test_acc_g0": 0.33968958258628845,
+      "val_eval_acc_g1": 0.24038460850715637,
+      "test_acc_g1": 0.23636363446712494,
+      "val_eval_acc_g2": 0.9156626462936401,
+      "test_acc_g2": 0.9657320976257324,
+      "val_eval_acc_g3": 1.0,
+      "test_acc_g3": 0.9641744494438171,
+      "walltime_sec": 17.74133586883545
+    }
+  ],
+  "total_walltime_sec": 17.74153971672058
+}

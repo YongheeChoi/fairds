@@ -1,0 +1,70 @@
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_smooth_abl/temp0.05/20260602-083338
+[  1/10] fairds-1   s=0.90 seed=0 val_worst=0.644 test_acc=0.463 test_worst=0.414 (15.6s)
+[  2/10] fairds-1   s=0.90 seed=1 val_worst=0.680 test_acc=0.408 test_worst=0.350 (15.2s)
+[  3/10] fairds-1   s=0.90 seed=2 val_worst=0.520 test_acc=0.204 test_worst=0.116 (10.3s)
+[  4/10] fairds-1   s=0.90 seed=3 val_worst=0.604 test_acc=0.431 test_worst=0.393 (9.3s)
+[  5/10] fairds-1   s=0.90 seed=4 val_worst=0.604 test_acc=0.428 test_worst=0.378 (9.2s)
+[  6/10] fairds-1   s=0.90 seed=5 val_worst=0.608 test_acc=0.407 test_worst=0.350 (9.2s)
+[  7/10] fairds-1   s=0.90 seed=6 val_worst=0.604 test_acc=0.329 test_worst=0.262 (9.2s)
+[  8/10] fairds-1   s=0.90 seed=7 val_worst=0.676 test_acc=0.453 test_worst=0.408 (9.2s)
+[  9/10] fairds-1   s=0.90 seed=8 val_worst=0.676 test_acc=0.491 test_worst=0.450 (9.3s)
+[ 10/10] fairds-1   s=0.90 seed=9 val_worst=0.556 test_acc=0.250 test_worst=0.177 (9.3s)
+[e5] results/e5_smooth_abl/temp0.05/20260602-083338/sweep_results.json  (105.7s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_smooth_abl/temp0.1/20260602-083526
+[  1/10] fairds-1   s=0.90 seed=0 val_worst=0.616 test_acc=0.354 test_worst=0.293 (15.9s)
+[  2/10] fairds-1   s=0.90 seed=1 val_worst=0.676 test_acc=0.491 test_worst=0.447 (10.7s)
+[  3/10] fairds-1   s=0.90 seed=2 val_worst=0.628 test_acc=0.429 test_worst=0.377 (11.4s)
+[  4/10] fairds-1   s=0.90 seed=3 val_worst=0.576 test_acc=0.356 test_worst=0.306 (15.1s)
+[  5/10] fairds-1   s=0.90 seed=4 val_worst=0.668 test_acc=0.555 test_worst=0.527 (10.8s)
+[  6/10] fairds-1   s=0.90 seed=5 val_worst=0.596 test_acc=0.394 test_worst=0.336 (15.4s)
+[  7/10] fairds-1   s=0.90 seed=6 val_worst=0.612 test_acc=0.331 test_worst=0.262 (14.7s)
+[  8/10] fairds-1   s=0.90 seed=7 val_worst=0.648 test_acc=0.412 test_worst=0.361 (10.1s)
+[  9/10] fairds-1   s=0.90 seed=8 val_worst=0.628 test_acc=0.463 test_worst=0.418 (13.6s)
+[ 10/10] fairds-1   s=0.90 seed=9 val_worst=0.648 test_acc=0.458 test_worst=0.416 (10.0s)
+[e5] results/e5_smooth_abl/temp0.1/20260602-083526/sweep_results.json  (127.8s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_smooth_abl/temp0.2/20260602-083735
+[  1/10] fairds-1   s=0.90 seed=0 val_worst=0.644 test_acc=0.438 test_worst=0.387 (11.1s)
+[  2/10] fairds-1   s=0.90 seed=1 val_worst=0.684 test_acc=0.497 test_worst=0.453 (11.4s)
+[  3/10] fairds-1   s=0.90 seed=2 val_worst=0.540 test_acc=0.408 test_worst=0.360 (10.6s)
+[  4/10] fairds-1   s=0.90 seed=3 val_worst=0.600 test_acc=0.375 test_worst=0.330 (11.1s)
+[  5/10] fairds-1   s=0.90 seed=4 val_worst=0.612 test_acc=0.478 test_worst=0.439 (14.9s)
+[  6/10] fairds-1   s=0.90 seed=5 val_worst=0.588 test_acc=0.373 test_worst=0.317 (14.5s)
+[  7/10] fairds-1   s=0.90 seed=6 val_worst=0.608 test_acc=0.325 test_worst=0.256 (10.2s)
+[  8/10] fairds-1   s=0.90 seed=7 val_worst=0.592 test_acc=0.280 test_worst=0.208 (9.1s)
+[  9/10] fairds-1   s=0.90 seed=8 val_worst=0.680 test_acc=0.475 test_worst=0.429 (9.3s)
+[ 10/10] fairds-1   s=0.90 seed=9 val_worst=0.592 test_acc=0.312 test_worst=0.245 (9.4s)
+[e5] results/e5_smooth_abl/temp0.2/20260602-083735/sweep_results.json  (111.6s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_smooth_abl/temp0.5/20260602-083928
+[  1/10] fairds-1   s=0.90 seed=0 val_worst=0.624 test_acc=0.453 test_worst=0.405 (12.8s)
+[  2/10] fairds-1   s=0.90 seed=1 val_worst=0.696 test_acc=0.433 test_worst=0.379 (10.9s)
+[  3/10] fairds-1   s=0.90 seed=2 val_worst=0.620 test_acc=0.558 test_worst=0.529 (10.3s)
+[  4/10] fairds-1   s=0.90 seed=3 val_worst=0.628 test_acc=0.412 test_worst=0.369 (10.1s)
+[  5/10] fairds-1   s=0.90 seed=4 val_worst=0.620 test_acc=0.496 test_worst=0.457 (10.0s)
+[  6/10] fairds-1   s=0.90 seed=5 val_worst=0.644 test_acc=0.447 test_worst=0.395 (11.3s)
+[  7/10] fairds-1   s=0.90 seed=6 val_worst=0.596 test_acc=0.285 test_worst=0.210 (8.9s)
+[  8/10] fairds-1   s=0.90 seed=7 val_worst=0.632 test_acc=0.404 test_worst=0.351 (13.7s)
+[  9/10] fairds-1   s=0.90 seed=8 val_worst=0.672 test_acc=0.520 test_worst=0.480 (12.2s)
+[ 10/10] fairds-1   s=0.90 seed=9 val_worst=0.656 test_acc=0.390 test_worst=0.335 (10.1s)
+[e5] results/e5_smooth_abl/temp0.5/20260602-083928/sweep_results.json  (110.2s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_smooth_abl/temp1.0/20260602-084120
+[  1/10] fairds-1   s=0.90 seed=0 val_worst=0.640 test_acc=0.473 test_worst=0.427 (9.7s)
+[  2/10] fairds-1   s=0.90 seed=1 val_worst=0.696 test_acc=0.470 test_worst=0.420 (9.2s)
+[  3/10] fairds-1   s=0.90 seed=2 val_worst=0.588 test_acc=0.433 test_worst=0.382 (10.9s)
+[  4/10] fairds-1   s=0.90 seed=3 val_worst=0.620 test_acc=0.407 test_worst=0.365 (9.2s)
+[  5/10] fairds-1   s=0.90 seed=4 val_worst=0.660 test_acc=0.507 test_worst=0.469 (9.2s)
+[  6/10] fairds-1   s=0.90 seed=5 val_worst=0.636 test_acc=0.423 test_worst=0.369 (12.2s)
+[  7/10] fairds-1   s=0.90 seed=6 val_worst=0.568 test_acc=0.374 test_worst=0.320 (10.4s)
+[  8/10] fairds-1   s=0.90 seed=7 val_worst=0.624 test_acc=0.336 test_worst=0.272 (9.3s)
+[  9/10] fairds-1   s=0.90 seed=8 val_worst=0.668 test_acc=0.532 test_worst=0.493 (14.5s)
+[ 10/10] fairds-1   s=0.90 seed=9 val_worst=0.660 test_acc=0.357 test_worst=0.296 (12.3s)
+[e5] results/e5_smooth_abl/temp1.0/20260602-084120/sweep_results.json  (106.9s total)

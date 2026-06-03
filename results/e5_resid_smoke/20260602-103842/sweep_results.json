@@ -1,0 +1,52 @@
+{
+  "args": {
+    "methods": [
+      "fairds-2"
+    ],
+    "seeds": [
+      0
+    ],
+    "ratios": [
+      0.9
+    ],
+    "strengths": [
+      0.9
+    ],
+    "epochs": 3,
+    "n_train": 5000,
+    "batch_size": 128,
+    "lr": 0.02,
+    "alpha": 0.5,
+    "temperature": 0.1,
+    "weight_scale": 4.0,
+    "arm": "phi1",
+    "device": "cuda",
+    "out_root": "results/e5_resid_smoke"
+  },
+  "runs": [
+    {
+      "method": "fairds-2",
+      "seed": 0,
+      "majority_ratio": 0.9,
+      "p_corr_majority": 0.9,
+      "arm": "phi1",
+      "epochs": 3,
+      "lr": 0.02,
+      "alpha": 0.5,
+      "temperature": 0.1,
+      "weight_scale": 4.0,
+      "n_train": 5000,
+      "val_eval_acc": 0.6259999871253967,
+      "val_eval_worst": 0.6119999885559082,
+      "val_eval_acc_g0": 0.6119999885559082,
+      "val_eval_acc_g1": 0.6399999856948853,
+      "test_acc": 0.5985000133514404,
+      "test_worst": 0.5891088843345642,
+      "test_acc_aligned": 0.5891088843345642,
+      "test_acc_flipped": 0.5995550751686096,
+      "w_std_mean": 1.7234264542659123,
+      "walltime_sec": 3.8854217529296875
+    }
+  ],
+  "total_walltime_sec": 3.8857059478759766
+}

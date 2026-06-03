@@ -1,0 +1,6 @@
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Residual structure by spurious modality (mean over 10 seeds)
+
+  CMNIST (color)            : residual_fraction=0.206  r_sep/phi1_sep=-0.95  (aligned-positive in 3/10 seeds)
+  Corrupted-CIFAR (texture) : residual_fraction=0.210  r_sep/phi1_sep=-2.27  (aligned-positive in 4/10 seeds)

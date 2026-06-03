@@ -29,17 +29,31 @@ if str(ROOT) not in sys.path:
 
 from fairds.trainer import train_fairds, train_vanilla  # noqa: E402
 from baselines.ren2018 import train_ren2018  # noqa: E402
+from baselines.dfr import train_dfr  # noqa: E402
 from utils.seed import set_seed  # noqa: E402
 from datasets.waterbirds import WaterbirdsConfig, make_waterbirds, stack_dataset  # noqa: E402
 
 
-def build_model(n_classes: int = 2, pretrained: bool = True) -> nn.Module:
-    """ResNet-18 with BN running stats frozen for vmap compatibility."""
+def build_model(n_classes: int = 2, pretrained: bool = True,
+                freeze_backbone: bool = False) -> nn.Module:
+    """ResNet-18 with BN running stats frozen for vmap compatibility.
+
+    freeze_backbone: if True, only the freshly-initialised fc head is
+    trainable. Because fairds.shapley filters parameters by requires_grad,
+    this makes the in-run Shapley reweighter operate purely on last-layer
+    gradients (DFR-style; Kirichenko et al. 2022). In the pretrained
+    fine-tuning regime full-parameter g_i is small/noisy, whereas the new
+    head carries a clean spurious-vs-core signal — the diagnosed failure
+    mode of full-parameter E3b.
+    """
     if pretrained:
         model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
     else:
         model = models.resnet18(weights=None)
     model.fc = nn.Linear(model.fc.in_features, n_classes)
+    if freeze_backbone:
+        for name, p in model.named_parameters():
+            p.requires_grad = name.startswith("fc.")
     # Freeze BN running stats so vmap-per-sample-grad doesn't trip on
     # batch coupling. The affine params (weight/bias) remain trainable.
     for m in model.modules():
@@ -90,7 +104,7 @@ def run_one(*, method: str, seed: int, epochs: int, batch_size: int, lr: float,
             alpha: float, temperature: float, weight_scale: float,
             n_anchor_per_group: int, image_size: int,
             device: str, num_workers: int, warmup_epochs: int = 0,
-            no_ema: bool = False) -> dict:
+            no_ema: bool = False, freeze_backbone: bool = False) -> dict:
     set_seed(seed)
     cfg = WaterbirdsConfig(n_anchor_per_group=n_anchor_per_group, image_size=image_size, seed=seed)
     sets = make_waterbirds(cfg)
@@ -111,7 +125,8 @@ def run_one(*, method: str, seed: int, epochs: int, batch_size: int, lr: float,
     n_train = len(train_ds)
     train_groups = torch.tensor(sets["train_df"]["group"].values, dtype=torch.long).to(device)
 
-    model = build_model(n_classes=2, pretrained=True).to(device)
+    model = build_model(n_classes=2, pretrained=True,
+                        freeze_backbone=freeze_backbone).to(device)
 
     if method == "vanilla":
         log = train_vanilla(model, loader, Xa, ya, epochs=epochs, lr=lr, device=device)
@@ -124,6 +139,9 @@ def run_one(*, method: str, seed: int, epochs: int, batch_size: int, lr: float,
                            epochs=epochs, lr=lr, device=device)
     elif method == "ren2018":
         log = train_ren2018(model, loader, Xa, ya, epochs=epochs, lr=lr, device=device)
+    elif method == "dfr":
+        log = train_dfr(model, loader, Xa, ya, train_groups=train_groups,
+                        n_groups=4, epochs=epochs, lr=lr, device=device)
     else:
         raise ValueError(method)
 
@@ -135,6 +153,7 @@ def run_one(*, method: str, seed: int, epochs: int, batch_size: int, lr: float,
         "epochs": epochs, "lr": lr, "alpha": alpha,
         "temperature": temperature, "weight_scale": weight_scale,
         "image_size": image_size,
+        "freeze_backbone": freeze_backbone,
         "val_eval_acc": val_metrics["acc"],
         "val_eval_worst": val_metrics.get("worst_acc"),
         "test_acc": test_metrics["acc"],
@@ -161,6 +180,7 @@ def main():
     p.add_argument("--num-workers", type=int, default=4)
     p.add_argument("--warmup-epochs", type=int, default=0)
     p.add_argument("--no-ema", action="store_true")
+    p.add_argument("--freeze-backbone", action="store_true")
     p.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     p.add_argument("--out-root", type=str, default="results/e3b")
     args = p.parse_args()
@@ -184,6 +204,7 @@ def main():
                     weight_scale=args.weight_scale, n_anchor_per_group=args.n_anchor_per_group,
                     image_size=args.image_size, device=args.device, num_workers=args.num_workers,
                     warmup_epochs=args.warmup_epochs, no_ema=args.no_ema,
+                    freeze_backbone=args.freeze_backbone,
                 )
                 rec["walltime_sec"] = time.time() - tic
                 runs.append(rec)

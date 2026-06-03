@@ -1,0 +1,5 @@
+.karis/
+.claude/
+wandb/
+*.ckpt
+__pycache__/

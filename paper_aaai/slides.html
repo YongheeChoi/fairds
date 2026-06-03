@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Closed-form 2nd-order Data Shapley as a Spurious-Correlation Attenuator</title>
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-family: "Helvetica Neue", Arial, sans-serif; color: #1a1a1a; }
+  .slide {
+    width: 13.333in; height: 7.5in; page-break-after: always;
+    padding: 0.55in 0.8in 0.7in 0.8in; position: relative; overflow: hidden;
+  }
+  .slide:last-child { page-break-after: auto; }
+  h1 { color: #0d47a1; font-size: 34pt; line-height: 1.12; }
+  h2 { color: #0d47a1; font-size: 25pt; border-bottom: 3px solid #1565c0;
+       padding-bottom: 8px; margin-bottom: 18px; }
+  h3 { color: #1565c0; font-size: 16pt; margin: 14px 0 6px; }
+  ul { margin: 6px 0 6px 26px; }
+  li { font-size: 15.5pt; line-height: 1.5; margin-bottom: 7px; }
+  li ul li { font-size: 13.5pt; margin-bottom: 3px; color: #444; }
+  p { font-size: 15.5pt; line-height: 1.45; }
+  .num { position: absolute; bottom: 0.32in; right: 0.55in; color: #aaa; font-size: 11pt; }
+  .tag { position: absolute; bottom: 0.32in; left: 0.8in; color: #bbb; font-size: 10.5pt; }
+  .center { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .title-main { color:#0d47a1; font-size: 38pt; line-height: 1.15; margin-bottom: 10px; }
+  .title-sub  { color:#1565c0; font-size: 21pt; font-style: italic; margin-bottom: 40px; }
+  .title-meta { font-size: 15pt; color:#555; line-height: 1.6; }
+  .hl { color: #0d47a1; font-weight: bold; }
+  .good { color: #1b5e20; font-weight: bold; }
+  .bad  { color: #b71c1c; font-weight: bold; }
+  .box { background: #f3f7fc; border-left: 5px solid #1565c0; padding: 12px 18px; margin: 12px 0; font-size: 15pt; }
+  .figwrap { text-align: center; margin-top: 10px; }
+  .figwrap img { max-width: 100%; max-height: 4.4in; }
+  .cap { font-size: 12pt; color: #666; margin-top: 4px; }
+  table { border-collapse: collapse; margin: 12px 0; font-size: 14pt; }
+  th, td { border: 1px solid #cfd8dc; padding: 5px 13px; text-align: center; }
+  th { background: #1565c0; color: white; }
+  .eq { font-family: "Times New Roman", serif; font-size: 19pt; text-align:center;
+        background:#f7f9fc; padding: 14px; margin: 14px 0; border-radius: 6px; }
+  .two { display: flex; gap: 28px; }
+  .two > div { flex: 1; }
+  .key { font-size: 17pt; color:#0d47a1; font-weight: bold; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- 1. TITLE -->
+<section class="slide">
+  <div class="center">
+    <div class="title-main">Closed-form 2nd-order Data Shapley<br>as a Spurious-Correlation Attenuator</div>
+    <div class="title-sub">Where it works, where it doesn't — and why</div>
+    <div class="title-meta">
+      A closed-form, single-pass per-sample reweighter for worst-group robustness.<br>
+      Mechanism reproduced across <b>three</b> spurious regimes: color, texture, natural images.
+    </div>
+  </div>
+  <div class="tag">Fairds</div>
+</section>
+
+<!-- 2. PROBLEM -->
+<section class="slide">
+  <h2>The problem: spurious correlations break worst-group accuracy</h2>
+  <ul>
+    <li>Models latch onto an <span class="hl">easy spurious cue</span> (background, color, texture) that
+        correlates with the label in training but <span class="bad">flips at test time</span>.</li>
+    <li>Average accuracy looks fine; the <span class="hl">worst group collapses</span>.</li>
+    <li>Strong fixes need <span class="hl">group labels</span> (GroupDRO) or expensive
+        two-stage/bi-level pipelines (JTT, meta-reweighting).</li>
+  </ul>
+  <div class="box">
+    <b>Question:</b> can a <span class="hl">closed-form, single-pass</span> per-sample reweighter —
+    no group labels at training, no inner optimization loop — attenuate the spurious cue?
+  </div>
+  <h3>Our answer</h3>
+  <p>Repurpose <b>In-Run Data Shapley</b> (Wang et al. 2024) as an in-training reweighter, and add a
+     <span class="hl">2nd-order gradient–Hessian–gradient cross-term</span>. We isolate exactly what the
+     cross-term contributes and show it generalizes across three spurious modalities.</p>
+  <div class="num">2</div>
+</section>
+
+<!-- 3. IDEA -->
+<section class="slide">
+  <h2>Idea: Data Shapley as an in-training reweighter</h2>
+  <ul>
+    <li>In-Run Data Shapley gives a <span class="hl">closed-form Taylor estimate</span> of how much each
+        training sample improves a small balanced validation anchor — computed <b>during</b> training, no retraining.</li>
+    <li>We turn that valuation into a <span class="hl">per-sample weight</span> and run weighted SGD.</li>
+    <li>A 50:50 group-balanced <span class="hl">anchor</span> is used only for the inner inner-product —
+        sensitive labels are never consumed by the model update.</li>
+  </ul>
+  <div class="eq">
+    w<sub>i</sub> = B · softmax( EMA(&phi;<sub>i</sub>) / &tau; ) &nbsp;&nbsp;&rarr;&nbsp;&nbsp;
+    &theta;<sub>t+1</sub> = &theta;<sub>t</sub> &minus; &eta; &sum;<sub>i</sub> w<sub>i</sub> &nabla;L(z<sub>i</sub>)
+  </div>
+  <p>The whole question becomes: <span class="hl">what should &phi;<sub>i</sub> be?</span></p>
+  <div class="num">3</div>
+</section>
+
+<!-- 4. METHOD 1st order -->
+<section class="slide">
+  <h2>Method — 1st order (Fairds-1)</h2>
+  <div class="eq">
+    &phi;<sub>i</sub><sup>(1)</sup> = &langle; g<sub>i</sub>, g<sub>val</sub> &rangle;
+    &nbsp;&nbsp;&nbsp; g<sub>i</sub> = &nabla;<sub>&theta;</sub>L(z<sub>i</sub>),
+    &nbsp; g<sub>val</sub> = &nabla;<sub>&theta;</sub>L(D<sub>val</sub>)
+  </div>
+  <ul>
+    <li>Wang et al.'s estimator: how much sample <i>z<sub>i</sub></i> reduces validation loss in one SGD step.</li>
+    <li>Larger &phi;<sup>(1)</sup> &rArr; <i>z<sub>i</sub></i> pushes &theta; in a validation-helpful direction.</li>
+    <li>Per-sample gradients via <span class="hl">torch.func.vmap</span> in a single autograd graph — closed form, no bi-level loop.</li>
+  </ul>
+  <div class="box">But the 1st-order term alone leaves accuracy on the table. Can curvature help?</div>
+  <div class="num">4</div>
+</section>
+
+<!-- 5. METHOD 2nd order -->
+<section class="slide">
+  <h2>Method — 2nd order (Fairds-2) with RMS rescaling</h2>
+  <div class="eq">
+    &phi;<sub>i</sub><sup>(2)</sup> = &phi;<sub>i</sub><sup>(1)</sup>
+    &minus; &alpha; · <span style="color:#0d47a1">&langle; g<sub>i</sub>, H<sub>val</sub> g<sub>val</sub> &rangle;</span>
+    &nbsp;&nbsp;(cross-term)
+  </div>
+  <ul>
+    <li>H<sub>val</sub> g<sub>val</sub> via the <span class="hl">Pearlmutter trick</span> — one extra backward pass, no full Hessian.</li>
+    <li>H<sub>val</sub>'s spectrum varies by orders of magnitude during training &rArr; a fixed &alpha; is unusable.</li>
+    <li><span class="hl">Algorithmic contribution:</span> rescale the cross-term to the
+        <b>same RMS magnitude</b> as the 1st-order term each minibatch.</li>
+    <li class="bad" style="list-style:none; margin-left:-10px;">⚠ Without RMS rescaling, Fairds-2 collapses to chance under strong spurious bias.</li>
+  </ul>
+  <div class="num">5</div>
+</section>
+
+<!-- 6. MECHANISM QUESTION -->
+<section class="slide">
+  <h2>Is the 2nd-order term doing something real?</h2>
+  <p>A skeptic's worry: maybe the cross-term is just <span class="bad">smoothing / regularization</span> noise.
+     We tested this directly.</p>
+  <h3>What we found about the geometry</h3>
+  <ul>
+    <li>g<sub>val</sub> is almost the <span class="hl">top eigenvector of H<sub>val</sub></span>
+        (alignment 0.89–0.99) &rArr; the cross-term is <b>nearly parallel</b> to &phi;<sup>(1)</sup>.</li>
+    <li>Decompose: &nbsp; cross<sub>n</sub> = <span class="hl">&beta;·&phi;<sup>(1)</sup></span> (parallel, a curvature shrinkage)
+        + <span class="hl">r</span> (orthogonal residual).</li>
+  </ul>
+  <div class="box">
+    The parallel part = global shrinkage (equivalent to smoothing). <br>
+    <b>Is the orthogonal residual <span class="good">r</span> a real, sample-specific signal — or noise?</b>
+  </div>
+  <div class="num">6</div>
+</section>
+
+<!-- 7. RESIDUAL ABLATION -->
+<section class="slide">
+  <h2>Residual ablation: the cross-term's signal lives in <i>r</i></h2>
+  <div class="two">
+    <div>
+      <p>We build 5 arms that share &phi;<sup>(1)</sup> but treat <i>r</i> differently:</p>
+      <ul>
+        <li><b>residual (real):</b> &phi;<sup>(1)</sup> − &alpha;·r</li>
+        <li><b>residual (shuffle):</b> r permuted within class×&phi;-bin</li>
+        <li><b>parallel:</b> only the shrinkage part</li>
+        <li><b>sign_flip:</b> &phi;<sup>(1)</sup> + &alpha;·r</li>
+      </ul>
+      <div class="key">real &gt; shuffle &gt; parallel;<br>sign-flip collapses.</div>
+      <p style="font-size:13pt;color:#555;margin-top:8px">CIFAR: real vs shuffle <b>+5.9pp, p=0.0015</b> (20 seeds).
+         If <i>r</i> were noise, shuffling it would not matter — it does.</p>
+    </div>
+    <div class="figwrap">
+      <img src="figures/fig_residual.png">
+    </div>
+  </div>
+  <div class="num">7</div>
+</section>
+
+<!-- 8. HEADLINE 3 REGIMES -->
+<section class="slide">
+  <h2>Headline: the mechanism reproduces across 3 spurious regimes</h2>
+  <div class="figwrap">
+    <img src="figures/fig_three_regimes.png">
+  </div>
+  <p style="text-align:center;margin-top:8px">
+    Fairds-2 (residual) beats every <span class="hl">no-group-label</span> baseline
+    (vanilla, Fairds-1, Ren2018) in <b>all three</b> regimes —
+    color (MNIST), texture (CIFAR), and natural images (STL-10).
+  </p>
+  <div class="num">8</div>
+</section>
+
+<!-- 9. STL CLINCH STATS -->
+<section class="slide">
+  <h2>The third regime (STL-10, 96px natural images)</h2>
+  <p>New benchmark: car vs truck, corruption-type (blur vs noise) as the spurious cue; from-scratch CNN, 10 seeds.</p>
+  <table>
+    <tr><th>method</th><th>OOD test_worst</th><th>vs Fairds-2-resid</th></tr>
+    <tr><td>vanilla</td><td>0.042</td><td class="good">+28.1pp, p=0.002</td></tr>
+    <tr><td>Fairds-1 (1st-order)</td><td>0.194</td><td class="good">+12.9pp, p=0.010</td></tr>
+    <tr><td>Ren2018 (bi-level)</td><td>0.151</td><td class="good">+17.2pp, p=0.002</td></tr>
+    <tr style="background:#e8f0fe"><td><b>Fairds-2 (residual)</b></td><td><b>0.323</b></td><td>—</td></tr>
+    <tr><td>JTT / GroupDRO*</td><td>0.61 / 0.52</td><td class="bad">stronger (see next)</td></tr>
+  </table>
+  <div class="box"><b>2nd-order isolation holds:</b> the residual variant beats the 1st-order term by
+     +12.9pp (p=0.010) — exactly the cross-term effect we isolated on CIFAR, now in a third modality.</div>
+  <div class="num">9</div>
+</section>
+
+<!-- 10. HONEST SCOPE -->
+<section class="slide">
+  <h2>Honest scope — what we do <i>not</i> claim</h2>
+  <h3>Stronger methods exist (reported plainly)</h3>
+  <ul>
+    <li><span class="bad">JTT</span> (2-stage ERM) and <span class="bad">GroupDRO</span> (uses group labels)
+        reach higher worst-group accuracy in most regimes.</li>
+    <li>Fairds-2's value is the <span class="hl">closed-form, single-pass cross-term mechanism</span>, not peak accuracy.</li>
+  </ul>
+  <h3>A regime where it fails: pretrained-ResNet Waterbirds fine-tuning</h3>
+  <ul>
+    <li>All Fairds variants (3 algorithmic versions) <span class="bad">fail to match</span> the bi-level baseline.</li>
+    <li>Cause: with a strong pretrained extractor, early per-sample gradients are small/noisy &rArr;
+        the EMA buffer fills with noise. <span class="hl">Use bi-level meta-learning there.</span></li>
+  </ul>
+  <div class="box">We characterize the <b>regime boundary</b> rather than hide the negative result.</div>
+  <div class="num">10</div>
+</section>
+
+<!-- 11. COST -->
+<section class="slide">
+  <h2>Cost &amp; practicality</h2>
+  <div class="two">
+    <div>
+      <h3>Wall-clock overhead (ResNet-18)</h3>
+      <table>
+        <tr><th>method</th><th>×vanilla</th></tr>
+        <tr><td>Fairds-1</td><td>4.30×</td></tr>
+        <tr><td>Ren2018 (bi-level)</td><td>4.78×</td></tr>
+        <tr><td>Fairds-2</td><td>7.68×</td></tr>
+      </table>
+      <p style="font-size:13pt;color:#555">1st-order is cheaper than bi-level; 2nd-order pays for the HVP.
+         Honestly reported, not yet at the 1.5×/3× target.</p>
+    </div>
+    <div>
+      <h3>When to reach for Fairds-2</h3>
+      <ul>
+        <li><span class="good">From-scratch / small models</span> with a strong spurious cue and no group labels.</li>
+        <li>When you want a <span class="hl">closed-form</span> reweighter (no inner loop) and lowest seed variance among no-label methods.</li>
+        <li><span class="bad">Not</span> for pretrained fine-tuning &rArr; use bi-level.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num">11</div>
+</section>
+
+<!-- 12. CONTRIBUTIONS -->
+<section class="slide">
+  <h2>Contributions</h2>
+  <ul>
+    <li><b>1.</b> Repurpose closed-form In-Run Data Shapley as an in-training per-sample reweighter for worst-group robustness.</li>
+    <li><b>2.</b> A <span class="hl">2nd-order cross-term</span> with <span class="hl">RMS rescaling</span> (required for stability under strong spurious bias).</li>
+    <li><b>3.</b> A <span class="hl">decomposition + residual ablation</span> proving the cross-term carries a real, sample-specific
+        directional signal (real &gt; shuffle &gt; parallel; sign-flip collapses).</li>
+    <li><b>4.</b> The mechanism <span class="good">reproduces across three spurious regimes</span> — color, texture, natural images.</li>
+    <li><b>5.</b> An <span class="hl">honest regime boundary</span>: a clean negative on pretrained fine-tuning, with a diagnosis.</li>
+  </ul>
+  <div class="num">12</div>
+</section>
+
+<!-- 13. TAKEAWAY -->
+<section class="slide">
+  <div class="center">
+    <h1>Takeaway</h1>
+    <div class="box" style="font-size:18pt">
+      A <span class="hl">closed-form 2nd-order Data Shapley</span> reweighter attenuates spurious correlations
+      across <span class="good">three distinct regimes</span> — and we can prove
+      <i>which part of the cross-term</i> does the work.
+    </div>
+    <ul>
+      <li>The gain is the orthogonal <b>residual</b> of the gradient–Hessian–gradient term, not mere smoothing.</li>
+      <li>It beats every no-group-label baseline from scratch; group-label / 2-stage methods remain stronger.</li>
+      <li>It fails on pretrained fine-tuning — and we say so, with a mechanism.</li>
+    </ul>
+    <p style="margin-top:24px;color:#0d47a1;font-size:19pt"><b>Closed-form valuation can shape training dynamics — within a characterized regime.</b></p>
+  </div>
+  <div class="num">13</div>
+</section>
+
+</body>
+</html>

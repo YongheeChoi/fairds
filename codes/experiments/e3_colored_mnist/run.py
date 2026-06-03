@@ -82,7 +82,8 @@ def evaluate(model, X, y, g, device):
 
 def run_one(*, method: str, seed: int, epochs: int, batch_size: int, lr: float,
             alpha: float, n_train: int, majority_ratio: float, device: str,
-            temperature: float = 0.5, weight_scale: float = 1.0) -> dict:
+            temperature: float = 0.5, weight_scale: float = 1.0,
+            arm: str = None) -> dict:
     set_seed(seed)
     cfg = CMNISTConfig(n_train=n_train, majority_ratio=majority_ratio, seed=seed)
     b = make_colored_mnist(cfg)
@@ -109,7 +110,7 @@ def run_one(*, method: str, seed: int, epochs: int, batch_size: int, lr: float,
                            train_groups=gt, order=order, alpha=alpha,
                            temperature=temperature, weight_scale=weight_scale,
                            epochs=epochs, lr=lr, device=device,
-                           train_x=Xt, train_y=yt)
+                           train_x=Xt, train_y=yt, arm=arm)
     elif method == "ren2018":
         log = train_ren2018(model, loader, Xa, ya, epochs=epochs, lr=lr, device=device,
                             train_x=Xt, train_y=yt)
@@ -132,6 +133,7 @@ def run_one(*, method: str, seed: int, epochs: int, batch_size: int, lr: float,
 
     rec = {
         "method": method, "seed": seed, "majority_ratio": majority_ratio,
+        "arm": arm,
         "epochs": epochs, "lr": lr, "alpha": alpha,
         "temperature": temperature, "weight_scale": weight_scale,
         "n_train": n_train,
@@ -163,6 +165,8 @@ def main():
     p.add_argument("--alpha", type=float, default=0.5)
     p.add_argument("--temperature", type=float, default=0.5)
     p.add_argument("--weight-scale", type=float, default=1.0)
+    p.add_argument("--arm", type=str, default=None,
+                   help="residual ablation arm: phi1|parallel|residual_real|residual_shuffle|sign_flip")
     p.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     p.add_argument("--out-root", type=str, default="results/e3")
     args = p.parse_args()
@@ -185,7 +189,7 @@ def main():
                     epochs=args.epochs, batch_size=args.batch_size,
                     lr=args.lr, alpha=args.alpha, n_train=args.n_train,
                     temperature=args.temperature, weight_scale=args.weight_scale,
-                    device=args.device,
+                    device=args.device, arm=args.arm,
                 )
                 rec["walltime_sec"] = time.time() - tic
                 runs.append(rec)

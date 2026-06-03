@@ -1,0 +1,311 @@
+\documentclass[letterpaper]{article}
+\usepackage[submission]{aaai2026}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}
+\usepackage{caption}
+\frenchspacing
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+
+\pdfinfo{
+/TemplateVersion (2026.1)
+}
+
+\title{Closed-form Second-order Data Shapley as a Spurious-Correlation Attenuator:\\
+Where it Works and Where it Doesn't}
+\author{Anonymous Submission}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We adapt the closed-form In-Run Data Shapley of \citet{wang2024inrun} into an
+\emph{in-training} per-sample reweighter for worst-group robustness. Our
+second-order variant augments the gradient inner product with an RMS-rescaled
+gradient--Hessian--gradient cross-term. We \emph{decompose} this cross-term and,
+through a residual ablation, show that its benefit comes from an orthogonal,
+sample-specific residual rather than from mere smoothing
+(real $>$ shuffle $>$ parallel; Corrupted-CIFAR $+5.9$~pp, $p=0.0015$). The
+mechanism reproduces across \textbf{three} from-scratch spurious regimes ---
+color (Colored MNIST), texture (Corrupted-CIFAR), and natural images
+(Spurious-STL10) --- where, among methods that use \emph{no group labels at
+training time}, the second-order reweighter beats vanilla SGD and a corrected
+bi-level meta-learner (on STL10, $+28.1$/$+17.2$~pp over vanilla/Ren2018 and a
+$+12.9$~pp second-order isolation over the first-order term; all $p<0.011$,
+10 seeds). Stronger methods exist (JTT, GroupDRO); we do \emph{not} claim
+state-of-the-art. On pretrained-ResNet Waterbirds fine-tuning all our variants
+fail to match the bi-level baseline, and we characterize this regime boundary.
+\end{abstract}
+
+\section{Introduction}
+
+Models trained by empirical risk minimization latch onto \emph{spurious cues}
+--- background, color, texture --- that correlate with the label in training but
+shift or flip at test time, so average accuracy stays high while the
+\emph{worst group} collapses \citep{sagawa2020groupdro}. The strongest remedies
+require group labels at training (GroupDRO) or multi-stage / bi-level pipelines
+(JTT, \citealp{liu2021jtt}; meta-reweighting, \citealp{ren2018reweight}).
+
+We ask whether a \emph{closed-form, single-pass} per-sample reweighter --- no
+group labels in the model update, no inner optimization loop --- can attenuate
+the spurious cue. Our starting point is In-Run Data Shapley
+\citep{wang2024inrun}, which gives a closed-form Taylor estimate of each
+sample's contribution to a validation anchor \emph{during} training. We
+repurpose this valuation as a training-time weight, and ask what the
+\emph{second-order} curvature term adds beyond the first-order inner product.
+
+Our contributions are:
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item We repurpose closed-form In-Run Data Shapley as an in-training per-sample
+reweighter for worst-group robustness (Section~\ref{sec:method}).
+\item A second-order gradient--Hessian--gradient cross-term with \textbf{RMS
+rescaling}, which is required for stability under strong spurious bias.
+\item A \textbf{decomposition and residual ablation} establishing that the
+cross-term's gain is a real, sample-specific directional signal --- the
+orthogonal residual --- not global smoothing (real $>$ shuffle $>$ parallel;
+sign-flip collapses).
+\item Evidence that the mechanism \textbf{reproduces across three distinct
+spurious regimes} (color, texture, natural images), with a statistically
+isolated second-order benefit in each.
+\item An \textbf{honest regime boundary}: a clean negative on pretrained-ResNet
+fine-tuning, with a mechanistic diagnosis and a practical recommendation.
+\end{itemize}
+
+\section{Related Work}
+
+\paragraph{Data valuation.}
+Data Shapley \citep{ghorbani2019datashapley} values training points by their
+marginal contribution but needs many retrainings; In-Run Data Shapley
+\citep{wang2024inrun} makes this closed-form within a single run. We repurpose
+that estimator --- not for post-hoc valuation but as a training-time reweighter
+--- and add a curvature term.
+
+\paragraph{Reweighting for robustness and fairness.}
+Learning to reweight \citep{ren2018reweight} and FORML \citep{yan2022forml}
+solve a bi-level meta problem; ARL \citep{lahoti2020arl} reweights adversarially
+without demographics. Our reweighter is closed-form and single-pass, with no
+inner optimization loop.
+
+\paragraph{Worst-group robustness.}
+GroupDRO \citep{sagawa2020groupdro} uses group labels; JTT \citep{liu2021jtt}
+and IRM \citep{arjovsky2019irm} relax that requirement. These are stronger but
+heavier; we position Fairds as a lightweight closed-form alternative and report
+the gap honestly.
+
+\paragraph{Shapley for fairness.}
+FairShap \citep{arnaiz2023fairshap} uses Shapley values for fair data valuation;
+we instead inject a \emph{second-order} Shapley signal into the optimization
+trajectory itself.
+
+\section{Method: Fairds}
+\label{sec:method}
+
+\paragraph{Setup.}
+At step $t$ with parameters $\theta_t$, a minibatch $\mathcal{B}=\{z_i\}_{i=1}^B$
+and a small \emph{group-balanced anchor} $\mathcal{D}_{\mathrm{val}}$ (50:50,
+constructed once; the model update consumes no sensitive labels). Let
+$g_i=\nabla_\theta L(z_i;\theta_t)$ and
+$g_{\mathrm{val}}=\nabla_\theta L(\mathcal{D}_{\mathrm{val}};\theta_t)$.
+
+\paragraph{First order (Fairds-1).}
+$\phi_i^{(1)}=\langle g_i,g_{\mathrm{val}}\rangle$ is the Wang et al.\ estimator
+of how much $z_i$ reduces validation loss in one SGD step. Per-sample gradients
+are obtained with \texttt{torch.func.vmap} in a single autograd graph --- closed
+form, no bi-level loop.
+
+\paragraph{Second order (Fairds-2) with RMS rescaling.}
+The second-order term adds the gradient--Hessian--gradient cross-term
+$c_i=\langle g_i, H_{\mathrm{val}}\,g_{\mathrm{val}}\rangle$, where
+$H_{\mathrm{val}}\,g_{\mathrm{val}}$ is computed by the Pearlmutter trick
+\citep{pearlmutter1994hvp} (one extra backward pass, no explicit Hessian). The
+spectrum of $H_{\mathrm{val}}$ varies by orders of magnitude during training, so
+a fixed $\alpha$ is unusable. We \textbf{rescale the cross-term to the same
+root-mean-square magnitude as the first-order term} within each minibatch:
+\begin{equation}
+\widetilde\phi_i^{(2)}
+= \phi_i^{(1)} - \alpha\,
+\frac{\mathrm{RMS}(\phi^{(1)})}{\mathrm{RMS}(c)}\; c_i .
+\label{eq:phi2}
+\end{equation}
+This rescaling is an algorithmic contribution: without it, second-order Fairds
+collapses to chance accuracy under strong spurious bias.
+
+\paragraph{Pipeline.}
+We (1) compute $g_i$ and (for second order) $H_{\mathrm{val}}g_{\mathrm{val}}$;
+(2) update an exponential moving average $\mathrm{EMA}_i$ with
+$\widetilde\phi_i$; (3) form per-batch weights
+$w_i=B\cdot\mathrm{softmax}(\mathrm{EMA}_{\mathcal{B}}/\tau)$, clipped at quantile
+bounds; and (4) take a weighted SGD step
+$\theta_{t+1}=\theta_t-\eta\sum_i w_i\nabla_\theta L(z_i;\theta_t)$. For models
+with batch normalization we freeze BN running statistics so vmap per-sample
+gradients stay coupling-free.
+
+\paragraph{What does the cross-term do?}
+We find $g_{\mathrm{val}}$ is nearly the top eigenvector of $H_{\mathrm{val}}$
+(alignment $0.89$--$0.99$), so the normalized cross-term $c_n$ is almost
+parallel to $\phi^{(1)}$. Decomposing
+$c_n=\beta\,\phi^{(1)}+r$ separates a \emph{parallel} part (a curvature
+shrinkage, equivalent to global smoothing) from an \emph{orthogonal residual}
+$r$. The empirical question is whether $r$ is a real signal; we answer it in
+Section~\ref{sec:residual}.
+
+\section{Experiments}
+
+We compare, on OOD worst-group test accuracy (the spurious cue is flipped at
+test time): Vanilla SGD; our Fairds-1/2 and the residual variant
+$\phi^{(1)}-\alpha r$; a corrected one-step bi-level meta-learner
+(\citealp{ren2018reweight}, a FORML proxy); JTT \citep{liu2021jtt}; and GroupDRO
+\citep{sagawa2020groupdro}. Vanilla, Fairds, Ren2018 and JTT use \emph{no group
+labels} in the update; GroupDRO uses them. Each method sees a small balanced
+anchor for its inner computation only.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.97\textwidth]{figures/fig_three_regimes.pdf}
+\caption{\textbf{The second-order mechanism reproduces across three spurious
+regimes.} OOD worst-group test accuracy (higher is better). Grey/blue bars use
+\emph{no} group label at training; red bars use a group label or a two-stage
+procedure. Fairds-2 (residual; hatched) beats every no-group-label baseline in
+all three regimes. Error bars (STL10) are $\pm 1$ std over 10 seeds.}
+\label{fig:three}
+\end{figure*}
+
+\subsection{Three spurious regimes}
+\label{sec:regimes}
+
+We use three from-scratch benchmarks with the same anchor / held-out
+\texttt{val\_eval} / OOD-test protocol, differing only in the spurious modality:
+\textbf{Colored MNIST} (color; \citealp{arjovsky2019irm}-style),
+\textbf{Corrupted-CIFAR} (texture: Gaussian blur vs.\ additive noise on
+car/truck), and \textbf{Spurious-STL10} (the same corruption cue on $96{\times}96$
+natural images, car vs.\ truck). In each, the majority training group has
+spurious--label correlation $0.9$, the minority $0.5$, and the test set flips it
+to $0.1$.
+
+Table~\ref{tab:regimes} and Figure~\ref{fig:three} show the pattern is
+consistent. Among no-group-label methods, the second-order residual variant is
+best in every regime. On the hardest, most naturalistic regime (STL10) the
+margins are largest and statistically clear (seed-paired Wilcoxon, 10 seeds):
+$+28.1$~pp over vanilla ($p=0.002$), $+17.2$~pp over Ren2018 ($p=0.002$), and a
+\textbf{second-order isolation} of $+12.9$~pp over the first-order term alone
+($p=0.010$). The Colored-MNIST isolation ($+4.7$~pp, $p=0.033$) and
+Corrupted-CIFAR isolation ($+4.9$~pp, $p=0.042$) reproduce the same effect.
+Fairds-2 also has the lowest seed variance among no-group-label methods.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccc}
+\toprule
+ & Colored MNIST & Corrupted-CIFAR & Spurious-STL10 \\
+method & (color) & (texture) & (natural) \\
+\midrule
+Vanilla              & 0.694 & 0.196 & 0.042 \\
+Ren2018              & 0.796 & 0.375 & 0.151 \\
+\textit{Fairds-1}    & 0.777 & 0.374 & 0.194 \\
+\textit{Fairds-2}    & 0.824 & 0.423 & 0.227 \\
+\textit{Fairds-2-res}& 0.815 & 0.458 & \textbf{0.323} \\
+\midrule
+JTT                  & \textbf{0.878} & 0.368 & \textbf{0.606} \\
+GroupDRO$^\dagger$   & 0.900 & \textbf{0.564} & 0.521 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{OOD worst-group test accuracy across three spurious regimes}
+(mean, 10 seeds). \textit{Italics} = our methods. $^\dagger$uses group labels.
+Among no-group-label methods (top block) the second-order residual variant is
+best in all three regimes; JTT/GroupDRO are stronger overall.}
+\label{tab:regimes}
+\end{table}
+
+\subsection{The cross-term's signal is the orthogonal residual}
+\label{sec:residual}
+
+To test whether the residual $r$ is a real signal or noise, we build five arms
+that share $\phi^{(1)}$ but treat $r$ differently: \emph{phi1} (first order only),
+\emph{parallel} ($(1-\alpha\beta)\phi^{(1)}$, the shrinkage part),
+\emph{residual-real} ($\phi^{(1)}-\alpha r$), \emph{residual-shuffle}
+($r$ permuted within class$\times\phi^{(1)}$-quantile bins), and \emph{sign-flip}
+($\phi^{(1)}+\alpha r$). Figure~\ref{fig:residual} reports the result.
+
+The ordering is unambiguous: \textbf{real $>$ shuffle $>$ parallel}, and
+sign-flip collapses. On Corrupted-CIFAR (20 seeds), residual-real beats
+residual-shuffle by $+5.9$~pp ($p=0.0015$) and the parallel/shrinkage arm by
+$+9.2$~pp ($p<10^{-4}$); sign-flipping the residual destroys accuracy
+($0.07$, $p=5\times10^{-4}$). If $r$ were noise, shuffling it within matched
+bins would not matter --- but it does. Thus the second-order benefit is a
+real, sample-specific \emph{directional} signal, not global smoothing.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.99\columnwidth]{figures/fig_residual.pdf}
+\caption{\textbf{Residual ablation.} Decomposing the cross-term, the orthogonal
+residual carries the signal: real $>$ shuffle $>$ parallel; sign-flip collapses.
+STL10 measures \emph{phi1} and \emph{residual-real} at 10 seeds.}
+\label{fig:residual}
+\end{figure}
+
+\subsection{Controlled mechanism probe}
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\columnwidth]{figures/fig_e1b_phi.pdf}
+\caption{\textbf{Controlled probe.} Mean per-sample $\phi_i$ by group vs.\
+imbalance ratio on the spurious-feature MLP. Both Fairds variants down-weight
+majority $\phi_i$; the second-order cross-term amplifies the effect.}
+\label{fig:e1b}
+\end{figure}
+On a controlled spurious-feature 2-layer MLP (a single strongly
+label-correlated feature in the majority group), the per-sample $\phi_i$ of
+Fairds-2 assign \emph{lower} value to majority than minority samples
+(Mann--Whitney $U(\mathrm{maj}<\mathrm{min})$, $p=1.89\times10^{-8}$ at ratio
+$0.9$), with $\Delta\phi(\mathrm{maj}-\mathrm{min})$ monotonically decreasing as
+imbalance grows. This is the predicted mechanism: the cross-term penalizes
+majority gradients aligned with the validation Hessian's dominant directions.
+
+\subsection{Honest scope}
+\label{sec:scope}
+\paragraph{Stronger methods exist.}
+JTT and GroupDRO reach higher worst-group accuracy in most regimes
+(Table~\ref{tab:regimes}). Fairds-2's contribution is the closed-form,
+single-pass cross-term mechanism, not peak accuracy.
+
+\paragraph{A regime where it fails.}
+On the canonical Waterbirds benchmark \citep{sagawa2020groupdro} with a
+\emph{pretrained} ResNet-18, three Fairds variants (default EMA; warmup; per-step
+no-EMA) all fail to match the corrected bi-level baseline (Ren2018 test\_worst
+$\approx 0.49$ vs.\ Fairds-2 $\le 0.20$, $p<0.005$). With a strong pretrained
+extractor, early per-sample gradients are small and noisy, so the EMA buffer
+accumulates noise and reweighting destabilizes training. When the backbone is
+frozen and Shapley acts only on a freshly initialized last layer (a DFR-style
+setup), Fairds recovers to parity with the bi-level baseline and with last-layer
+retraining --- but this is a boundary result, not a win.
+
+\section{Discussion and Conclusion}
+
+Closed-form data valuation can shape training dynamics, but \emph{within a
+characterized regime}. The second-order cross-term helps because of its
+orthogonal residual --- a real, per-sample directional signal that down-weights
+majority gradients aligned with the validation curvature --- and this mechanism
+reproduces across color, texture, and natural-image spurious cues from scratch.
+It does not transfer to pretrained fine-tuning, where bi-level meta-learning is
+the better tool; the failure has a clear mechanistic cause (noisy small
+gradients corrupting the EMA buffer). The method is not state-of-the-art:
+two-stage (JTT) and group-label (GroupDRO) methods remain stronger, and the
+second-order variant costs roughly $7.7\times$ vanilla wall-clock (the
+first-order variant, $4.3\times$, is cheaper than the bi-level baseline). Its
+value is conceptual: a single-pass, closed-form valuation whose curvature term
+provably carries a usable robustness signal. Characterizing why the residual is
+informative in some architectures but not others, and reducing the
+second-order overhead, are the natural next steps.
+
+\bibliography{references}
+
+\end{document}

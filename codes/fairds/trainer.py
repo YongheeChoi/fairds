@@ -19,6 +19,7 @@ from .reweighter import EMAReweighter
 from .shapley import (
     first_order_shapley_per_sample,
     second_order_shapley_per_sample,
+    shapley_residual_arms,
 )
 
 
@@ -55,6 +56,37 @@ def _loss(model: nn.Module, x: Tensor, y: Tensor) -> float:
     with torch.no_grad():
         out = model(x)
         return F.cross_entropy(out, y).item()
+
+
+def _shuffle_residual_within(r, phi1, y, n_bins=4):
+    """Permutation control: shuffle the residual within (class x phi1-quantile)
+    bins, destroying any sample-specific residual signal while preserving its
+    marginal distribution. If H* is real, real residual > shuffled residual."""
+    r_s = r.clone()
+    edges = torch.quantile(phi1, torch.linspace(0, 1, n_bins + 1, device=phi1.device)[1:-1])
+    bins = torch.bucketize(phi1, edges)
+    for c in y.unique():
+        for b in range(n_bins):
+            idx = ((y == c) & (bins == b)).nonzero(as_tuple=True)[0]
+            if idx.numel() > 1:
+                r_s[idx] = r[idx[torch.randperm(idx.numel(), device=r.device)]]
+    return r_s
+
+
+def _residual_arm_phi(model, loss_fn, x, y, x_val, y_val, alpha, arm):
+    """Per-sample phi for the residual-ablation arms (Codex Q1)."""
+    phi1, _cross_n, r, beta = shapley_residual_arms(model, loss_fn, x, y, x_val, y_val)
+    if arm == "phi1":
+        return phi1
+    if arm == "parallel":  # (1 - alpha*beta) phi1 = phi1 rescaled = smoothing-equivalent
+        return (1.0 - alpha * beta) * phi1
+    if arm == "residual_real":
+        return phi1 - alpha * r
+    if arm == "residual_shuffle":
+        return phi1 - alpha * _shuffle_residual_within(r, phi1, y)
+    if arm == "sign_flip":
+        return phi1 + alpha * r
+    raise ValueError(f"unknown arm {arm}")
 
 
 def train_vanilla(
@@ -112,6 +144,7 @@ def train_fairds(
     weight_scale: float = 1.0,
     warmup_epochs: int = 0,
     no_ema: bool = False,
+    arm: Optional[str] = None,
 ) -> TrainLog:
     """
     weight_scale: post-softmax temperature-style amplifier; w' = (w-1)*scale + 1.
@@ -164,6 +197,8 @@ def train_fairds(
             # 1. Compute per-sample Shapley value at current parameters.
             if order == 1:
                 phi = first_order_shapley_per_sample(model, loss_fn, x, y, x_val, y_val)
+            elif arm is not None:
+                phi = _residual_arm_phi(model, loss_fn, x, y, x_val, y_val, alpha, arm)
             else:
                 phi = second_order_shapley_per_sample(
                     model, loss_fn, x, y, x_val, y_val, alpha=alpha

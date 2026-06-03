@@ -1,0 +1,14 @@
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e3b] writing to results/e3b_dfr/20260602-104202
+[  1/10] dfr        seed=0 val_acc=0.891 val_worst=0.687 test_acc=0.883 test_worst=0.701 (60.1s)
+[  2/10] dfr        seed=1 val_acc=0.878 val_worst=0.229 test_acc=0.847 test_worst=0.266 (68.7s)
+[  3/10] dfr        seed=2 val_acc=0.895 val_worst=0.470 test_acc=0.895 test_worst=0.597 (69.3s)
+[  4/10] dfr        seed=3 val_acc=0.556 val_worst=0.389 test_acc=0.586 test_worst=0.403 (72.2s)
+[  5/10] dfr        seed=4 val_acc=0.896 val_worst=0.373 test_acc=0.888 test_worst=0.498 (73.6s)
+[  6/10] dfr        seed=5 val_acc=0.896 val_worst=0.602 test_acc=0.889 test_worst=0.618 (71.4s)
+[  7/10] dfr        seed=6 val_acc=0.899 val_worst=0.410 test_acc=0.888 test_worst=0.489 (75.2s)
+[  8/10] dfr        seed=7 val_acc=0.873 val_worst=0.157 test_acc=0.831 test_worst=0.179 (75.8s)
+[  9/10] dfr        seed=8 val_acc=0.909 val_worst=0.614 test_acc=0.895 test_worst=0.584 (75.8s)
+[ 10/10] dfr        seed=9 val_acc=0.894 val_worst=0.349 test_acc=0.892 test_worst=0.517 (76.1s)
+[e3b] results/e3b_dfr/20260602-104202/sweep_results.json  (718.2s)

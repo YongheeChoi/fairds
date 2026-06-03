@@ -150,3 +150,37 @@ def second_order_shapley_per_sample(
         rms_cross = cross.pow(2).mean().clamp_min(eps).sqrt()
         cross = cross * (rms_first / rms_cross)
     return first - alpha * cross
+
+
+def shapley_residual_arms(
+    model: nn.Module,
+    loss_fn,
+    x: Tensor,
+    y: Tensor,
+    x_val: Tensor,
+    y_val: Tensor,
+):
+    """Decompose the cross-term into its first-order-parallel part and its
+    orthogonal residual, for the mechanism ablation (Codex Q1).
+
+    Since g_val is ~the top eigenvector of H_val, cross_n is nearly parallel
+    to phi1. We split:
+        cross_n = beta * phi1 + r,   beta = <cross_n, phi1> / ||phi1||^2
+    where r is the orthogonal residual (the curvature-specific signal that
+    is NOT a rescaling of phi1). r is renormalized to phi1's RMS so a single
+    gamma controls its magnitude fairly against the shuffled control.
+
+    Returns (phi1, cross_n, r, beta).
+    """
+    eps = 1e-8
+    g_val = _validation_gradient(model, loss_fn, x_val, y_val)
+    Hg_val = _hessian_vector_product(model, loss_fn, x_val, y_val, g_val)
+    g_i = _per_sample_gradients(model, loss_fn, x, y)
+    phi1 = g_i @ g_val
+    cross = g_i @ Hg_val
+    rms_first = phi1.pow(2).mean().clamp_min(eps).sqrt()
+    cross_n = cross * (rms_first / cross.pow(2).mean().clamp_min(eps).sqrt())
+    beta = (cross_n @ phi1) / phi1.pow(2).sum().clamp_min(eps)
+    r = cross_n - beta * phi1
+    r = r * (rms_first / r.pow(2).mean().clamp_min(eps).sqrt())  # match phi1 RMS
+    return phi1.detach(), cross_n.detach(), r.detach(), float(beta)

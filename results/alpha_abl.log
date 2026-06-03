@@ -1,0 +1,86 @@
+=== A: mechanism alpha-gap probe ===
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+device=cuda
+======================================================================
+[D2] FROM-SCRATCH (Corrupted-CIFAR, full params)
+    {'eigs': [125.32, 11.782, -10.081], 'spectral_gap_l1_over_l2': 10.64, 'first_maj_min': (44.2126, 65.1574), 'cross_maj_min': (44.5697, 62.8023), 'cos_first_cross': 1.0, 'align_Hgval_gval': 0.989, 'min_minus_maj_phi1': 20.945, 'min_minus_maj_phi2': 11.829, 'n_sub': 300}
+[H* alpha-sweep] from-scratch min-maj phi gap vs alpha (expect |gap| monotone down):
+    {0.0: -25.052, 0.25: -18.18, 0.5: -11.308, 1.0: 2.435, 2.0: 29.922}
+
+[D2] LAST-LAYER FT (Waterbirds frozen ResNet-18, fc only)
+    {'eigs': [63.124, 7.835, 6.939], 'spectral_gap_l1_over_l2': 8.06, 'first_maj_min': (-3.0328, -234.9627), 'cross_maj_min': (-3.2485, -272.0559), 'cos_first_cross': 0.997, 'align_Hgval_gval': 0.89, 'min_minus_maj_phi1': -231.93, 'min_minus_maj_phi2': -97.526, 'n_sub': 300}
+
+[D1] FULL-PARAM Waterbirds — per-layer gradient split
+    {'backbone': {'mean_grad_norm': 30.6788, 'maj_min_cos': 0.616, 'abs_dotval_contrib': 140.8376}, 'fc': {'mean_grad_norm': 12.2192, 'maj_min_cos': 0.87, 'abs_dotval_contrib': 72.8608}}
+=== B: performance alpha sweep (fairds-2) ===
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_alpha_abl/a0.0/20260602-083728
+[  1/10] fairds-2   s=0.90 seed=0 val_worst=0.616 test_acc=0.354 test_worst=0.293 (11.9s)
+[  2/10] fairds-2   s=0.90 seed=1 val_worst=0.676 test_acc=0.491 test_worst=0.447 (11.1s)
+[  3/10] fairds-2   s=0.90 seed=2 val_worst=0.628 test_acc=0.429 test_worst=0.377 (11.1s)
+[  4/10] fairds-2   s=0.90 seed=3 val_worst=0.576 test_acc=0.356 test_worst=0.306 (11.2s)
+[  5/10] fairds-2   s=0.90 seed=4 val_worst=0.668 test_acc=0.555 test_worst=0.527 (11.1s)
+[  6/10] fairds-2   s=0.90 seed=5 val_worst=0.596 test_acc=0.394 test_worst=0.336 (11.2s)
+[  7/10] fairds-2   s=0.90 seed=6 val_worst=0.612 test_acc=0.331 test_worst=0.262 (11.1s)
+[  8/10] fairds-2   s=0.90 seed=7 val_worst=0.648 test_acc=0.412 test_worst=0.361 (11.1s)
+[  9/10] fairds-2   s=0.90 seed=8 val_worst=0.628 test_acc=0.463 test_worst=0.418 (11.1s)
+[ 10/10] fairds-2   s=0.90 seed=9 val_worst=0.648 test_acc=0.458 test_worst=0.416 (11.1s)
+[e5] results/e5_alpha_abl/a0.0/20260602-083728/sweep_results.json  (111.8s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_alpha_abl/a0.25/20260602-083921
+[  1/10] fairds-2   s=0.90 seed=0 val_worst=0.660 test_acc=0.462 test_worst=0.414 (12.8s)
+[  2/10] fairds-2   s=0.90 seed=1 val_worst=0.696 test_acc=0.515 test_worst=0.472 (12.3s)
+[  3/10] fairds-2   s=0.90 seed=2 val_worst=0.628 test_acc=0.545 test_worst=0.512 (12.3s)
+[  4/10] fairds-2   s=0.90 seed=3 val_worst=0.596 test_acc=0.477 test_worst=0.447 (13.8s)
+[  5/10] fairds-2   s=0.90 seed=4 val_worst=0.664 test_acc=0.516 test_worst=0.486 (12.4s)
+[  6/10] fairds-2   s=0.90 seed=5 val_worst=0.668 test_acc=0.517 test_worst=0.483 (14.4s)
+[  7/10] fairds-2   s=0.90 seed=6 val_worst=0.588 test_acc=0.363 test_worst=0.300 (14.0s)
+[  8/10] fairds-2   s=0.90 seed=7 val_worst=0.668 test_acc=0.438 test_worst=0.391 (11.6s)
+[  9/10] fairds-2   s=0.90 seed=8 val_worst=0.668 test_acc=0.512 test_worst=0.473 (12.9s)
+[ 10/10] fairds-2   s=0.90 seed=9 val_worst=0.592 test_acc=0.398 test_worst=0.350 (12.0s)
+[e5] results/e5_alpha_abl/a0.25/20260602-083921/sweep_results.json  (128.5s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_alpha_abl/a0.5/20260602-084132
+[  1/10] fairds-2   s=0.90 seed=0 val_worst=0.656 test_acc=0.476 test_worst=0.430 (12.6s)
+[  2/10] fairds-2   s=0.90 seed=1 val_worst=0.596 test_acc=0.433 test_worst=0.388 (12.9s)
+[  3/10] fairds-2   s=0.90 seed=2 val_worst=0.588 test_acc=0.452 test_worst=0.404 (12.2s)
+[  4/10] fairds-2   s=0.90 seed=3 val_worst=0.604 test_acc=0.479 test_worst=0.449 (12.4s)
+[  5/10] fairds-2   s=0.90 seed=4 val_worst=0.632 test_acc=0.545 test_worst=0.519 (13.6s)
+[  6/10] fairds-2   s=0.90 seed=5 val_worst=0.644 test_acc=0.463 test_worst=0.416 (13.2s)
+[  7/10] fairds-2   s=0.90 seed=6 val_worst=0.644 test_acc=0.400 test_worst=0.344 (12.6s)
+[  8/10] fairds-2   s=0.90 seed=7 val_worst=0.664 test_acc=0.458 test_worst=0.417 (13.0s)
+[  9/10] fairds-2   s=0.90 seed=8 val_worst=0.680 test_acc=0.513 test_worst=0.473 (14.4s)
+[ 10/10] fairds-2   s=0.90 seed=9 val_worst=0.676 test_acc=0.442 test_worst=0.394 (11.4s)
+[e5] results/e5_alpha_abl/a0.5/20260602-084132/sweep_results.json  (128.2s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_alpha_abl/a1.0/20260602-084342
+[  1/10] fairds-2   s=0.90 seed=0 val_worst=0.536 test_acc=0.507 test_worst=0.503 (16.9s)
+[  2/10] fairds-2   s=0.90 seed=1 val_worst=0.600 test_acc=0.437 test_worst=0.391 (16.5s)
+[  3/10] fairds-2   s=0.90 seed=2 val_worst=0.568 test_acc=0.467 test_worst=0.446 (16.0s)
+[  4/10] fairds-2   s=0.90 seed=3 val_worst=0.636 test_acc=0.532 test_worst=0.509 (13.7s)
+[  5/10] fairds-2   s=0.90 seed=4 val_worst=0.656 test_acc=0.553 test_worst=0.523 (15.2s)
+[  6/10] fairds-2   s=0.90 seed=5 val_worst=0.588 test_acc=0.457 test_worst=0.414 (13.6s)
+[  7/10] fairds-2   s=0.90 seed=6 val_worst=0.632 test_acc=0.296 test_worst=0.223 (12.3s)
+[  8/10] fairds-2   s=0.90 seed=7 val_worst=0.672 test_acc=0.459 test_worst=0.417 (12.1s)
+[  9/10] fairds-2   s=0.90 seed=8 val_worst=0.656 test_acc=0.564 test_worst=0.534 (14.2s)
+[ 10/10] fairds-2   s=0.90 seed=9 val_worst=0.676 test_acc=0.501 test_worst=0.465 (12.8s)
+[e5] results/e5_alpha_abl/a1.0/20260602-084342/sweep_results.json  (143.2s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_alpha_abl/a2.0/20260602-084607
+[  1/10] fairds-2   s=0.90 seed=0 val_worst=0.532 test_acc=0.500 test_worst=0.496 (23.3s)
+[  2/10] fairds-2   s=0.90 seed=1 val_worst=0.492 test_acc=0.500 test_worst=0.499 (11.2s)
+[  3/10] fairds-2   s=0.90 seed=2 val_worst=0.472 test_acc=0.500 test_worst=0.499 (11.2s)
+[  4/10] fairds-2   s=0.90 seed=3 val_worst=0.452 test_acc=0.500 test_worst=0.497 (11.5s)
+[  5/10] fairds-2   s=0.90 seed=4 val_worst=0.464 test_acc=0.500 test_worst=0.446 (11.3s)
+[  6/10] fairds-2   s=0.90 seed=5 val_worst=0.476 test_acc=0.500 test_worst=0.497 (11.3s)
+[  7/10] fairds-2   s=0.90 seed=6 val_worst=0.480 test_acc=0.500 test_worst=0.500 (11.3s)
+[  8/10] fairds-2   s=0.90 seed=7 val_worst=0.492 test_acc=0.500 test_worst=0.498 (11.3s)
+[  9/10] fairds-2   s=0.90 seed=8 val_worst=0.480 test_acc=0.500 test_worst=0.482 (11.4s)
+[ 10/10] fairds-2   s=0.90 seed=9 val_worst=0.456 test_acc=0.500 test_worst=0.477 (11.5s)
+[e5] results/e5_alpha_abl/a2.0/20260602-084607/sweep_results.json  (125.4s total)

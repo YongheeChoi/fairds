@@ -10,6 +10,48 @@
 
 > Method-level insights: what works, what doesn't, and why. These directly inform your claims, experiment design, and paper narrative.
 
+## [2026-06-02] 🎯 E6 Spurious-STL10 — 3rd positive regime 확정, 8-clinch PASS
+- 96px 자연이미지(STL-10 car vs truck), texture-corruption(blur vs noise) spurious. CMNIST(color)/Corrupted-CIFAR(texture) 미러. from-scratch 3-conv CNN(96→12), 10 seed, 30ep, τ=0.1 ws=4.0 α=0.5. STL train+test pool(car+truck 2600) → disjoint 4-way split. 신규: `datasets/spurious_stl10.py`, `experiments/e6_spurious_stl10/{run,analyze}.py`.
+- **test_worst (10 seed)**: vanilla 0.042, fairds-1 0.194, fairds-2 0.227, **fairds-2-resid 0.323**, ren2018 0.151, jtt 0.606, groupdro 0.521.
+- **8-clinch PASS (Codex R3 기준, seed-paired Wilcoxon)**: resid vs vanilla **+28.1pp p=0.002**, vs fairds-1 **+12.9pp p=0.010**, vs ren2018 **+17.2pp p=0.002** — 3개 target 전부 충족.
+- **mechanism**: residual_real > full fairds-2 (+9.6pp p=0.037) — CIFAR(≈preserve)보다 강함, 잔차 = 진짜 방향 signal 재확인. STL에선 평행분(shrinkage)이 오히려 약화 요인.
+- **honest**: jtt 0.606, groupdro 0.521이 fairds-2-resid 압도 (CMNIST/CIFAR 동일 패턴, 정직 보고). STL에서 jtt 특히 강함.
+- **🎯 3 regimes (color/texture/natural-image)에서 2차 mechanism 재현 → universality 확립**. Codex 7.8→8 clinch 조건(2nd non-toy positive regime) 충족.
+- results: `results/e6_main`, `results/e6_oracle`, `results/e6_resid` (각 최신 ts).
+
+## [2026-06-02] ✅ 메커니즘 잠금 (H* full battery) + Codex 7.8/10 — residual_real이 새 headline
+- **H* 입증 (probe.py 진단 + e5 arm sweep)**: 2차 cross-term = **평행분**(curvature shrinkage = smoothing 등가) + **직교 잔차**(sample-specific directional signal). cos(first,cross)≈1 (g_val≈H_val top eigenvector, align 0.89–0.99) → H1/H2 반증. 분해: cross_n = β·phi1 + r, residual arm = phi1 − α·r. 코드: `fairds/shapley.py::shapley_residual_arms`, `fairds/trainer.py`(arm 분기+`_shuffle_residual_within`), e5/e3 run.py `--arm`.
+- **Residual ablation 20 seed (Corrupted-CIFAR, test_worst)**: residual_real **0.458** > shuffle 0.398 (**+5.9pp p=0.0015**, Wilcoxon 0.0012) > parallel 0.366 (+9.2pp p<1e-4) ≈ phi1 0.370. sign_flip 0.067 (붕괴 p=5e-4). → 잔차 = smoothing/noise 아닌 **진짜 방향성 signal**. (10seed에선 real-vs-shuffle NS였으나 20seed에서 유의.)
+- **honest selection (Corrupted-CIFAR, held-out val_eval_worst ranking)**: **Fairds-2-residual val 0.647 / test 0.463 = non-oracle best** (GroupDRO oracle와 val 동급). > original 0.638/0.423 > ren2018 0.630/0.375 > parallel 0.624/0.379 > jtt 0.577/0.368 > vanilla 0.555/0.196. → selection leakage 없이 2차 우위 주장 가능 (alpha=2 leakage 우회).
+- **Waterbirds last-layer + DFR (10 seed, test_worst)**: vanilla 0.186, fairds-1 0.366, fairds-2 0.444, ren2018 0.440, **dfr 0.485**(acc 0.849 유지). fairds=ren=dfr 동등(NS), vanilla 압도(+25.8pp p=6e-4). → **boundary result**(우위 아님, DFR 실용 best). `baselines/dfr.py`.
+- **Codex 크로스체크 (gpt-5.5 xhigh, threadId `019e878e-05f4-7291-88d1-571c65ea6569`)**: R1 7.2 → R2 7.5 → **R3 7.8/10 borderline 8**. 8 clinch = CelebA last-layer (residual이 ERM/fairds-1/ren ≥5pp or p<0.05, DFR 동등이상, groupdro oracle엔 져도 명시). CelebA 전 high-value = CMNIST residual(headline 정당화). abstract 문장 받음. 상세: `REVIEW_20260602_mechanism.md`.
+- **CMNIST residual (10 seed)**: residual_real 0.815 ≈ fairds-2-original 0.824 (preserve, p=0.70), > fairds-1 0.777 (p=0.008). 단 real-vs-shuffle NS (p=0.26) — CMNIST mechanism 약함. (Corrupted-CIFAR는 real>shuffle p=0.0015.)
+- **mechanism은 benchmark-dependent 아님 — "universal" (보강으로 정정)**: 처음 3seed에서 group-alignment 가설(texture O/color X)을 세웠으나 **10seed 보강에서 반증** — residual_fraction CMNIST 0.206 ≈ CIFAR 0.210, alignment 부호 둘 다 불안정(3/10, 4/10). 정적 구조로 차이 설명 안 됨. **CMNIST real>shuffle 20seed: +4.85pp p=0.071 (marginal)** — Corrupted-CIFAR(+5.9pp p=0.0015)와 effect size·방향 일치. → 잔차 signal은 색·texture 양쪽에서 **일관 작동(universal)**, CMNIST marginal은 variance/power 차이. ("benchmark-dependent"는 10seed noise였음.) `probe_residual.py`.
+- **진행/다음**: (a) alignment 통찰 보강 or (b) 7.8 확정 후 논문 반영. CelebA(8 clinch)는 선택지로 보류.
+
+## [2026-06-02] 🚀 7→8 강화: Track A (last-layer Shapley) + Track B (Corrupted-CIFAR) — 10seed 확정 중
+- **동기**: Codex 7→8 ceiling = (a) 두 번째 non-toy positive regime, (b) deeper theory. 사용자 "더 큰 모델" 제안은 Waterbirds FT 실패 regime이라 신중 권고. 대신 **① 2nd positive + ② Waterbirds 정복**, 가볍게.
+- **env**: `PY=/home/users/yonghee/.conda/envs/fl_shapley/bin/python`, GPU 2×97GB Blackwell (0,1).
+- **Track A — Waterbirds last-layer Shapley (E3b honest-negative 정복 시도)** 🎯
+  - 진단: pretrained backbone의 full-param g_i가 small/noisy → EMA 오염 (E3b 실패원인). **Fix: backbone freeze → fc head gradient로만 Shapley** (DFR insight, Kirichenko 2022). 구현: `run.py --freeze-backbone` (shapley.py가 requires_grad 필터라 코드 자동 반영). 224px linear-probe, lr=0.1, 25ep.
+  - 3 seed 잠정 (test_worst): vanilla 0.205, **fairds-1 0.388**, fairds-2 0.312, **ren2018 0.397**.
+  - **fairds-1 ≈ ren2018 (0.388 vs 0.397, p=0.84 동등)** — full-param의 -29pp 압패를 동등으로 뒤집음. honest negative 정복(부분).
+  - **fairds-2 < fairds-1**: last-layer 저차원 Hessian(512×2)에서 2차 cross-term 역효과 → "from-scratch=2차 유리, FT=1차로 충분" regime별 차수 선택 스토리.
+  - accuracy tradeoff: fairds worst↑(0.39) overall acc↓(0.72 vs vanilla 0.85).
+  - 10 seed 확정 중: `results/e3b_lastlayer/` (3seed: 20260602-060900).
+- **Track B — Corrupted-CIFAR-10 (2nd positive regime 확보)** 🎯
+  - color 아닌 **texture-corruption(blur vs noise) spurious**. CMNIST 미러 (anchor/val_eval/OOD-test). from-scratch 2-conv CNN. 신규: `codes/datasets/corrupted_cifar.py`, `codes/experiments/e5_corrupted_cifar/run.py`.
+  - **10 seed 확정** (test_worst): vanilla 0.196±0.143, fairds-1 0.374, **fairds-2 0.423±0.046** (lowest var), ren2018 0.375, jtt 0.368, groupdro 0.564.
+  - **fairds-2 vs vanilla +22.8pp (p=0.0016)** — 두 번째 positive regime 확정.
+  - **fairds-2 vs ren2018 +4.8pp (p=0.016)**, **vs fairds-1 (2차 isolation) +4.9pp (p=0.042)** — CMNIST(+2.7/+4.7pp) 재현, ren2018 우위는 오히려 더 강함(유의). 둘 다 same-supervision regime.
+  - groupdro 0.564가 fairds-2 압도(-14pp, group label 사용 — 다른 supervision, 정직 보고). jtt 0.368 동등(NS). `results/e5_corrupted_cifar/20260602-063050`.
+- **Track A 10 seed 확정**: fairds-1 0.366 (vs vanilla +18.0pp p=0.0022), **fairds-2 0.444 ≈ ren2018 0.440** (동등). ⚠️ 3seed 잠정의 "fairds-2 < fairds-1 (2차 역효과)"는 **반증됨** — 10seed에선 fairds-2(0.444) > fairds-1(0.366). variance였음. (`results/e3b_lastlayer/20260602-064215`)
+- **🔬 메커니즘 진단 (`experiments/diagnostics/probe.py`) — H1/H2 반증, 통합 H* 도출**:
+  - **H2 (cross⊥first 직교성) 반증**: 두 regime 모두 cos(first,cross)≈1.0 (평행). 근원: g_val ≈ H_val top eigenvector — align(H_val·g_val, g_val) = 0.989(from-scratch)/0.89(last-layer).
+  - **H* (통합)**: 2차 = first-order의 **곡률 기반 shrinkage**. phi1 group gap(minority−majority) → phi2에서 |damp| (from-scratch 20.9→11.8, last-layer −232→−98). D3(per-batch weight_std fairds-2 2.65 < fairds-1 3.01)와 동일 현상 → 2차 = 1차 과격 reweight 완화 → 안정성↑ + worst-group↑.
+  - **H1 (backbone noise) 반증**: backbone이 ⟨g_i,g_val⟩ 지배(140.8 vs fc 72.8) + group 더 구분(cos 0.62<0.87). last-layer 우위는 noise제거가 아니라 spurious-heavy backbone 신호 제거로 재해석 필요.
+- **다음**: (a) **smoothing ablation** — fairds-1 weight_scale sweep이 fairds-2 따라잡나? (2차=전역smoothing vs 곡률적응 판별), (b) Codex 메커니즘 크로스체크, (c) best-tuned lr 공정성, (d) 논문 반영 (NARRATIVE/PAPER).
+
 ## [2026-05-06] E1 — 2차 Shapley 의 자동 균형 가설 (C3) 1차 검증 실패
 - **결과:** Toy 2-group LR (n=2000, ratio∈{0.5, 0.7, 0.9, 0.99}, 5 seeds) 에서 fairds-2 의 다수 그룹 평균 phi 가 소수 그룹보다 *항상 큼*. ratio=0.9 에서 Mann-Whitney U(maj < min) p=1, 즉 가설과 반대 방향. Imbalance 증가 시 Δφ 도 단조 증가 (0.50→+0.00026, 0.99→+0.00145).
 - **1차 vs 2차 격차 ≈ 0:** Δφ₂ − Δφ₁ ≈ −3e-5. Cross-term 의 실효 영향이 거의 0.

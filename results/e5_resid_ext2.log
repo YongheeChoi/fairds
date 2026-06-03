@@ -1,0 +1,28 @@
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_resid_abl/phi1/20260602-105831
+[  1/10] fairds-2   s=0.90 seed=10 val_worst=0.564 test_acc=0.363 test_worst=0.321 (15.3s)
+[  2/10] fairds-2   s=0.90 seed=11 val_worst=0.612 test_acc=0.408 test_worst=0.353 (14.6s)
+[  3/10] fairds-2   s=0.90 seed=12 val_worst=0.652 test_acc=0.363 test_worst=0.312 (13.8s)
+[  4/10] fairds-2   s=0.90 seed=13 val_worst=0.528 test_acc=0.448 test_worst=0.408 (20.1s)
+[  5/10] fairds-2   s=0.90 seed=14 val_worst=0.660 test_acc=0.488 test_worst=0.442 (18.5s)
+[  6/10] fairds-2   s=0.90 seed=15 val_worst=0.604 test_acc=0.424 test_worst=0.369 (12.2s)
+[  7/10] fairds-2   s=0.90 seed=16 val_worst=0.600 test_acc=0.507 test_worst=0.471 (18.2s)
+[  8/10] fairds-2   s=0.90 seed=17 val_worst=0.628 test_acc=0.331 test_worst=0.264 (14.4s)
+[  9/10] fairds-2   s=0.90 seed=18 val_worst=0.680 test_acc=0.431 test_worst=0.389 (12.1s)
+[ 10/10] fairds-2   s=0.90 seed=19 val_worst=0.652 test_acc=0.389 test_worst=0.330 (17.0s)
+[e5] results/e5_resid_abl/phi1/20260602-105831/sweep_results.json  (156.3s total)
+/home/users/yonghee/.conda/envs/fl_shapley/lib/python3.9/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[e5] writing to results/e5_resid_abl/parallel/20260602-110109
+[  1/10] fairds-2   s=0.90 seed=10 val_worst=0.624 test_acc=0.318 test_worst=0.255 (15.2s)
+[  2/10] fairds-2   s=0.90 seed=11 val_worst=0.648 test_acc=0.456 test_worst=0.407 (13.1s)
+[  3/10] fairds-2   s=0.90 seed=12 val_worst=0.624 test_acc=0.436 test_worst=0.400 (13.9s)
+[  4/10] fairds-2   s=0.90 seed=13 val_worst=0.608 test_acc=0.518 test_worst=0.488 (12.5s)
+[  5/10] fairds-2   s=0.90 seed=14 val_worst=0.652 test_acc=0.458 test_worst=0.407 (12.4s)
+[  6/10] fairds-2   s=0.90 seed=15 val_worst=0.600 test_acc=0.411 test_worst=0.354 (12.4s)
+[  7/10] fairds-2   s=0.90 seed=16 val_worst=0.580 test_acc=0.420 test_worst=0.365 (13.7s)
+[  8/10] fairds-2   s=0.90 seed=17 val_worst=0.612 test_acc=0.317 test_worst=0.247 (12.3s)
+[  9/10] fairds-2   s=0.90 seed=18 val_worst=0.588 test_acc=0.366 test_worst=0.310 (12.8s)
+[ 10/10] fairds-2   s=0.90 seed=19 val_worst=0.644 test_acc=0.363 test_worst=0.301 (12.1s)
+[e5] results/e5_resid_abl/parallel/20260602-110109/sweep_results.json  (130.4s total)
