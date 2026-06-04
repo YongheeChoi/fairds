@@ -1,8 +1,8 @@
-# Speaker Notes — Fairds Talk
+# Speaker Notes — Fairds Talk (Group Fairness)
 
 > **Goal: about 8 minutes** (safe under the 9-minute limit).
 > Easy English. Short sentences. Speak **slowly** and look at the audience.
-> On the chart slides (6 and 7), point at the bars while you talk.
+> On the chart slides (6, 7, 8), point at the bars while you talk.
 > If you run long, the slides you can shorten are 9 and 10.
 
 **Time plan (total ≈ 8:10)**
@@ -10,14 +10,14 @@
 | Slide | Topic | Time | Clock |
 |---|---|---|---|
 | 1 | Title | 0:25 | 0:00–0:25 |
-| 2 | Problem | 0:50 | 0:25–1:15 |
+| 2 | Problem: bias → unfairness | 0:50 | 0:25–1:15 |
 | 3 | Idea | 0:45 | 1:15–2:00 |
 | 4 | Method | 0:55 | 2:00–2:55 |
 | 5 | Is it real? | 0:40 | 2:55–3:35 |
 | 6 | Residual test | 0:55 | 3:35–4:30 |
-| 7 | Main result | 0:50 | 4:30–5:20 |
-| 8 | STL-10 numbers | 0:50 | 5:20–6:10 |
-| 9 | Honest scope | 0:45 | 6:10–6:55 |
+| 7 | Group fairness, 3 regimes | 0:50 | 4:30–5:20 |
+| 8 | Closing the gap | 0:50 | 5:20–6:10 |
+| 9 | Demographic (honest) | 0:45 | 6:10–6:55 |
 | 10 | Cost | 0:35 | 6:55–7:30 |
 | 11 | Wrap-up | 0:40 | 7:30–8:10 |
 
@@ -25,133 +25,131 @@
 
 ## Slide 1 — Title  ·  (0:00–0:25)
 
-> Hello everyone. Today I will show a simple way to make a model more robust.
-> The problem is data shortcuts. Our method is called Fairds.
-> It uses a data-value score during training.
-> We test it on three different image tasks.
+> Hello everyone. This work is about fairness.
+> A model often copies the bias in its data.
+> We use a simple data-value score to stop that, during training, with no group labels.
+> We show it on three kinds of bias: color, texture, and natural images.
 
 ---
 
-## Slide 2 — The problem  ·  (0:25–1:15)
+## Slide 2 — Bias becomes unfairness  ·  (0:25–1:15)
 
-> Let me explain the problem. A model often learns an easy shortcut.
-> For example, it may look at the image background, not the real object.
-> The shortcut works during training. But at test time, the shortcut flips.
-> So the model fails on one group of the data. We call it the **worst group**.
-> The average accuracy still looks good. That is the danger.
-> Old fixes need group labels, or a second training stage, or a slow inner loop.
-> We want something simpler. So we ask one question.
-> Can a closed-form score, computed in one pass, fix this? No group labels. No extra loop.
+> Here is the problem. In the training data, a majority group ties some attribute to the label.
+> For example, a background, a color, or a demographic feature.
+> An ordinary model just uses that biased attribute.
+> The average accuracy looks good. But the model fails on the minority group,
+> where the attribute does not hold.
+> That is an unfair model: good for the majority, poor for the minority.
+> The strong fixes need extra help: group labels, a second training stage, or a bi-level loop.
+> We ask a simpler question.
+> Can a closed-form, one-pass score, with no group labels, find the examples that teach
+> the bias — so we can down-weight them?
 
 ---
 
 ## Slide 3 — The idea  ·  (1:15–2:00)
 
-> Here is our idea. There is a tool called In-Run Data Shapley.
-> It gives each training sample a score.
-> The score says how much that sample helps a small, balanced check set.
-> The nice part is: it is closed-form. We get it during training, with no retraining.
-> We turn this score into a weight, and we do weighted training.
-> A sample with a higher score gets more weight.
-> So the whole question becomes: what score should we use?
+> Our idea uses In-Run Data Shapley.
+> It gives each training example a score: how much it helps a small, group-balanced reference set.
+> This is closed-form, computed during training.
+> Here is the key point. An example that helps the biased majority, but not the balanced set,
+> gets a low score.
+> We turn the score into a weight. A low score means less weight.
+> So the question becomes: what score best targets the bias?
 
 ---
 
 ## Slide 4 — Method  ·  (2:00–2:55)
 
-> This slide shows the score. The first-order score is simple.
-> It is the inner product of two gradients: one from the sample, one from the check set.
-> We compute all the sample gradients in one pass.
-> Now the main part. We add a **second-order** term. It uses the curvature, the Hessian.
-> We get it with the Pearlmutter trick. It needs only one more backward pass.
-> One problem: the curvature size changes a lot during training.
-> So we **rescale** the new term to the same size as the first term, every minibatch.
-> This step is important. Without it, the method breaks.
+> This is the score. The first-order score is the inner product of two gradients —
+> one from the example, one from the balanced set. We compute them in one pass.
+> Then we add a second-order term, using the curvature, with the Pearlmutter trick.
+> It needs just one more backward pass.
+> The key trick: we rescale this term to the same size as the first term, every minibatch,
+> because the curvature size changes a lot during training.
+> Without this rescaling, the method breaks under strong bias.
 
 ---
 
 ## Slide 5 — Is the second-order term real?  ·  (2:55–3:35)
 
-> Now a fair question. Maybe this second-order term is just smoothing. Maybe it is only noise.
-> We checked this, and we found something interesting.
-> The check-set gradient is almost the top direction of the curvature.
+> A fair worry: maybe the second-order term is just smoothing, not a real bias signal.
+> We checked.
+> The balanced-set gradient is almost the top direction of the curvature.
 > So the new term is almost parallel to the first score.
-> We split it into two parts: one parallel part, which is like smoothing,
-> and one extra part — the **residual** — that points a different way.
-> So the real question is: is this residual a true signal, or just noise?
+> We split it into a parallel part, which is just smoothing,
+> and an extra part — the residual.
+> So the real question is: is the residual a true bias signal, or only noise?
 
 ---
 
 ## Slide 6 — Residual test  ·  (3:35–4:30)
 
-> To answer this, we ran a clean test. We made five versions.
-> They all share the first-order score. They only treat the residual differently.
-> One uses the real residual. One shuffles it. One keeps only the parallel part. One flips its sign.
-> Look at the bars. Real is best. Shuffle is worse. Parallel is worse still.
-> And flipping the sign breaks everything.
-> On CIFAR, real beats shuffle by about six points, with a small p-value.
-> If the residual were just noise, shuffling it would not matter. But it does matter.
-> So the residual is a real, useful signal.
+> We tested this with five versions.
+> They all share the first score, but treat the residual differently:
+> real, shuffled, parallel-only, and sign-flipped.
+> The order is clear. Real is best, shuffle is worse, parallel is worse still,
+> and flipping the sign breaks everything.
+> On CIFAR, the real residual beats the shuffled one by about six points.
+> If the residual were just noise, shuffling it would not matter. But it does.
+> So the bias-correcting signal is real.
 
 ---
 
-## Slide 7 — Main result  ·  (4:30–5:20)
+## Slide 7 — Group fairness across three regimes  ·  (4:30–5:20)
 
-> This is our main result. We test the same method on three problems.
-> A color shortcut on MNIST. A texture shortcut on CIFAR. And natural photos on STL-10.
-> The grey and blue bars use **no** group labels.
-> The red bars use group labels or a two-stage trick.
-> Now look at our method — the striped bar.
-> It beats every no-label baseline, in all three problems.
-> So this is not one lucky result. The same idea works for color, texture, and real photos.
-
----
-
-## Slide 8 — STL-10 numbers  ·  (5:20–6:10)
-
-> Here are the numbers for the hardest task, STL-10, with real photos.
-> Our method reaches thirty-two percent worst-group accuracy. Plain training is near zero.
-> We beat plain training by twenty-eight points.
-> We beat the bi-level baseline by seventeen points.
-> And, very important, we beat the first-order score by thirteen points.
-> That last gap is the second-order effect, alone.
-> It is the same effect we saw on CIFAR, now on a third, harder task.
-> All the p-values are small, over ten seeds.
+> This is our main fairness result.
+> We test three kinds of bias: color, texture, and natural images.
+> The bars show worst-group accuracy, which protects the minority group.
+> Our method — the striped bar — beats every no-group-label baseline, in all three.
+> So the same idea works across very different biases.
+> The red bars, group-label and two-stage methods, are fairer still — but they use more help.
 
 ---
 
-## Slide 9 — Honest scope  ·  (6:10–6:55)
+## Slide 8 — Closing the gap by helping the minority  ·  (5:20–6:10)
 
-> Now let us be honest. We do not claim the best accuracy.
-> Two-stage methods like JTT, and group-label methods like GroupDRO, are stronger.
-> Our value is the simple, closed-form mechanism.
-> And there is a case where our method fails.
-> On Waterbirds, with a pretrained network, it does not match the bi-level baseline.
-> The reason is clear. With a strong pretrained model, the early gradients are small and noisy.
-> So our score buffer fills with noise. In that case, use bi-level instead.
-> We report this clearly.
+> We can also measure fairness as the accuracy gap between the majority and the minority group.
+> Our method cuts that gap by forty to forty-seven percent over plain training.
+> And, very important, it closes the gap by helping the minority, not by hurting the majority.
+> On STL-10, minority accuracy goes from four percent to thirty-two,
+> while the majority drops only a little, and overall accuracy still goes up.
+> This is what fairness should do: protect the under-represented group.
+> To be honest, JTT and GroupDRO are fairer, but they use a second stage or group labels.
+
+---
+
+## Slide 9 — Demographic fairness, honestly  ·  (6:10–6:55)
+
+> Now an honest part. We also test real demographic data: Adult, with sex, and COMPAS, with race.
+> Here the story is different.
+> Our method keeps accuracy, but it barely moves the fairness gaps, DP and EO.
+> The bi-level method is fairer, at an accuracy cost.
+> Why? Tabular bias is diffuse — spread over many weak features — so the per-example signal is small.
+> The scope is clear: our method needs a structured bias, one dominant attribute, to work.
+> It is strong on the image regimes, and weak on diffuse tabular bias.
 
 ---
 
 ## Slide 10 — Cost  ·  (6:55–7:30)
 
 > A quick word on cost.
-> The first-order version is about four times slower than plain training.
-> That is cheaper than the bi-level baseline.
-> The second-order version is about seven to eight times slower, because of the Hessian step.
-> So use the second-order term when the residual signal matters —
-> the from-scratch tasks we just showed.
+> The first-order version is about four times slower than plain training —
+> that is cheaper than the bi-level method.
+> The second-order version is about seven to eight times slower, because of the curvature step.
+> Use it for structured bias, with no group labels, when you must keep accuracy.
 
 ---
 
 ## Slide 11 — Wrap-up  ·  (7:30–8:10)
 
-> To wrap up. We turn a data-value score into a training reweighter.
-> We add a second-order term with rescaling.
-> With the ablation, we prove the gain is the residual, not just smoothing.
-> And the mechanism works across three problems.
-> We are also honest about where it fails.
-> The big message: a closed-form data score can shape training, inside a clear regime.
+> To wrap up. We turn a data-value score into a fair-training reweighter.
+> We add a second-order term that targets the bias.
+> We prove, with the ablation, that the signal is real, not just smoothing.
+> And it improves group fairness across three kinds of bias,
+> while we stay honest about the demographic boundary.
+> The big message: a closed-form data-value score can keep bias out of a model as it trains,
+> within a clear regime.
 > Thank you. I am happy to take any questions.
 
 ---
@@ -159,5 +157,5 @@
 ### Quick tips
 - **Practice once with a timer.** If you finish slide 7 by 5:20, you are on track.
 - Breathe between slides. A short pause is fine.
-- You do not need to read every word — these notes are a guide, not a script to memorize.
-- If a question comes early, it is okay; you have an ~0.8-minute buffer.
+- These notes are a guide — you do not need to read every word.
+- Key fairness words to say clearly: *minority group*, *accuracy gap*, *no group labels*, *structured bias*.

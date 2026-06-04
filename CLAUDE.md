@@ -3,18 +3,18 @@
 ## Pipeline Status
 
 ```yaml
-stage: deliverables  # 8-clinch PASS (3rd regime), 발표자료+AAAI 논문 완성
+stage: deliverables  # fairness 재정렬 완료 (group fairness + demographic), 발표·논문·notes
 idea: "Dynamic In-Run Data Shapley reweighting for fairness (idea:dynamic-in-run-shapley-fairness)"
 contract: "plan.md"
 current_branch: main
-baseline: "3 from-scratch spurious regimes, OOD test_worst (10 seed): CMNIST(color) fairds-2 0.824 / CIFAR(texture) fairds-2-resid 0.458 / STL10(natural) fairds-2-resid 0.323. JTT/GroupDRO 더 강함(정직 보고)."
+baseline: "Group fairness (3 regime): fairds-2가 majority−minority gap 40-47%↓ (CMNIST .223→.118, CIFAR .703→.430, STL .950→.568) + worst-group↑, minority lift(STL .04→.32). Demographic(Adult/COMPAS) DP/EO 개선 미미(정직 boundary, diffuse bias). jtt/groupdro 더 공정."
 training_status: idle
 language: ko
 code_dir: codes
 active_tasks: []
-deliverables: "paper_aaai/slides.{html,pdf} (13 슬라이드, 7-9분, 영어), paper_aaai/main.pdf (AAAI 4페이지, 영어). figures: paper_aaai/figures/{fig_three_regimes,fig_residual,fig_e1b_phi}."
-next: "발표/논문 사용자 리뷰. 저자정보 기입(현 anonymous submission). 추가 강화 시: Codex Round 4로 STL universal-mechanism 재스코어, larger-model overhead(C1)."
-last_updated: "2026-06-02"
+deliverables: "paper_aaai/ (fairness 프레임): main.pdf (제목 'for Group Fairness', 본문 4p + refs 5p), slides.{html,pdf} (11장 ~8분, 영어), speaker_notes.md (영어). figures: fig_three_regimes(worst=group fairness)/fig_disparity/fig_residual/fig_e1b_phi. fairness_analysis.py."
+next: "발표/논문 리뷰. 저자정보 기입(현 anonymous). 추가: demographic 강화(CelebA gender), Codex fairness 재스코어."
+last_updated: "2026-06-04"
 ```
 
 ## 실험 종합 요약 (2026-05-06, 6-round auto-review 완료)

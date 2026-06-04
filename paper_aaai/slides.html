@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Closed-form 2nd-order Data Shapley as a Spurious-Correlation Attenuator</title>
+<title>Closed-form Second-order Data Shapley for Group Fairness</title>
 <style>
   @page { size: 13.333in 7.5in; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,7 +23,7 @@
   .num { position: absolute; bottom: 0.32in; right: 0.55in; color: #aaa; font-size: 11pt; }
   .tag { position: absolute; bottom: 0.32in; left: 0.8in; color: #bbb; font-size: 10.5pt; }
   .center { display: flex; flex-direction: column; justify-content: center; height: 100%; }
-  .title-main { color:#0d47a1; font-size: 38pt; line-height: 1.15; margin-bottom: 10px; }
+  .title-main { color:#0d47a1; font-size: 36pt; line-height: 1.15; margin-bottom: 10px; }
   .title-sub  { color:#1565c0; font-size: 21pt; font-style: italic; margin-bottom: 40px; }
   .title-meta { font-size: 15pt; color:#555; line-height: 1.6; }
   .hl { color: #0d47a1; font-weight: bold; }
@@ -31,7 +31,7 @@
   .bad  { color: #b71c1c; font-weight: bold; }
   .box { background: #f3f7fc; border-left: 5px solid #1565c0; padding: 12px 18px; margin: 12px 0; font-size: 15pt; }
   .figwrap { text-align: center; margin-top: 10px; }
-  .figwrap img { max-width: 100%; max-height: 4.4in; }
+  .figwrap img { max-width: 100%; max-height: 4.3in; }
   .cap { font-size: 12pt; color: #666; margin-top: 4px; }
   table { border-collapse: collapse; margin: 12px 0; font-size: 14pt; }
   th, td { border: 1px solid #cfd8dc; padding: 5px 13px; text-align: center; }
@@ -48,11 +48,12 @@
 <!-- 1. TITLE -->
 <section class="slide">
   <div class="center">
-    <div class="title-main">Closed-form 2nd-order Data Shapley<br>as a Spurious-Correlation Attenuator</div>
-    <div class="title-sub">Where it works, where it doesn't — and why</div>
+    <div class="title-main">Closed-form Second-order Data Shapley<br>for Group Fairness</div>
+    <div class="title-sub">Down-weighting biased training data, without group labels</div>
     <div class="title-meta">
-      A closed-form, single-pass per-sample reweighter for worst-group robustness.<br>
-      Mechanism reproduced across <b>three</b> spurious regimes: color, texture, natural images.
+      A model inherits the bias in its data. We use a closed-form data-value score to
+      stop it — <b>during training</b>, with no group labels in the update.<br>
+      Shown across three kinds of data bias: color, texture, natural images.
     </div>
   </div>
   <div class="tag">Fairds</div>
@@ -60,44 +61,42 @@
 
 <!-- 2. PROBLEM -->
 <section class="slide">
-  <h2>The problem: spurious correlations break worst-group accuracy</h2>
+  <h2>Bias in the data becomes unfairness in the model</h2>
   <ul>
-    <li>Models latch onto an <span class="hl">easy spurious cue</span> (background, color, texture) that
-        correlates with the label in training but <span class="bad">flips at test time</span>.</li>
-    <li>Average accuracy looks fine; the <span class="hl">worst group collapses</span>.</li>
-    <li>Strong fixes need <span class="hl">group labels</span> (GroupDRO) or expensive
-        two-stage/bi-level pipelines (JTT, meta-reweighting).</li>
+    <li>In training, a <span class="hl">majority group</span> ties an attribute to the label
+        — background, color, or a demographic feature.</li>
+    <li>An ordinary model uses that <span class="bad">biased attribute</span>. Average accuracy looks fine,
+        but it <span class="bad">fails the minority group</span> where the attribute does not hold.</li>
+    <li>That is an <span class="hl">unfair model</span>: good for the well-represented, poor for the under-represented.</li>
   </ul>
   <div class="box">
-    <b>Question:</b> can a <span class="hl">closed-form, single-pass</span> per-sample reweighter —
-    no group labels at training, no inner optimization loop — attenuate the spurious cue?
+    Strong fixes need extra help: <b>group labels</b> (GroupDRO), a <b>second stage</b> (JTT),
+    or a <b>bi-level loop</b> (meta-reweighting).
   </div>
-  <h3>Our answer</h3>
-  <p>Repurpose <b>In-Run Data Shapley</b> (Wang et al. 2024) as an in-training reweighter, and add a
-     <span class="hl">2nd-order gradient–Hessian–gradient cross-term</span>. We isolate exactly what the
-     cross-term contributes and show it generalizes across three spurious modalities.</p>
+  <h3>Our question</h3>
+  <p>Can a <span class="hl">closed-form, single-pass</span> signal — computed during normal training,
+     with <b>no group labels in the update</b> — find the examples that teach the bias, so we can down-weight them?</p>
   <div class="num">2</div>
 </section>
 
 <!-- 3. IDEA -->
 <section class="slide">
-  <h2>Idea: Data Shapley as an in-training reweighter</h2>
+  <h2>Idea: value each example, then down-weight the biased ones</h2>
   <ul>
-    <li>In-Run Data Shapley gives a <span class="hl">closed-form Taylor estimate</span> of how much each
-        training sample improves a small balanced validation anchor — computed <b>during</b> training, no retraining.</li>
-    <li>We turn that valuation into a <span class="hl">per-sample weight</span> and run weighted SGD.</li>
-    <li>A 50:50 group-balanced <span class="hl">anchor</span> is used only for the inner inner-product —
-        sensitive labels are never consumed by the model update.</li>
+    <li><b>In-Run Data Shapley</b> gives each training example a <span class="hl">closed-form score</span>:
+        how much it helps a small, <b>group-balanced</b> reference set — computed <i>during</i> training.</li>
+    <li>An example that helps the biased majority but <b>not</b> the balanced set gets a <span class="hl">low score</span>.</li>
+    <li>We turn the score into a weight and do weighted training. Low score &rArr; less weight.</li>
   </ul>
   <div class="eq">
-    w<sub>i</sub> = B · softmax( EMA(&phi;<sub>i</sub>) / &tau; ) &nbsp;&nbsp;&rarr;&nbsp;&nbsp;
+    w<sub>i</sub> = B · softmax( EMA(&phi;<sub>i</sub>) / &tau; ) &nbsp;&rarr;&nbsp;
     &theta;<sub>t+1</sub> = &theta;<sub>t</sub> &minus; &eta; &sum;<sub>i</sub> w<sub>i</sub> &nabla;L(z<sub>i</sub>)
   </div>
-  <p>The whole question becomes: <span class="hl">what should &phi;<sub>i</sub> be?</span></p>
+  <p>The question becomes: <span class="hl">what score &phi;<sub>i</sub> best targets the bias?</span></p>
   <div class="num">3</div>
 </section>
 
-<!-- 4. METHOD (1st + 2nd order) -->
+<!-- 4. METHOD (1st + 2nd) -->
 <section class="slide">
   <h2>Method — closed-form Shapley score (1st &amp; 2nd order)</h2>
   <div class="eq">
@@ -107,110 +106,107 @@
     <span style="color:#0d47a1">&langle; g<sub>i</sub>, H<sub>val</sub> g<sub>val</sub> &rangle;</span>
   </div>
   <ul>
-    <li><b>1st order</b> (Fairds-1): &phi;<sup>(1)</sup> = how much z<sub>i</sub> reduces validation loss in one SGD step.
-        Per-sample gradients via <span class="hl">torch.func.vmap</span>, single graph — closed form, no bi-level loop.</li>
-    <li><b>2nd order</b> (Fairds-2): add the gradient–Hessian–gradient cross-term via the
-        <span class="hl">Pearlmutter trick</span> (one extra backward pass, no full Hessian).</li>
-    <li><span class="hl">Algorithmic contribution:</span> rescale the cross-term to the <b>same RMS magnitude</b>
-        as &phi;<sup>(1)</sup> each minibatch — H<sub>val</sub>'s spectrum varies by orders of magnitude.</li>
-    <li class="bad" style="list-style:none; margin-left:-10px;">⚠ Without RMS rescaling, Fairds-2 collapses to chance under strong spurious bias.</li>
+    <li><b>1st order:</b> &phi;<sup>(1)</sup> = how much z<sub>i</sub> helps the balanced set in one step.
+        Per-sample gradients via <span class="hl">torch.func.vmap</span> — closed form, no bi-level loop.</li>
+    <li><b>2nd order:</b> add the gradient–Hessian–gradient cross-term via the
+        <span class="hl">Pearlmutter trick</span> (one extra backward pass).</li>
+    <li><span class="hl">Key trick:</span> rescale the cross-term to the <b>same RMS magnitude</b> as &phi;<sup>(1)</sup> each minibatch.</li>
+    <li class="bad" style="list-style:none; margin-left:-10px;">⚠ Without RMS rescaling, the method collapses under strong bias.</li>
   </ul>
   <div class="num">4</div>
 </section>
 
-<!-- 6. MECHANISM QUESTION -->
+<!-- 5. MECHANISM QUESTION -->
 <section class="slide">
-  <h2>Is the 2nd-order term doing something real?</h2>
-  <p>A skeptic's worry: maybe the cross-term is just <span class="bad">smoothing / regularization</span> noise.
-     We tested this directly.</p>
-  <h3>What we found about the geometry</h3>
+  <h2>Does the 2nd-order term really target bias?</h2>
+  <p>A fair worry: maybe the curvature term is just <span class="bad">smoothing</span>, not a real bias signal.
+     We checked.</p>
+  <h3>The geometry</h3>
   <ul>
-    <li>g<sub>val</sub> is almost the <span class="hl">top eigenvector of H<sub>val</sub></span>
-        (alignment 0.89–0.99) &rArr; the cross-term is <b>nearly parallel</b> to &phi;<sup>(1)</sup>.</li>
-    <li>Decompose: &nbsp; cross<sub>n</sub> = <span class="hl">&beta;·&phi;<sup>(1)</sup></span> (parallel, a curvature shrinkage)
+    <li>g<sub>val</sub> is almost the <span class="hl">top eigenvector of H<sub>val</sub></span> &rArr;
+        the cross-term is <b>nearly parallel</b> to &phi;<sup>(1)</sup>.</li>
+    <li>Split it: &nbsp; cross = <span class="hl">&beta;·&phi;<sup>(1)</sup></span> (parallel = global shrinkage)
         + <span class="hl">r</span> (orthogonal residual).</li>
   </ul>
   <div class="box">
-    The parallel part = global shrinkage (equivalent to smoothing). <br>
-    <b>Is the orthogonal residual <span class="good">r</span> a real, sample-specific signal — or noise?</b>
+    The parallel part is just smoothing.
+    <b>Is the residual <span class="good">r</span> a real bias signal — or noise?</b>
   </div>
   <div class="num">5</div>
 </section>
 
-<!-- 7. RESIDUAL ABLATION -->
+<!-- 6. RESIDUAL ABLATION -->
 <section class="slide">
-  <h2>Residual ablation: the cross-term's signal lives in <i>r</i></h2>
+  <h2>The bias-correcting signal is the residual</h2>
   <div class="two">
     <div>
-      <p>We build 5 arms that share &phi;<sup>(1)</sup> but treat <i>r</i> differently:</p>
+      <p>Five arms share &phi;<sup>(1)</sup>, treat the residual <i>r</i> differently:</p>
       <ul>
         <li><b>residual (real):</b> &phi;<sup>(1)</sup> − &alpha;·r</li>
-        <li><b>residual (shuffle):</b> r permuted within class×&phi;-bin</li>
-        <li><b>parallel:</b> only the shrinkage part</li>
+        <li><b>residual (shuffle):</b> r permuted within bins</li>
+        <li><b>parallel:</b> shrinkage only</li>
         <li><b>sign_flip:</b> &phi;<sup>(1)</sup> + &alpha;·r</li>
       </ul>
       <div class="key">real &gt; shuffle &gt; parallel;<br>sign-flip collapses.</div>
-      <p style="font-size:13pt;color:#555;margin-top:8px">CIFAR: real vs shuffle <b>+5.9pp, p=0.0015</b> (20 seeds).
-         If <i>r</i> were noise, shuffling it would not matter — it does.</p>
+      <p style="font-size:13pt;color:#555;margin-top:8px">CIFAR: real vs shuffle <b>+5.9pp, p=0.0015</b>.
+         If <i>r</i> were noise, shuffling would not matter — it does.</p>
     </div>
-    <div class="figwrap">
-      <img src="figures/fig_residual.png">
-    </div>
+    <div class="figwrap"><img src="figures/fig_residual.png"></div>
   </div>
   <div class="num">6</div>
 </section>
 
-<!-- 8. HEADLINE 3 REGIMES -->
+<!-- 7. GROUP FAIRNESS ACROSS 3 REGIMES -->
 <section class="slide">
-  <h2>Headline: the mechanism reproduces across 3 spurious regimes</h2>
-  <div class="figwrap">
-    <img src="figures/fig_three_regimes.png">
-  </div>
+  <h2>Group fairness across three data-bias regimes</h2>
+  <div class="figwrap"><img src="figures/fig_three_regimes.png"></div>
   <p style="text-align:center;margin-top:8px">
-    Fairds-2 (residual) beats every <span class="hl">no-group-label</span> baseline
-    (vanilla, Fairds-1, Ren2018) in <b>all three</b> regimes —
-    color (MNIST), texture (CIFAR), and natural images (STL-10).
+    Worst-group accuracy (protecting the minority). Our reweighter (striped) beats every
+    <span class="hl">no-group-label</span> baseline in <b>all three</b> bias types — color, texture, natural images.
+    Group-label / 2-stage methods (red) are fairer still.
   </p>
   <div class="num">7</div>
 </section>
 
-<!-- 9. STL CLINCH STATS -->
+<!-- 8. DISPARITY + MINORITY LIFT -->
 <section class="slide">
-  <h2>The third regime (STL-10, 96px natural images)</h2>
-  <p>New benchmark: car vs truck, corruption-type (blur vs noise) as the spurious cue; from-scratch CNN, 10 seeds.</p>
-  <table>
-    <tr><th>method</th><th>OOD test_worst</th><th>vs Fairds-2-resid</th></tr>
-    <tr><td>vanilla</td><td>0.042</td><td class="good">+28.1pp, p=0.002</td></tr>
-    <tr><td>Fairds-1 (1st-order)</td><td>0.194</td><td class="good">+12.9pp, p=0.010</td></tr>
-    <tr><td>Ren2018 (bi-level)</td><td>0.151</td><td class="good">+17.2pp, p=0.002</td></tr>
-    <tr style="background:#e8f0fe"><td><b>Fairds-2 (residual)</b></td><td><b>0.323</b></td><td>—</td></tr>
-    <tr><td>JTT / GroupDRO*</td><td>0.61 / 0.52</td><td class="bad">stronger (see next)</td></tr>
-  </table>
-  <div class="box"><b>2nd-order isolation holds:</b> the residual variant beats the 1st-order term by
-     +12.9pp (p=0.010) — exactly the cross-term effect we isolated on CIFAR, now in a third modality.</div>
+  <h2>It shrinks the unfairness gap — by lifting the minority</h2>
+  <div class="two">
+    <div class="figwrap" style="flex:1.25"><img src="figures/fig_disparity.png" style="max-height:3.0in"></div>
+    <div>
+      <ul>
+        <li>Majority−minority accuracy gap <span class="good">cut 40–47%</span> vs ERM
+            (CMNIST .223→.118, CIFAR .703→.430, STL .950→.568).</li>
+        <li>The gap closes by <span class="hl">helping the minority</span>, not hurting the majority:
+            STL minority <b>0.04→0.32</b>, majority only 0.99→0.89, overall ↑ 0.14→0.38.</li>
+        <li><span class="bad">Honest:</span> JTT / GroupDRO are fairer, but use a 2nd stage or group labels.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="box">This is the behavior fairness asks for: protect the under-represented group.</div>
   <div class="num">8</div>
 </section>
 
-<!-- 10. HONEST SCOPE -->
+<!-- 9. DEMOGRAPHIC FAIRNESS (HONEST BOUNDARY) -->
 <section class="slide">
-  <h2>Honest scope — what we do <i>not</i> claim</h2>
-  <h3>Stronger methods exist (reported plainly)</h3>
+  <h2>Demographic fairness (Adult, COMPAS) — honest scope</h2>
+  <table>
+    <tr><th>data</th><th>method</th><th>DP ↓</th><th>EO ↓</th><th>acc</th></tr>
+    <tr><td>Adult</td><td>vanilla</td><td>0.196</td><td>0.117</td><td>0.837</td></tr>
+    <tr><td></td><td>Fairds-2</td><td>0.189</td><td>0.127</td><td>0.835</td></tr>
+    <tr><td></td><td>Ren2018 (bi-level)</td><td class="good">0.175</td><td class="good">0.102</td><td>0.819</td></tr>
+  </table>
   <ul>
-    <li><span class="bad">JTT</span> (2-stage ERM) and <span class="bad">GroupDRO</span> (uses group labels)
-        reach higher worst-group accuracy in most regimes.</li>
-    <li>Fairds-2's value is the <span class="hl">closed-form, single-pass cross-term mechanism</span>, not peak accuracy.</li>
+    <li>On tabular demographic data, Fairds <span class="hl">keeps accuracy</span> but barely moves DP/EO (not significant).</li>
+    <li>The bi-level reweighter is fairer, at an accuracy cost.</li>
+    <li><span class="hl">Why:</span> tabular bias is <b>diffuse</b> (many weak features) &rArr; the per-example signal is small.</li>
   </ul>
-  <h3>A regime where it fails: pretrained-ResNet Waterbirds fine-tuning</h3>
-  <ul>
-    <li>All Fairds variants (3 algorithmic versions) <span class="bad">fail to match</span> the bi-level baseline.</li>
-    <li>Cause: with a strong pretrained extractor, early per-sample gradients are small/noisy &rArr;
-        the EMA buffer fills with noise. <span class="hl">Use bi-level meta-learning there.</span></li>
-  </ul>
-  <div class="box">We characterize the <b>regime boundary</b> rather than hide the negative result.</div>
+  <div class="box"><b>Scope:</b> the mechanism needs <b>structured</b> bias (one dominant attribute) to fire —
+     strong on the image regimes, weak on diffuse tabular bias.</div>
   <div class="num">9</div>
 </section>
 
-<!-- 11. COST -->
+<!-- 10. COST -->
 <section class="slide">
   <h2>Cost &amp; practicality</h2>
   <div class="two">
@@ -222,15 +218,14 @@
         <tr><td>Ren2018 (bi-level)</td><td>4.78×</td></tr>
         <tr><td>Fairds-2</td><td>7.68×</td></tr>
       </table>
-      <p style="font-size:13pt;color:#555">1st-order is cheaper than bi-level; 2nd-order pays for the HVP.
-         Honestly reported, not yet at the 1.5×/3× target.</p>
+      <p style="font-size:13pt;color:#555">1st-order is cheaper than bi-level; 2nd-order pays for the HVP.</p>
     </div>
     <div>
-      <h3>When to reach for Fairds-2</h3>
+      <h3>When to use it</h3>
       <ul>
-        <li><span class="good">From-scratch / small models</span> with a strong spurious cue and no group labels.</li>
-        <li>When you want a <span class="hl">closed-form</span> reweighter (no inner loop) and lowest seed variance among no-label methods.</li>
-        <li><span class="bad">Not</span> for pretrained fine-tuning &rArr; use bi-level.</li>
+        <li><span class="good">Structured bias, no group labels</span>, accuracy must be kept.</li>
+        <li>A <span class="hl">closed-form</span> fairness signal — no inner loop — that preserves accuracy.</li>
+        <li><span class="bad">Not</span> a general tabular debiaser; use group-label methods when labels exist.</li>
       </ul>
     </div>
   </div>
@@ -241,16 +236,14 @@
 <section class="slide">
   <h2>Contributions &amp; takeaway</h2>
   <ul>
-    <li>Repurpose closed-form In-Run Data Shapley as an <b>in-training per-sample reweighter</b> for worst-group robustness.</li>
-    <li>A <span class="hl">2nd-order cross-term with RMS rescaling</span> (required for stability under strong spurious bias).</li>
-    <li>A <span class="hl">decomposition + residual ablation</span> proving the cross-term carries a real, sample-specific
-        directional signal — real &gt; shuffle &gt; parallel; sign-flip collapses — <b>not mere smoothing</b>.</li>
-    <li>The mechanism <span class="good">reproduces across three regimes</span> (color / texture / natural images),
-        with an honest negative on pretrained fine-tuning.</li>
+    <li>A closed-form In-Run Data Shapley reweighter for <b>fair training</b> — down-weights biased examples, no group labels in the update.</li>
+    <li>A <span class="hl">2nd-order cross-term with RMS rescaling</span> that targets the bias.</li>
+    <li>A <span class="hl">residual ablation</span> proving the bias signal is a real direction, not smoothing.</li>
+    <li><span class="good">Group fairness across 3 bias regimes</span>: worst-group ↑, majority–minority gap ↓ 40–47%; honest demographic boundary.</li>
   </ul>
-  <div class="box" style="font-size:18pt;margin-top:18px">
-    <b>Closed-form valuation can shape training dynamics — within a characterized regime.</b><br>
-    <span style="font-size:15pt">Beats every no-group-label baseline from scratch; group-label / 2-stage methods remain stronger, and we say so.</span>
+  <div class="box" style="font-size:18pt;margin-top:16px">
+    <b>A closed-form data-value score can keep bias out of a model as it trains — within a clear regime.</b><br>
+    <span style="font-size:15pt">Fairest among no-group-label methods; group-label / 2-stage methods remain stronger, and we say so.</span>
   </div>
   <div class="num">11</div>
 </section>

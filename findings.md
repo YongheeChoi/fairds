@@ -10,6 +10,14 @@
 
 > Method-level insights: what works, what doesn't, and why. These directly inform your claims, experiment design, and paper narrative.
 
+## [2026-06-04] 🎯 연구 목표 fairness 재확립 — group fairness 프레임 + demographic 재분석
+- **사용자 지적**: 발표/논문이 'spurious shortcut robustness'로 흘렀으나 **원래 목표는 fairness** (idea/C2/C3/C4, FORML 비교). "데이터 기여도로 편향 학습 방지 → 공정"이 목적. E2 fairness 약세로 robustness pivot했던 것을 fairness로 되돌림.
+- **재정렬**: worst-group = group fairness (Rawlsian/max-min) + **group disparity gap** metric 추가, mechanism(2차 Shapley가 편향 다수 down-weight = C3)을 bias-mitigation으로 전면화. spurious→data bias 용어.
+- **Disparity 분석 (majority−minority acc gap; ↓ fairer)**: fairds-2가 vanilla 대비 gap **40-47%↓** — CMNIST 0.223→0.118, CIFAR 0.703→0.430, STL 0.950→0.568(resid). no-label 중 최저(vanilla/f1/ren 우위). jtt/groupdro 더 공정(정직). `codes/experiments/fairness_analysis.py`.
+- **Minority lift**: gap 감소는 **소수 그룹 향상**으로 — STL minority 0.04→0.32, majority 0.99→0.89, overall 0.14→0.38 (소수 보호, 다수 소폭 양보). fairness 정석 거동.
+- **Demographic 재분석 (Adult/COMPAS DP/EO)**: fairds-2 accuracy 보존하나 DP/EO 개선 미미(NS). ren2018(bi-level) 더 공정(acc 희생). 진단: **diffuse tabular bias → per-example signal 작음**. scope: structured bias(이미지)는 작동, diffuse(tabular)는 안 됨 — 정직한 boundary.
+- **산출물 fairness 재작성**: 논문(제목 'for Group Fairness', abstract/intro/exp/discussion + **Broader Impact** 섹션, 본문 4p + refs 5p), 발표(11장 fairness ~8분), speaker_notes(fairness 영어). 새 `fig_disparity`. paper_aaai/.
+
 ## [2026-06-02] 🎯 E6 Spurious-STL10 — 3rd positive regime 확정, 8-clinch PASS
 - 96px 자연이미지(STL-10 car vs truck), texture-corruption(blur vs noise) spurious. CMNIST(color)/Corrupted-CIFAR(texture) 미러. from-scratch 3-conv CNN(96→12), 10 seed, 30ep, τ=0.1 ws=4.0 α=0.5. STL train+test pool(car+truck 2600) → disjoint 4-way split. 신규: `datasets/spurious_stl10.py`, `experiments/e6_spurious_stl10/{run,analyze}.py`.
 - **test_worst (10 seed)**: vanilla 0.042, fairds-1 0.194, fairds-2 0.227, **fairds-2-resid 0.323**, ren2018 0.151, jtt 0.606, groupdro 0.521.
