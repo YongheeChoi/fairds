@@ -119,15 +119,16 @@
 
 ---
 
-## Slide 9 — Demographic fairness, honestly  ·  (6:10–6:55)
+## Slide 9 — Demographic fairness: structured vs diffuse  ·  (6:10–6:55)
 
-> Now an honest part. We also test real demographic data: Adult, with sex, and COMPAS, with race.
-> Here the story is different.
-> Our method keeps accuracy, but it barely moves the fairness gaps, DP and EO.
-> The bi-level method is fairer, at an accuracy cost.
-> Why? Tabular bias is diffuse — spread over many weak features — so the per-example signal is small.
-> The scope is clear: our method needs a structured bias, one dominant attribute, to work.
-> It is strong on the image regimes, and weak on diffuse tabular bias.
+> Now, does this help real demographic data? It depends on the bias.
+> On CelebA, we predict blond hair, with gender as the sensitive group. This is a structured image bias.
+> Here our method works strongly: worst-group accuracy goes from twenty percent to seventy-two percent,
+> and the equal-odds gap drops by more than half. Accuracy even goes up.
+> But on tabular data, Adult and COMPAS, the bias is diffuse — spread over many weak features.
+> There our method keeps accuracy but barely moves the gaps.
+> So the scope is clear: structured bias works, even on real faces and real demographics;
+> diffuse tabular bias does not.
 
 ---
 

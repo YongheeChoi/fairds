@@ -10,6 +10,13 @@
 
 > Method-level insights: what works, what doesn't, and why. These directly inform your claims, experiment design, and paper narrative.
 
+## [2026-06-04] 🎯 E7 CelebA — demographic fairness가 structured면 작동 (Adult/COMPAS 약점 보완)
+- **셋업**: CelebA Blond_Hair target, Male sensitive group (Sagawa style). 자연 spurious(blond↔female), minority blond-male (train 10000 중 90개!). from-scratch 3-conv CNN 64px, 10 seed, 15ep. 신규: `datasets/celeba_fairness.py`, `experiments/e7_celeba/{run,analyze}.py`. 다운로드: gdrive quota 풀림(이전 실패 → 성공).
+- **결과 (test, 10 seed)**: vanilla worst **0.199** → fairds-1 **0.747** / fairds-2 0.719 / resid 0.711 (**+51-55pp, p=0.002**). disparity 0.779→0.19. **EO 0.381→0.155** (대폭). DP 0.237→0.21(약간). acc 0.773→0.86(향상).
+- **🎯 핵심**: demographic + **structured(image)** bias에서 fairds 강력 작동 → Adult/COMPAS(diffuse tabular, 약함)와 정반대. **"structured면 demographic fairness도 된다" 가설 입증.**
+- **정직**: ren2018 worst 0.785 (fairds보다 약간 위, vs resid p=0.049). **jtt 0.292/groupdro 0.469 — CelebA에서 오히려 약함** (다른 regime과 반대; 2-stage/groupdro가 face 64px서 불안정, variance 0.18-0.22). fairds-2 vs fairds-1 NS (0.719 vs 0.747) — structured bias엔 1차로 충분, 2차 isolation 없음.
+- results: `results/e7_main`(vanilla/f1/f2), `e7_oracle`(ren/jtt/gdro), `e7_resid`(f2 residual).
+
 ## [2026-06-04] 🎯 연구 목표 fairness 재확립 — group fairness 프레임 + demographic 재분석
 - **사용자 지적**: 발표/논문이 'spurious shortcut robustness'로 흘렀으나 **원래 목표는 fairness** (idea/C2/C3/C4, FORML 비교). "데이터 기여도로 편향 학습 방지 → 공정"이 목적. E2 fairness 약세로 robustness pivot했던 것을 fairness로 되돌림.
 - **재정렬**: worst-group = group fairness (Rawlsian/max-min) + **group disparity gap** metric 추가, mechanism(2차 Shapley가 편향 다수 down-weight = C3)을 bias-mitigation으로 전면화. spurious→data bias 용어.

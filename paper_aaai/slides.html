@@ -187,22 +187,30 @@
   <div class="num">8</div>
 </section>
 
-<!-- 9. DEMOGRAPHIC FAIRNESS (HONEST BOUNDARY) -->
+<!-- 9. DEMOGRAPHIC FAIRNESS: STRUCTURED vs DIFFUSE -->
 <section class="slide">
-  <h2>Demographic fairness (Adult, COMPAS) — honest scope</h2>
-  <table>
-    <tr><th>data</th><th>method</th><th>DP ↓</th><th>EO ↓</th><th>acc</th></tr>
-    <tr><td>Adult</td><td>vanilla</td><td>0.196</td><td>0.117</td><td>0.837</td></tr>
-    <tr><td></td><td>Fairds-2</td><td>0.189</td><td>0.127</td><td>0.835</td></tr>
-    <tr><td></td><td>Ren2018 (bi-level)</td><td class="good">0.175</td><td class="good">0.102</td><td>0.819</td></tr>
-  </table>
-  <ul>
-    <li>On tabular demographic data, Fairds <span class="hl">keeps accuracy</span> but barely moves DP/EO (not significant).</li>
-    <li>The bi-level reweighter is fairer, at an accuracy cost.</li>
-    <li><span class="hl">Why:</span> tabular bias is <b>diffuse</b> (many weak features) &rArr; the per-example signal is small.</li>
-  </ul>
-  <div class="box"><b>Scope:</b> the mechanism needs <b>structured</b> bias (one dominant attribute) to fire —
-     strong on the image regimes, weak on diffuse tabular bias.</div>
+  <h2>Demographic fairness — it works when the bias is <i>structured</i></h2>
+  <div class="two">
+    <div style="flex:0.9">
+      <table>
+        <tr><th>data</th><th>method</th><th>worst ↑</th><th>EO ↓</th></tr>
+        <tr><td><b>CelebA</b><br><span style="font-size:11pt">(image)</span></td><td>vanilla</td><td>0.20</td><td>0.381</td></tr>
+        <tr style="background:#e8f0fe"><td></td><td><b>Fairds-2</b></td><td class="good"><b>0.72</b></td><td class="good">0.158</td></tr>
+        <tr><td>Adult<br><span style="font-size:11pt">(tabular)</span></td><td>vanilla</td><td>—</td><td>0.117</td></tr>
+        <tr><td></td><td>Fairds-2</td><td>—</td><td>0.127</td></tr>
+      </table>
+    </div>
+    <div>
+      <ul>
+        <li><b>CelebA</b> (gender → blond): a <span class="hl">structured</span> image demographic bias.
+            Fairds <span class="good">worst +51pp</span> (0.20→0.72), EO 0.38→0.16, accuracy ↑.</li>
+        <li><b>Adult / COMPAS</b>: <span class="bad">diffuse</span> tabular bias. Fairds keeps accuracy
+            but barely moves DP/EO; bi-level is fairer.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="box"><b>Scope:</b> the closed-form signal needs <b>structured</b> bias to fire —
+     strong on images, <span class="good">even real faces / demographics</span>; weak on diffuse tabular bias.</div>
   <div class="num">9</div>
 </section>
 

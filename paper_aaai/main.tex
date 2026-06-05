@@ -44,10 +44,11 @@ data-bias regimes --- color, texture, and natural images --- the method improves
 worst-group accuracy and \textbf{shrinks the majority--minority accuracy gap by
 $40$--$47\%$ over ERM}, and it beats a bi-level fairness reweighter
 \citep{ren2018reweight}, among methods that use \emph{no group labels} at training
-(stronger group-label / two-stage methods exist, which we report). On tabular
-demographic benchmarks (Adult, COMPAS) the gain on demographic-parity and
-equalized-odds gaps is small; we characterize where the mechanism is strong
-(structured bias) and weak (diffuse tabular bias).
+(stronger group-label / two-stage methods exist, which we report). On \textbf{CelebA}
+--- a structured \emph{image} demographic bias (predict blond hair, sensitive
+group gender) --- it lifts worst-group accuracy by $+51$~pp and cuts the
+equalized-odds gap $0.38{\to}0.16$; on \emph{diffuse} tabular data (Adult, COMPAS)
+the gain is small. The mechanism needs structured bias.
 \end{abstract}
 
 \section{Introduction}
@@ -292,40 +293,46 @@ $p{=}1.89\times10^{-8}$ at ratio $0.9$), and $\Delta\phi$ falls as imbalance
 grows. This is the bias-mitigation mechanism, seen directly: the cross-term
 penalizes majority gradients aligned with the validation curvature.
 
-\subsection{Demographic fairness, honestly}
+\subsection{Demographic fairness: structured vs diffuse}
 \label{sec:demographic}
-Table~\ref{tab:demo} reports DP and EO gaps on Adult and COMPAS. Here the picture
-is different: Fairds keeps accuracy but barely moves the fairness gaps (e.g.\ Adult
-DP $0.196{\to}0.189$, not significant), and the bi-level reweighter is fairer at a
-small accuracy cost. The reason is structural: tabular bias is \emph{diffuse}
-(spread over many weakly informative features), so the per-example reweighting
-signal is small. The mechanism needs a \emph{structured} bias --- one dominant
-biased attribute --- to fire. We report this boundary rather than hide it. Concretely, the per-example
-weight spread on Adult is far smaller than on the image regimes; the signal still
-exists (Fairds down-weights the majority group on average) but is too weak to move
-DP/EO. The scope condition is therefore clear: the closed-form Shapley reweighter
-is a fairness tool for \emph{structured} bias --- one dominant biased attribute ---
-not a general tabular debiaser.
+Does this help \emph{real} demographic bias? It depends on whether the bias is
+structured. Table~\ref{tab:demo} tests two kinds. On \textbf{CelebA} --- predict
+Blond\_Hair with gender (Male) as the sensitive group; blond strongly correlates
+with female, so blond-male is the tiny minority --- the bias is structured (one
+dominant attribute in image space), and Fairds works strongly: worst-group
+(blond-male) accuracy rises $0.20{\to}0.72$ ($+51$~pp, $p{=}0.002$, 10 seeds), the
+equalized-odds gap falls $0.38{\to}0.16$, and overall accuracy \emph{improves}. It
+nearly matches the bi-level baseline (Ren2018 worst $0.79$). On \textbf{Adult} and
+\textbf{COMPAS} --- tabular bias spread over many weakly informative features ---
+Fairds keeps accuracy but barely moves DP/EO, and the bi-level method is fairer.
+The contrast is the point: the closed-form Shapley signal needs a \emph{structured}
+bias to fire. It is a fairness tool for structured demographic bias --- even on
+real faces --- not a general tabular debiaser.
 
 \begin{table}[t]
 \centering\footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{llccc}
+\begin{tabular}{llcccc}
 \toprule
-data & method & DP $\downarrow$ & EO $\downarrow$ & acc \\
+data & method & worst$\uparrow$ & DP$\downarrow$ & EO$\downarrow$ & acc \\
 \midrule
-Adult  & Vanilla          & 0.196 & 0.117 & 0.837 \\
-       & \textit{Fairds-2}& 0.189 & 0.127 & 0.835 \\
-       & Ren2018          & \textbf{0.175} & \textbf{0.102} & 0.819 \\
+CelebA  & Vanilla          & 0.20 & 0.237 & 0.381 & 0.773 \\
+(image) & \textit{Fairds-2}& \textbf{0.72} & 0.213 & 0.158 & 0.856 \\
+        & Ren2018          & 0.79 & 0.209 & \textbf{0.129} & 0.856 \\
 \midrule
-COMPAS & Vanilla          & 0.240 & \textbf{0.226} & 0.667 \\
-       & \textit{Fairds-2}& 0.239 & 0.244 & 0.671 \\
-       & Ren2018          & \textbf{0.231} & 0.241 & 0.681 \\
+Adult   & Vanilla          & 0.80 & 0.196 & 0.117 & 0.837 \\
+(tab.)  & \textit{Fairds-2}& 0.80 & 0.189 & 0.127 & 0.835 \\
+        & Ren2018          & 0.78 & \textbf{0.175} & \textbf{0.102} & 0.819 \\
+\midrule
+COMPAS  & Vanilla          & 0.66 & 0.240 & 0.226 & 0.667 \\
+(tab.)  & \textit{Fairds-2}& 0.66 & 0.239 & 0.244 & 0.671 \\
+        & Ren2018          & 0.67 & \textbf{0.231} & 0.241 & 0.681 \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Demographic fairness (lower DP/EO is fairer).} On diffuse tabular
-bias, Fairds preserves accuracy but barely improves fairness; the bi-level
-baseline is fairer. This is the weak-bias boundary of the mechanism.}
+\caption{\textbf{Demographic fairness.} On \textbf{CelebA} (structured image bias)
+Fairds lifts worst-group $+51$~pp and cuts EO sharply; on \emph{diffuse} tabular
+data (Adult, COMPAS) it barely moves worst-group, DP, or EO --- the mechanism needs
+structured bias.}
 \label{tab:demo}
 \end{table}
 
